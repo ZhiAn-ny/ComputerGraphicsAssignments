@@ -1,30 +1,17 @@
 #pragma once
-#include "Lib.h"
-
+#include "SceneObject.h"
 
 #define PI 3.14159265358979323846264
 
-typedef struct {
-public:
-	GLuint VertexArrayObject;
-	GLuint VertexBufferObject_Geometry;
-	GLuint VertexBufferObject_Colors;
-
-	vector<vec3> vertices;
-	vector<vec4> colors;
-
-	int nTriangles;
-	int nVertices;
-
-	vec3 bottomLeft;
-	vec3 topRight;
-
-	// Model matrix: translation * rotation * scale
-	mat4 Model;
-} SceneObject;
-
 class ShapeFactory
 {
+private:
+	unsigned int heartCounter;
+	unsigned int butterflyCounter;
+
+	SceneObject getShape(float centerX, float centerY, float rayX, float rayY, float(*xFunc)(float, float, float), float(*yFunc)(float, float, float));
+	void setColor(SceneObject* fig, vec4 center, vec4(*colorFunc)(SceneObject, int));
+
 public:
 	ShapeFactory();
 	~ShapeFactory();

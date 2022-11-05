@@ -1,7 +1,6 @@
 #pragma once
 #include "Lib.h"
-#include "ShapeFactory.h"
-
+#include "SceneObject.h"
 
 class Scene
 {
