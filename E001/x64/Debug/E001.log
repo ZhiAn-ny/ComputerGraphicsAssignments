@@ -1,0 +1,8 @@
+﻿  lab3_MatrTrasf_Movimenti.cpp
+C:\Users\annyb\source\repos\Computer Graphics\CG\E001\lab3_MatrTrasf_Movimenti.cpp(73,14): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\annyb\source\repos\Computer Graphics\CG\E001\lab3_MatrTrasf_Movimenti.cpp(90,31): warning C4267: '=': conversione da 'size_t' a 'int'. Possibile perdita di dati.
+C:\Users\annyb\source\repos\Computer Graphics\CG\E001\lab3_MatrTrasf_Movimenti.cpp(97,14): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\annyb\source\repos\Computer Graphics\CG\E001\lab3_MatrTrasf_Movimenti.cpp(114,31): warning C4267: '=': conversione da 'size_t' a 'int'. Possibile perdita di dati.
+  ShaderMaker.cpp
+  Generazione del codice in corso...
+  E001.vcxproj -> C:\Users\annyb\source\repos\Computer Graphics\CG\x64\Debug\E001.exe
