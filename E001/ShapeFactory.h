@@ -29,6 +29,6 @@ public:
 	ShapeFactory();
 	~ShapeFactory();
 
-	void getHeart(float cx, float cy, float raggiox, float raggioy, SceneObject* fig);
-	void getButterfly(float cx, float cy, float raggiox, float raggioy, SceneObject* fig);
+	SceneObject getHeart(float centerX, float centerY, float rayX, float rayY);
+	SceneObject getButterfly(float centerX, float centerY, float rayX, float rayY);
 };

@@ -63,18 +63,12 @@ void INIT_VAO(void)
 {
 	ShapeFactory shf;
 
-	SceneObject shape = {};
-
-	shape.nTriangles = 180;
-	shf.getButterfly(0.0, 0.0, 1, 1, &shape);
+	SceneObject shape = shf.getButterfly(0.0, 0.0, 1, 1);
 	crea_VAO_Vector(&shape);
 	Scena.push_back(shape);
 	
-	shape.nTriangles = 180;
-	shf.getHeart(0.0, 0.0, 1, 1, &shape);
+	shape = shf.getHeart(0.0, 0.0, 1, 1);
 	crea_VAO_Vector(&shape);
-	
-	// metto la figura creata nella scena
 	Scena.push_back(shape);
 
 	// Passo variabili uniform a shader
