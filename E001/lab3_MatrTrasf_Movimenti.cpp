@@ -1,10 +1,11 @@
 #include <iostream>
-#include "ShaderMaker.h"
-#include "lib.h"
 
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
+#include "ShaderMaker.h"
+#include "lib.h"
+#include "ShapeFactory.h"
 
 
 #define  PI   3.14159265358979323846
@@ -20,46 +21,28 @@ float s = 1.0f;
 float factor = 1.1f;
 float dxc = 0, dyc = 0, dxf = 0, dyf = 0;
 
-typedef struct {
-	GLuint VAO;
-	GLuint VBO_G;
-	GLuint VBO_C;
-	int nTriangles;
+vector<SceneObject> Scena;
 
-	// Vertici
-	// vec3 e vec4 sono formiti in glm
-	vector<vec3> vertici;
-	vector<vec4> colors;
-
-	// Numero vertici
-	int nv;
-	
-	//Matrice di Modellazione: Traslazione*Rotazione*Scala
-	mat4 Model;
-} Figura;
-
-vector<Figura> Scena;
-
-Figura  Farf = {};
-Figura Cuore = {};
+SceneObject  Farf = {};
+SceneObject Cuore = {};
 
 
-void crea_VAO_Vector(Figura* fig)
+void crea_VAO_Vector(SceneObject* fig)
 {
 
-	glGenVertexArrays(1, &fig->VAO);
-	glBindVertexArray(fig->VAO);
+	glGenVertexArrays(1, &fig->VertexArrayObject);
+	glBindVertexArray(fig->VertexArrayObject);
 	//Genero , rendo attivo, riempio il VBO della geometria dei vertici
-	glGenBuffers(1, &fig->VBO_G);
-	glBindBuffer(GL_ARRAY_BUFFER, fig->VBO_G);
-	glBufferData(GL_ARRAY_BUFFER, fig->vertici.size() * sizeof(vec3), fig->vertici.data(), GL_STATIC_DRAW); // .data() usato per ottenere l'indirizzo di partenza del vettore (come &)
+	glGenBuffers(1, &fig->VertexBufferObject_Geometry);
+	glBindBuffer(GL_ARRAY_BUFFER, fig->VertexBufferObject_Geometry);
+	glBufferData(GL_ARRAY_BUFFER, fig->vertices.size() * sizeof(vec3), fig->vertices.data(), GL_STATIC_DRAW); // .data() usato per ottenere l'indirizzo di partenza del vettore (come &)
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 	glEnableVertexAttribArray(0);
 
 	//Genero , rendo attivo, riempio il VBO dei colori
-	glGenBuffers(1, &fig->VBO_C);
-	glBindBuffer(GL_ARRAY_BUFFER, fig->VBO_C);
+	glGenBuffers(1, &fig->VertexBufferObject_Colors);
+	glBindBuffer(GL_ARRAY_BUFFER, fig->VertexBufferObject_Colors);
 	glBufferData(GL_ARRAY_BUFFER, fig->colors.size() * sizeof(vec4), fig->colors.data(), GL_STATIC_DRAW);
 	//Adesso carico il VBO dei colori nel layer 2
 	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (void*)0);
@@ -67,51 +50,51 @@ void crea_VAO_Vector(Figura* fig)
 
 }
 
-void costruisci_cuore(float cx, float cy, float raggiox, float raggioy, Figura* fig) {
+void costruisci_cuore(float cx, float cy, float raggiox, float raggioy, SceneObject* fig) {
 
 	int i;
 	float stepA = (2 * PI) / fig->nTriangles;
 	float t;
 
 	// riempio il vettore mettendo prima il centro
-	fig->vertici.push_back(vec3(cx, cy, 0.0));
+	fig->vertices.push_back(vec3(cx, cy, 0.0));
 
 	fig->colors.push_back(vec4(255.0 / 255.0, 75.0 / 255.0, 0.0, 1.0));
 
 	for (i = 0; i <= fig->nTriangles; i++)
 	{
 		t = (float)i * stepA;
-		fig->vertici.push_back(vec3(cx + raggiox*(16 * pow(sin(t), 3)) / 16, cy+raggioy*( (13 * cos(t) - 5 * cos(2 * t) - 2 * cos(3 * t) - cos(4 * t)) / 16), 0.0));
+		fig->vertices.push_back(vec3(cx + raggiox*(16 * pow(sin(t), 3)) / 16, cy+raggioy*( (13 * cos(t) - 5 * cos(2 * t) - 2 * cos(3 * t) - cos(4 * t)) / 16), 0.0));
 		//Colore 
 		fig->colors.push_back(vec4(1.0, 204.0 / 255.0, 0.0, 1.0));
 
 
 	}
-	fig->nv = fig->vertici.size();
+	fig->nVertices = fig->vertices.size();
 
 }
 
-void costruisci_farfalla(float cx, float cy, float raggiox, float raggioy, Figura* fig) {
+void costruisci_farfalla(float cx, float cy, float raggiox, float raggioy, SceneObject* fig) {
 
 	int i;
 	float stepA = (2 * PI) / fig->nTriangles;
 	float t;
 
 
-	fig->vertici.push_back(vec3(cx, cy, 0.0));
+	fig->vertices.push_back(vec3(cx, cy, 0.0));
 
 	fig->colors.push_back(vec4(150.0 / 255.0, 75.0 / 255.0, 0.0, 1.0));
 
 	for (i = 0; i <= fig->nTriangles; i++)
 	{
 		t = (float)i * stepA;
-		fig->vertici.push_back(vec3(cx+raggiox*(sin(t) * (exp(cos(t)) - 2 * cos(4 * t)) + pow(sin(t / 12), 5)) / 4, cy+raggioy*(cos(t) * (exp(cos(t)) - 2 * cos(4 * t)) + pow(sin(t / 12), 5)) / 4, 0.0));
+		fig->vertices.push_back(vec3(cx+raggiox*(sin(t) * (exp(cos(t)) - 2 * cos(4 * t)) + pow(sin(t / 12), 5)) / 4, cy+raggioy*(cos(t) * (exp(cos(t)) - 2 * cos(4 * t)) + pow(sin(t / 12), 5)) / 4, 0.0));
 		//Colore 
 		fig->colors.push_back(vec4(1.0, 0.0, 0.0, 0.0));
 
 
 	}
-	fig->nv = fig->vertici.size();
+	fig->nVertices = fig->vertices.size();
 
 }
 
@@ -129,13 +112,15 @@ void INIT_SHADER(void)
 
 void INIT_VAO(void)
 {
+	ShapeFactory shf;
+
 	Farf.nTriangles = 180;
-	costruisci_farfalla(0.0, 0.0, 1, 1, &Farf);
+	shf.getButterfly(0.0, 0.0, 1, 1, &Farf);
 	crea_VAO_Vector(&Farf);
 	Scena.push_back(Farf);
 	
 	Cuore.nTriangles = 180;
-	costruisci_cuore(0.0, 0.0, 1, 1, &Cuore);
+	shf.getHeart(0.0, 0.0, 1, 1, &Cuore);
 	crea_VAO_Vector(&Cuore);
 	
 	// metto la figura creata nella scena
@@ -180,9 +165,9 @@ void drawScene(void)
 		// location, # matrici, normalizzare(t/f), puntatore alla matrice
 		glUniformMatrix4fv(MatMod, 1, GL_FALSE, value_ptr(Scena[k].Model));
 
-		glBindVertexArray(Scena[k].VAO);
+		glBindVertexArray(Scena[k].VertexArrayObject);
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		glDrawArrays(GL_TRIANGLE_FAN, 0, Scena[k].nv);
+		glDrawArrays(GL_TRIANGLE_FAN, 0, Scena[k].nVertices);
 	}
 
 	glutSwapBuffers();
