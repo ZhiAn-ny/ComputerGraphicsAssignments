@@ -23,9 +23,6 @@ float dxc = 0, dyc = 0, dxf = 0, dyf = 0;
 
 vector<SceneObject> Scena;
 
-SceneObject  Farf = {};
-SceneObject Cuore = {};
-
 
 void crea_VAO_Vector(SceneObject* fig)
 {
@@ -50,54 +47,6 @@ void crea_VAO_Vector(SceneObject* fig)
 
 }
 
-void costruisci_cuore(float cx, float cy, float raggiox, float raggioy, SceneObject* fig) {
-
-	int i;
-	float stepA = (2 * PI) / fig->nTriangles;
-	float t;
-
-	// riempio il vettore mettendo prima il centro
-	fig->vertices.push_back(vec3(cx, cy, 0.0));
-
-	fig->colors.push_back(vec4(255.0 / 255.0, 75.0 / 255.0, 0.0, 1.0));
-
-	for (i = 0; i <= fig->nTriangles; i++)
-	{
-		t = (float)i * stepA;
-		fig->vertices.push_back(vec3(cx + raggiox*(16 * pow(sin(t), 3)) / 16, cy+raggioy*( (13 * cos(t) - 5 * cos(2 * t) - 2 * cos(3 * t) - cos(4 * t)) / 16), 0.0));
-		//Colore 
-		fig->colors.push_back(vec4(1.0, 204.0 / 255.0, 0.0, 1.0));
-
-
-	}
-	fig->nVertices = fig->vertices.size();
-
-}
-
-void costruisci_farfalla(float cx, float cy, float raggiox, float raggioy, SceneObject* fig) {
-
-	int i;
-	float stepA = (2 * PI) / fig->nTriangles;
-	float t;
-
-
-	fig->vertices.push_back(vec3(cx, cy, 0.0));
-
-	fig->colors.push_back(vec4(150.0 / 255.0, 75.0 / 255.0, 0.0, 1.0));
-
-	for (i = 0; i <= fig->nTriangles; i++)
-	{
-		t = (float)i * stepA;
-		fig->vertices.push_back(vec3(cx+raggiox*(sin(t) * (exp(cos(t)) - 2 * cos(4 * t)) + pow(sin(t / 12), 5)) / 4, cy+raggioy*(cos(t) * (exp(cos(t)) - 2 * cos(4 * t)) + pow(sin(t / 12), 5)) / 4, 0.0));
-		//Colore 
-		fig->colors.push_back(vec4(1.0, 0.0, 0.0, 0.0));
-
-
-	}
-	fig->nVertices = fig->vertices.size();
-
-}
-
 void INIT_SHADER(void)
 {
 	GLenum ErrorCheckValue = glGetError();
@@ -114,17 +63,19 @@ void INIT_VAO(void)
 {
 	ShapeFactory shf;
 
-	Farf.nTriangles = 180;
-	shf.getButterfly(0.0, 0.0, 1, 1, &Farf);
-	crea_VAO_Vector(&Farf);
-	Scena.push_back(Farf);
+	SceneObject shape = {};
+
+	shape.nTriangles = 180;
+	shf.getButterfly(0.0, 0.0, 1, 1, &shape);
+	crea_VAO_Vector(&shape);
+	Scena.push_back(shape);
 	
-	Cuore.nTriangles = 180;
-	shf.getHeart(0.0, 0.0, 1, 1, &Cuore);
-	crea_VAO_Vector(&Cuore);
+	shape.nTriangles = 180;
+	shf.getHeart(0.0, 0.0, 1, 1, &shape);
+	crea_VAO_Vector(&shape);
 	
 	// metto la figura creata nella scena
-	Scena.push_back(Cuore);
+	Scena.push_back(shape);
 
 	// Passo variabili uniform a shader
 	// Specifico le coordinate del mondo in riferimento al dominio d'uso (es. se parlo di temperature potrei avere l'origine sotto zero)
