@@ -9,21 +9,28 @@
 #include "Scene.h"
 
 
-
 static unsigned int MatMod, MatProj;
 mat4 Projection;
 
-int width = 800;
-int height = 800;
-
-float angolo = 0.0f;
-float s = 1.0f;
-float factor = 1.1f;
-float dxc = 0, dyc = 0, dxf = 0, dyf = 0;
-
+RECT window;
 Scene scene;
 
-void INIT_VAO(void)
+void createWindow(const char* name)
+{
+	int SCREEN_WIDTH = glutGet(GLUT_SCREEN_WIDTH);
+	int SCREEN_HEIGHT= glutGet(GLUT_SCREEN_HEIGHT);
+	
+	window = {};
+	window.right = SCREEN_WIDTH / 3;
+	window.bottom = SCREEN_HEIGHT / 2;
+
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
+	glutInitWindowSize(window.right, window.bottom);
+	glutInitWindowPosition(100, 100);
+	glutCreateWindow(name);
+}
+
+void INIT_VAO()
 {
 	ShapeFactory shf;
 	SceneObject shape;
@@ -32,17 +39,17 @@ void INIT_VAO(void)
 	shape = shf.getButterfly(0.0, 0.0, 1, 1);
 	scene.addObject(&shape);
 	name = shape.name;
-	scene.transformObject(name, vec3(600.0, 200.0, 0.0), vec3(0.0), vec3(100.0), 0);
+	scene.transformObject(name, vec3(200.0, 200.0, 0.0), vec3(0.0), vec3(100.0), 0);
 
 	shape = shf.getHeart(0.0, 0.0, 1, 1);
 	scene.addObject(&shape);
 	name = shape.name;
-	scene.transformObject(name, vec3(400.0, 400.0, 0.0), vec3(0.0), vec3(100.0), 0);
+	scene.transformObject(name, vec3(100.0, 150.0, 0.0), vec3(0.0), vec3(100.0), 0);
 
 
 	// Passo variabili uniform a shader
 	// Specifico le coordinate del mondo in riferimento al dominio d'uso (es. se parlo di temperature potrei avere l'origine sotto zero)
-	Projection = ortho(0.0f, float(width), 0.0f, float(height));
+	Projection = ortho(0.0f, float(window.right), 0.0f, float(window.bottom));
 	MatProj = glGetUniformLocation(scene.getProgramID(), "Projection"); // secondo argomento è il nome della variabile definita nello shader
 	MatMod = glGetUniformLocation(scene.getProgramID(), "Model");
 
@@ -62,7 +69,7 @@ void drawScene(void)
 
 void updateAngolo(int value)
 {
-	angolo = 20;
+	int angolo = 20;
 
 	vec3 tv = vec3(-1.0, -1.0, 0.0);
 	vec3 rv = vec3(1.0, 0.0, 0.0);
@@ -82,7 +89,7 @@ void updateAngolo(int value)
 
 void myKey(unsigned char key, int x, int y)
 {
-	switch (key)
+	/*switch (key)
 	{
 		case 'a':
 			dxc--;
@@ -96,7 +103,7 @@ void myKey(unsigned char key, int x, int y)
 		case 'w':
 			dyc++;
 			break;
-	}
+	}*/
 
 	glutPostRedisplay();
 }
@@ -108,20 +115,18 @@ int main(int argc, char* argv[])
 	glutInitContextVersion(4, 0);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
 
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
+	createWindow("MyGameApp");
 
-	glutInitWindowSize(width, height);
-	glutInitWindowPosition(100, 100);
-	glutCreateWindow("Farfalla OpenGL");
 	glutDisplayFunc(drawScene);
-
 	glutKeyboardFunc(myKey);
-
 	glutTimerFunc(50, updateAngolo, 0); // 1° parametro -> millisec
+	
 	glewExperimental = GL_TRUE;
 	glewInit();
+	
 	scene.setShaders((char*)"vertexShader_M.glsl", (char*)"fragmentShader_S.glsl");
 	INIT_VAO();
+	
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	glutMainLoop();
