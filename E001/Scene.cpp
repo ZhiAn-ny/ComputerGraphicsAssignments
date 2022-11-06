@@ -13,6 +13,11 @@ vector<SceneObject> Scene::getScene()
     return this->_scene;
 }
 
+unsigned int Scene::getProgramID()
+{
+	return this->programId;
+}
+
 void Scene::addObject(SceneObject* fig)
 {
 	this->createVertexArray(fig);
@@ -39,6 +44,14 @@ void Scene::drawScene(unsigned int* MatMod, unsigned int* MatProj, mat4* Project
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glDrawArrays(GL_TRIANGLE_FAN, 0, Scena[index].nVertices);
 	}
+}
+
+void Scene::setShaders(char* vertexShader, char* fragmentShader)
+{
+	GLenum ErrorCheckValue = glGetError();
+
+	this->programId = ShaderMaker::createProgram(vertexShader, fragmentShader);
+	glUseProgram(this->programId);
 }
 
 void Scene::transformObject(std::string name, vec3 tVector, vec3 rVector, vec3 sVector, GLfloat angle)
