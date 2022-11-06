@@ -39,12 +39,12 @@ void INIT_VAO()
 	shape = shf.getButterfly(0.0, 0.0, 1, 1);
 	scene.addObject(&shape);
 	name = shape.name;
-	scene.transformObject(name, vec3(200.0, 200.0, 0.0), vec3(0.0), vec3(100.0), 0);
+	scene.transformObject(name, vec3(200.0, 200.0, 0.0), vec3(100.0), 0);
 
 	shape = shf.getHeart(0.0, 0.0, 1, 1);
 	scene.addObject(&shape);
 	name = shape.name;
-	scene.transformObject(name, vec3(100.0, 150.0, 0.0), vec3(0.0), vec3(100.0), 0);
+	scene.transformObject(name, vec3(100.0, 150.0, 0.0), vec3(100.0), 0);
 
 
 	// Passo variabili uniform a shader
@@ -67,23 +67,16 @@ void drawScene(void)
 	glutSwapBuffers();
 }
 
-void updateAngolo(int value)
+void rotate(int value)
 {
-	int angolo = 20;
+	float angolo = 0.1;
 
 	vec3 tv = vec3(0.0);
-	vec3 rv = vec3(1.0, 0.0, 0.0);
-	vec3 sv = vec3(1.0, 1.0, 0.0);
+	vec3 sv = vec3(1.0, 1.0, 1.0); // Leave z axis untouched
 
-	scene.transformObject("butterfly_0", tv, rv, sv, angolo);
-	
-	/*if (s > 3 || s < 0.5)
-	{
-		factor = 1 / factor;
-	}
-	s *= factor;*/
+	scene.transformObject("butterfly_0", tv, sv, angolo);
 
-	glutTimerFunc(50, updateAngolo, 0);
+	glutTimerFunc(50, rotate, 0);
 	glutPostRedisplay();
 }
 
@@ -119,7 +112,7 @@ int main(int argc, char* argv[])
 
 	glutDisplayFunc(drawScene);
 	glutKeyboardFunc(myKey);
-	glutTimerFunc(50, updateAngolo, 0); // 1° parametro -> millisec
+	glutTimerFunc(50, rotate, 0); // 1° parametro -> millisec
 	
 	glewExperimental = GL_TRUE;
 	glewInit();

@@ -58,18 +58,17 @@ void Scene::setShaders(char* vertexShader, char* fragmentShader)
 	glUseProgram(this->programId);
 }
 
-void Scene::transformObject(std::string name, vec3 tVector, vec3 rVector, vec3 sVector, GLfloat angle)
+void Scene::transformObject(std::string name, vec3 tVector, vec3 sVector, GLfloat angle)
 {
-	if (rVector == vec3(0.0))
-	{
-		rVector = vec3(1.0);
-	}
+	vec3 rotationVector = vec3(0.0, 0.0, 1.0); // Always rotate along z axis
+	sVector.z = 1.0; // Leave z dimension untouched
+	tVector.z = 0.0; // Can't move along z axis
 
 	SceneObject* fig = this->getObject(name);
 
 	mat4 T = translate(mat4(1.0), tVector);
 	mat4 S = scale(mat4(1.0), sVector);
-	mat4 R = rotate(mat4(1.0), angle, rVector);
+	mat4 R = rotate(mat4(1.0), angle, rotationVector);
 
 	(*fig).Model = (*fig).Model * T * R * S;
 }

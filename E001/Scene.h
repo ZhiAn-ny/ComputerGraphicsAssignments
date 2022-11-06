@@ -26,5 +26,5 @@ public:
 	void addObject(SceneObject* fig);
 	void drawScene(unsigned int* MatMod, unsigned int* MatProj, mat4* Projection);
 	void setShaders(char* vertexShader, char* fragmentShader);
-	void transformObject(std::string name, vec3 translationVector, vec3 rotationVector, vec3 scaleVector, GLfloat angle);
+	void transformObject(std::string name, vec3 tVector, vec3 sVector, GLfloat angle);
 };
