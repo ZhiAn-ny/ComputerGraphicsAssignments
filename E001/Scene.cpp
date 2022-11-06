@@ -2,6 +2,7 @@
 
 Scene::Scene()
 {
+	this->isWireframeActive = true;
 }
 
 Scene::~Scene()
@@ -37,12 +38,15 @@ void Scene::drawScene(unsigned int* MatMod, unsigned int* MatProj, mat4* Project
 
 	for (index = 0; index < length; index++)
 	{
-		// location, # matrici, normalizzare(t/f), puntatore alla matrice
+		// Create object's uniform matrix
 		glUniformMatrix4fv(*MatMod, 1, GL_FALSE, value_ptr(Scena[index].Model));
-
 		glBindVertexArray(Scena[index].VertexArrayObject);
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glDrawArrays(GL_TRIANGLE_FAN, 0, Scena[index].nVertices);
+
+		if (this->isWireframeActive)
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		}
 	}
 }
 

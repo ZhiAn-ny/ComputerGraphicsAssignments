@@ -8,6 +8,7 @@ class Scene
 private:
 	unsigned int programId;
 	vector<SceneObject> _scene;
+	bool isWireframeActive;
 
 	void createVertexArray(SceneObject* fig);
 	void bindVerticesGeometry(SceneObject* fig);
