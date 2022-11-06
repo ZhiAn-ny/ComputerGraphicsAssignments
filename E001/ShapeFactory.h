@@ -8,6 +8,7 @@ class ShapeFactory
 private:
 	unsigned int heartCounter;
 	unsigned int butterflyCounter;
+	unsigned int circleCounter;
 
 	SceneObject getShape(float centerX, float centerY, float rayX, float rayY, float(*xFunc)(float, float, float), float(*yFunc)(float, float, float));
 	void setColor(SceneObject* fig, vec4 center, vec4(*colorFunc)(SceneObject, int));
@@ -18,4 +19,5 @@ public:
 
 	SceneObject getHeart(float centerX, float centerY, float rayX, float rayY);
 	SceneObject getButterfly(float centerX, float centerY, float rayX, float rayY);
+	SceneObject getCircle(float centerX, float centerY, float rayX, float rayY);
 };
