@@ -16,6 +16,8 @@ public:
 	int nTriangles;
 	int nVertices;
 
+	vec3 pos;
+
 	vec3 bottomLeft;
 	vec3 topRight;
 

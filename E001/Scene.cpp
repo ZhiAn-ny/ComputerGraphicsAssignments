@@ -26,41 +26,35 @@ void Scene::drawScene(unsigned int* MatMod, unsigned int* MatProj, mat4* Project
 {
 	vector<SceneObject> Scena = this->_scene;
 	int length = this->getSceneLength();
-	int k;
+	int index;
 
-	float angolo = 0.0f;
-	float s = 1.0f;
-	float factor = 1.1f;
-	float dxc = 0, dyc = 0, dxf = 0, dyf = 0;
-
-	// fuori dal ciclo perché non cambia, sempre lei
 	glUniformMatrix4fv(*MatProj, 1, GL_FALSE, value_ptr(*Projection));
 
-	for (k = 0; k < length; k++)
+	for (index = 0; index < length; index++)
 	{
-		// Costruisco matrici di modellazione
-		if (k == 0)
-		{
-			Scena[k].Model = mat4(1.0); // inizializzo a identità
-			Scena[k].Model = translate(Scena[k].Model, vec3(600.0f + dxc, 200.0f + dyc, 0.0f)); // traslazione
-			Scena[k].Model = scale(Scena[k].Model, vec3(100.0f * s, 100.0f * s, 1.0f));     // (lascio z inalterata)
-			Scena[k].Model = rotate(Scena[k].Model, radians(angolo*30), vec3(0.0f, 0.0f, 1.0f)); // ruoto lungo l'asse z
-		}
-		if (k == 1)
-		{
-			Scena[k].Model = mat4(1.0); // inizializzo a identità
-			Scena[k].Model = translate(Scena[k].Model, vec3(400.0f + dxf, 400.0f + dyf, 0.0f));
-			Scena[k].Model = scale(Scena[k].Model, vec3(100.0f * (-s/2), 100.0f * (-s/2), 1.0f));
-			Scena[k].Model = rotate(Scena[k].Model, radians(-angolo), vec3(0.0f, 0.0f, 1.0f)); // ruoto lungo l'asse z
-		}
-
 		// location, # matrici, normalizzare(t/f), puntatore alla matrice
-		glUniformMatrix4fv(*MatMod, 1, GL_FALSE, value_ptr(Scena[k].Model));
+		glUniformMatrix4fv(*MatMod, 1, GL_FALSE, value_ptr(Scena[index].Model));
 
-		glBindVertexArray(Scena[k].VertexArrayObject);
+		glBindVertexArray(Scena[index].VertexArrayObject);
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		glDrawArrays(GL_TRIANGLE_FAN, 0, Scena[k].nVertices);
+		glDrawArrays(GL_TRIANGLE_FAN, 0, Scena[index].nVertices);
 	}
+}
+
+void Scene::transformObject(std::string name, vec3 tVector, vec3 rVector, vec3 sVector, GLfloat angle)
+{
+	if (rVector == vec3(0.0))
+	{
+		rVector = vec3(1.0);
+	}
+
+	SceneObject* fig = this->getObject(name);
+
+	mat4 T = translate(mat4(1.0), tVector);
+	mat4 S = scale(mat4(1.0), sVector);
+	mat4 R = rotate(mat4(1.0), angle, rVector);
+
+	(*fig).Model = (*fig).Model * T * R * S;
 }
 
 void Scene::createVertexArray(SceneObject* fig)
@@ -92,4 +86,17 @@ void Scene::bindVerticesColor(SceneObject* fig)
 int Scene::getSceneLength()
 {
 	return this->_scene.size();
+}
+
+SceneObject* Scene::getObject(std::string name)
+{
+	int index;
+	for (index = 0; index < this->_scene.size(); index++)
+	{
+		if (this->_scene[index].name._Equal(name))
+		{
+			return &(this->_scene[index]);
+		}
+	}
+	return NULL;
 }

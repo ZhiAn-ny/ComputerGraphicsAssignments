@@ -40,6 +40,7 @@ SceneObject ShapeFactory::getShape(float centerX, float centerY,
 	}
 	fig.nVertices = fig.vertices.size();
 
+	fig.Model = mat4(1.0);
 	return fig;
 }
 

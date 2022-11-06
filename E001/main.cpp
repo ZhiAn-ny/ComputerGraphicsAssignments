@@ -41,12 +41,18 @@ void INIT_VAO(void)
 {
 	ShapeFactory shf;
 	SceneObject shape;
+	std::string name;
 	
 	shape = shf.getButterfly(0.0, 0.0, 1, 1);
 	scene.addObject(&shape);
-	
+	name = shape.name;
+	scene.transformObject(name, vec3(600.0, 200.0, 0.0), vec3(0.0), vec3(100.0), 0);
+
 	shape = shf.getHeart(0.0, 0.0, 1, 1);
 	scene.addObject(&shape);
+	name = shape.name;
+	scene.transformObject(name, vec3(400.0, 400.0, 0.0), vec3(0.0), vec3(100.0), 0);
+
 
 	// Passo variabili uniform a shader
 	// Specifico le coordinate del mondo in riferimento al dominio d'uso (es. se parlo di temperature potrei avere l'origine sotto zero)
@@ -73,7 +79,13 @@ void drawScene(void)
 
 void updateAngolo(int value)
 {
-	angolo += 1;
+	angolo = 1;
+
+	//vec3 tv = vec3(600.0, 200.0, 0.0);
+	//vec3 rv = vec3(1.0,0,0);
+	//vec3 sv = vec3(1.0);
+
+	//scene.transformObject("butterfly_0", tv, rv, sv, angolo);
 	
 	if (s > 3 || s < 0.5)
 	{
