@@ -71,11 +71,11 @@ void updateAngolo(int value)
 {
 	int angolo = 20;
 
-	vec3 tv = vec3(-1.0, -1.0, 0.0);
+	vec3 tv = vec3(0.0);
 	vec3 rv = vec3(1.0, 0.0, 0.0);
 	vec3 sv = vec3(1.0, 1.0, 0.0);
 
-	//scene.transformObject("butterfly_0", tv, rv, sv, angolo);
+	scene.transformObject("butterfly_0", tv, rv, sv, angolo);
 	
 	/*if (s > 3 || s < 0.5)
 	{
@@ -124,7 +124,7 @@ int main(int argc, char* argv[])
 	glewExperimental = GL_TRUE;
 	glewInit();
 	
-	scene.setShaders((char*)"vertexShader_M.glsl", (char*)"fragmentShader_S.glsl");
+	scene.setShaders((char*)"vertexShader.glsl", (char*)"fragmentShader.glsl");
 	INIT_VAO();
 	
 	glEnable(GL_BLEND);
