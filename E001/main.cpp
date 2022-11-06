@@ -7,6 +7,7 @@
 #include "lib.h"
 #include "ShapeFactory.h"
 #include "Scene.h"
+#include "Mouse.h"
 
 
 static unsigned int MatMod, MatProj;
@@ -14,6 +15,7 @@ mat4 Projection;
 
 RECT window;
 Scene scene;
+Mouse mouse;
 
 void createWindow(const char* name)
 {
@@ -36,21 +38,23 @@ void INIT_VAO()
 	SceneObject shape;
 	std::string name;
 	
-	shape = shf.getButterfly(0.0, 0.0, 1, 1);
-	scene.addObject(&shape);
-	name = shape.name;
-	scene.transformObject(name, vec3(200.0, 200.0, 0.0), vec3(100.0), 0);
+	// Add scene objects to render on start
+	// shape = shf.getButterfly(0.0, 0.0, 1, 1);
+	// scene.addObject(&shape);
+	// name = shape.name;
+	// scene.transformObject(name, vec3(200.0, 200.0, 0.0), vec3(100.0), 0);
+	// 
+	// shape = shf.getHeart(0.0, 0.0, 1, 1);
+	// scene.addObject(&shape);
+	// name = shape.name;
+	// scene.transformObject(name, vec3(100.0, 150.0, 0.0), vec3(100.0), 0);
 
-	shape = shf.getHeart(0.0, 0.0, 1, 1);
-	scene.addObject(&shape);
-	name = shape.name;
-	scene.transformObject(name, vec3(100.0, 150.0, 0.0), vec3(100.0), 0);
 
-
-	// Passo variabili uniform a shader
-	// Specifico le coordinate del mondo in riferimento al dominio d'uso (es. se parlo di temperature potrei avere l'origine sotto zero)
+	// Pass uniform variables to the shader
+	// Coordinates are specified in relation to the usage domain
+	// (i.e. when dealing w/ temperature, the origin could be below zero)
 	Projection = ortho(0.0f, float(window.right), 0.0f, float(window.bottom));
-	MatProj = glGetUniformLocation(scene.getProgramID(), "Projection"); // secondo argomento è il nome della variabile definita nello shader
+	MatProj = glGetUniformLocation(scene.getProgramID(), "Projection");
 	MatMod = glGetUniformLocation(scene.getProgramID(), "Model");
 
 }
@@ -67,7 +71,7 @@ void drawScene(void)
 	glutSwapBuffers();
 }
 
-void rotate(int value)
+void timeRefresh(int value)
 {
 	float angolo = 0.1;
 
@@ -76,7 +80,7 @@ void rotate(int value)
 
 	scene.transformObject("butterfly_0", tv, sv, angolo);
 
-	glutTimerFunc(50, rotate, 0);
+	glutTimerFunc(50, timeRefresh, 0);
 	glutPostRedisplay();
 }
 
@@ -101,6 +105,16 @@ void myKey(unsigned char key, int x, int y)
 	glutPostRedisplay();
 }
 
+void mouseClick(int btn, int state, int x, int y)
+{
+	// Get y in window system
+	y = window.bottom - y;
+
+	if (state == GLUT_UP) mouse.onMouseRelease(btn, state, x, y);
+	if (state == GLUT_DOWN) mouse.onMouseClick(btn, state, x, y);
+
+}
+
 int main(int argc, char* argv[])
 {
 	glutInit(&argc, argv);
@@ -111,8 +125,13 @@ int main(int argc, char* argv[])
 	createWindow("MyGameApp");
 
 	glutDisplayFunc(drawScene);
+
+	// Handle mouse inputs
+	mouse.assignRefScene(&scene);
+	glutMouseFunc(mouseClick);
+
 	glutKeyboardFunc(myKey);
-	glutTimerFunc(50, rotate, 0); // 1° parametro -> millisec
+	//glutTimerFunc(50, timeRefresh, 0);
 	
 	glewExperimental = GL_TRUE;
 	glewInit();
