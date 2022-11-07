@@ -4,6 +4,7 @@ ShapeFactory::ShapeFactory()
 {
 	this->heartCounter = 0;
 	this->butterflyCounter = 0;
+	this->circleCounter = 0;
 }
 
 ShapeFactory::~ShapeFactory()
@@ -59,6 +60,7 @@ void ShapeFactory::setColor(SceneObject* fig, vec4 center, vec4(*colorFunc)(Scen
 
 SceneObject ShapeFactory::getHeart(float centerX, float centerY, float rayX, float rayY)
 {
+	vec4 darkYellow = vec4(255.0 / 255.0, 75.0 / 255.0, 0.0, 1.0);
 	SceneObject fig = this->getShape(centerX, centerY, rayX, rayY,
 		[](float x, float r, float t) {return (float)(x + r * (16 * pow(sin(t), 3)) / 16);},
 		[](float y, float r, float t) {return y + r * ((13 * cos(t) - 5 * cos(2 * t) - 2 * cos(3 * t) - cos(4 * t)) / 16);});
@@ -66,7 +68,7 @@ SceneObject ShapeFactory::getHeart(float centerX, float centerY, float rayX, flo
 	fig.name = "heart_";
 	fig.name += std::to_string(this->heartCounter);
 
-	this->setColor(&fig, vec4(255.0 / 255.0, 75.0 / 255.0, 0.0, 1.0),
+	this->setColor(&fig, darkYellow,
 		[](SceneObject f, int i) {return vec4(1.0, 204.0 / 255.0, 0.0, 1.0);});
 
 	this->heartCounter++;
@@ -75,6 +77,7 @@ SceneObject ShapeFactory::getHeart(float centerX, float centerY, float rayX, flo
 
 SceneObject ShapeFactory::getButterfly(float centerX, float centerY, float rayX, float rayY)
 {
+	vec4 darkOrange = vec4(150.0 / 255.0, 75.0 / 255.0, 0.0, 1.0);
 	SceneObject fig = this->getShape(centerX, centerY, rayX, rayY,
 		[](float x, float r, float t) {return (float)(x + r * (sin(t) * (exp(cos(t)) - 2 * cos(4 * t)) + pow(sin(t / 12), 5)) / 4); },
 		[](float y, float r, float t) {return (float)(y + r * (cos(t) * (exp(cos(t)) - 2 * cos(4 * t)) + pow(sin(t / 12), 5)) / 4); });
@@ -82,9 +85,26 @@ SceneObject ShapeFactory::getButterfly(float centerX, float centerY, float rayX,
 	fig.name = "butterfly_";
 	fig.name += std::to_string(this->butterflyCounter);
 
-	this->setColor(&fig, vec4(150.0 / 255.0, 75.0 / 255.0, 0.0, 1.0),
+	this->setColor(&fig, darkOrange,
 		[](SceneObject f, int i) {return vec4(1.0, 0.0, 0.0, 0.0); });
 
 	this->butterflyCounter++;
+	return fig;
+}
+
+SceneObject ShapeFactory::getCircle(float centerX, float centerY, float rayX, float rayY)
+{
+	vec4 color = vec4(0.0, 75 / 255, 1, 1);
+	SceneObject fig = this->getShape(centerX, centerY, rayX, rayY,
+		[](float x, float r, float t) {return (float)(x + r * cos(t)); },
+		[](float y, float r, float t) {return (float)(y + r * sin(t)); });
+
+	fig.name = "circle_";
+	fig.name += std::to_string(this->circleCounter);
+
+	this->setColor(&fig, color,
+		[](SceneObject f, int i) {return vec4(0, 125/255.0, 1.0, 1.0); });
+
+	this->circleCounter++;
 	return fig;
 }

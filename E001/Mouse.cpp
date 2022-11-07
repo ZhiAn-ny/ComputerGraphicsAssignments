@@ -24,13 +24,13 @@ void Mouse::onMouseClick(int btn, int state, int x, int y)
 	switch (btn)
 	{
 	case GLUT_LEFT_BUTTON:
-		shape = shf.getButterfly(x, y, 50, 50);
+		shape = shf.getCircle(x, y, 5, 5);
 		(*this->scene).addObject(&shape);
 		break;
 
 	case GLUT_RIGHT_BUTTON:
-		shape = shf.getHeart(x, y, 50, 50);
-		(*this->scene).addObject(&shape);
+		// shape = shf.getHeart(x, y, 50, 50);
+		// (*this->scene).addObject(&shape);
 
 		break;
 	}
