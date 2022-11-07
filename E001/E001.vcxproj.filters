@@ -15,13 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="fragmentShader_S.glsl">
-      <Filter>File di risorse</Filter>
-    </None>
-    <None Include="vertexShader_M.glsl">
-      <Filter>File di risorse</Filter>
-    </None>
     <None Include="packages.config" />
+    <None Include="fragmentShader.glsl">
+      <Filter>File di risorse</Filter>
+    </None>
+    <None Include="vertexShader.glsl">
+      <Filter>File di risorse</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib.h">
@@ -30,12 +30,33 @@
     <ClInclude Include="ShaderMaker.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="Mouse.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneObject.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="ShapeFactory.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lab3_MatrTrasf_Movimenti.cpp">
+    <ClCompile Include="ShaderMaker.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderMaker.cpp">
+    <ClCompile Include="main.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mouse.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="ShapeFactory.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
   </ItemGroup>

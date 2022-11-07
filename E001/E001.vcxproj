@@ -127,17 +127,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="fragmentShader_S.glsl" />
+    <None Include="fragmentShader.glsl" />
     <None Include="packages.config" />
-    <None Include="vertexShader_M.glsl" />
+    <None Include="vertexShader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib.h" />
+    <ClInclude Include="Mouse.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneObject.h" />
     <ClInclude Include="ShaderMaker.h" />
+    <ClInclude Include="ShapeFactory.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lab3_MatrTrasf_Movimenti.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShaderMaker.cpp" />
+    <ClCompile Include="ShapeFactory.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
