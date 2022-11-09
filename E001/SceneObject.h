@@ -2,6 +2,15 @@
 #include <string>
 #include "Lib.h"
 
+
+
+typedef enum {
+	UP = 1, 
+	DOWN = -1,
+	LEFT = -2,
+	RIGHT = 2
+}Direction;
+
 typedef struct {
 public:
 	std::string name;
@@ -17,6 +26,7 @@ public:
 	int nVertices;
 
 	vec3 pos;
+	Direction dir;
 
 	vec3 bottomLeft;
 	vec3 topRight;
@@ -24,3 +34,5 @@ public:
 	// Model matrix: translation * rotation * scale
 	mat4 Model;
 } SceneObject;
+
+

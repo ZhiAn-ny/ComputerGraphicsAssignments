@@ -2,7 +2,7 @@
 
 Scene::Scene()
 {
-	this->isWireframeActive = true;
+	this->isWireframeActive = false;
 }
 
 Scene::~Scene()
@@ -66,6 +66,10 @@ void Scene::transformObject(std::string name, vec3 tVector, vec3 sVector, GLfloa
 
 	SceneObject* fig = this->getObject(name);
 
+	// Update position
+	fig->pos.x += tVector.x;
+	fig->pos.y += tVector.y;
+
 	mat4 T = translate(mat4(1.0), tVector);
 	mat4 S = scale(mat4(1.0), sVector);
 	mat4 R = rotate(mat4(1.0), angle, rotationVector);
@@ -115,4 +119,22 @@ SceneObject* Scene::getObject(std::string name)
 		}
 	}
 	return NULL;
+}
+
+vec3 Scene::getObjectPosition(std::string name)
+{
+	SceneObject* fig = this->getObject(name);
+	return fig->pos;
+}
+
+Direction Scene::getObjectDirection(std::string name)
+{
+	SceneObject* fig = this->getObject(name);
+	return fig->dir;
+}
+
+void Scene::changeObjectDirection(std::string name, Direction newDir)
+{
+	SceneObject* fig = this->getObject(name);
+	fig->dir = newDir;
 }

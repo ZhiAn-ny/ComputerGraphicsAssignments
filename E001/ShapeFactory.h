@@ -11,13 +11,22 @@ private:
 	unsigned int circleCounter;
 
 	SceneObject getShape(float centerX, float centerY, float rayX, float rayY, float(*xFunc)(float, float, float), float(*yFunc)(float, float, float));
+	
 	void setColor(SceneObject* fig, vec4 center, vec4(*colorFunc)(SceneObject, int));
+	
+	/** Compares the last added vertex to the object's top left and bottom right
+	 * corners. If the new vertex is out of the object's boundary, updates the
+	 * object's corners.
+	 */
+	void setCorners(SceneObject* fig);
 
 public:
 	ShapeFactory();
 	~ShapeFactory();
 
 	SceneObject getHeart(float centerX, float centerY, float rayX, float rayY);
+
 	SceneObject getButterfly(float centerX, float centerY, float rayX, float rayY);
+
 	SceneObject getCircle(float centerX, float centerY, float rayX, float rayY);
 };

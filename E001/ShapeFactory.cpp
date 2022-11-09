@@ -28,6 +28,9 @@ SceneObject ShapeFactory::getShape(float centerX, float centerY,
 	fig.vertices.push_back(vec3(centerX, centerY, 0.0));
 	fig.colors.push_back(vec4(1.0, 1.0, 1.0, 1.0));
 
+	fig.topRight = fig.vertices[0];
+	fig.bottomLeft = fig.vertices[0];
+
 	// Add all the other vertices on the perimeter
 	for (index = 0; index <= fig.nTriangles; index++)
 	{
@@ -38,9 +41,13 @@ SceneObject ShapeFactory::getShape(float centerX, float centerY,
 		fig.vertices.push_back(vec3(x, y, 0.0));
 		//Colors
 		fig.colors.push_back(vec4(1.0, 1.0, 1.0, 1.0));
+
+		this->setCorners(&fig);
 	}
 	fig.nVertices = fig.vertices.size();
 
+	// set center as reference for object's position
+	fig.pos = fig.vertices[0];
 	fig.Model = mat4(1.0);
 	return fig;
 }
@@ -55,6 +62,20 @@ void ShapeFactory::setColor(SceneObject* fig, vec4 center, vec4(*colorFunc)(Scen
 	for (index = 1; index < fig->colors.size(); index++)
 	{
 		fig->colors[index] = colorFunc(*fig, index);
+	}
+}
+
+void ShapeFactory::setCorners(SceneObject* fig)
+{
+	vec3 lastVertex = fig->vertices[fig->vertices.size() - 1];
+
+	if (lastVertex.x <= fig->bottomLeft.x && lastVertex.y <= fig->bottomLeft.y)
+	{
+		fig->bottomLeft = lastVertex;
+	}
+	else if (lastVertex.x >= fig->topRight.x && lastVertex.y >= fig->topRight.y)
+	{
+		fig->topRight = lastVertex;
 	}
 }
 

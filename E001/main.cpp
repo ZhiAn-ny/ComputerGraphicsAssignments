@@ -39,15 +39,32 @@ void INIT_VAO()
 	std::string name;
 	
 	// Add scene objects to render on start
-	// shape = shf.getButterfly(0.0, 0.0, 1, 1);
-	// scene.addObject(&shape);
-	// name = shape.name;
-	// scene.transformObject(name, vec3(200.0, 200.0, 0.0), vec3(100.0), 0);
-	// 
-	// shape = shf.getHeart(0.0, 0.0, 1, 1);
-	// scene.addObject(&shape);
-	// name = shape.name;
-	// scene.transformObject(name, vec3(100.0, 150.0, 0.0), vec3(100.0), 0);
+	 shape = shf.getButterfly(0.0, 0.0, 1, 1);
+	 // Set initial direction
+	 shape.dir = Direction::UP;
+	 scene.addObject(&shape);
+	 name = shape.name;
+	 // Set initial position and scale
+	 scene.transformObject(name, vec3(100.0, window.bottom - 200.0, 0.0), 
+								 vec3(window.bottom/10), 0);
+
+	 {
+		 shape = shf.getButterfly(0.0, 0.0, 1, 1);
+		 shape.dir = Direction::UP;
+		 scene.addObject(&shape);
+		 name = shape.name;
+		 // Set initial position and scale
+		 scene.transformObject(name, vec3(100.0, window.bottom / 4, 0.0),
+			 vec3(window.bottom / 10), 0);
+
+		 shape = shf.getButterfly(0.0, 0.0, 1, 1);
+		 shape.dir = Direction::UP;
+		 scene.addObject(&shape);
+		 name = shape.name;
+		 // Set initial position and scale
+		 scene.transformObject(name, vec3(100.0, window.bottom /4*3, 0.0),
+			 vec3(window.bottom / 10), 0);
+	 }
 
 
 	// Pass uniform variables to the shader
@@ -73,12 +90,36 @@ void drawScene(void)
 
 void timeRefresh(int value)
 {
-	float angolo = 0.1;
+	float angolo = 0.0;
+	float trasFactor;
+	float minObjY = window.bottom / 4;
+	float maxObjY = window.bottom - minObjY;
+	float ray = window.bottom / 10;
+	std::string moving = "butterfly_0";
 
-	vec3 tv = vec3(0.0);
+	vec3 objPos = scene.getObjectPosition(moving);
+	Direction dir = scene.getObjectDirection(moving);
+
+	float y = (ray * 2 * (dir / abs((int)dir))) + objPos.y;
+
+	// Change direction
+	if (y < minObjY) 
+		scene.changeObjectDirection(moving, Direction::UP);
+	if (y > maxObjY) 
+		scene.changeObjectDirection(moving, Direction::DOWN);
+
+
+	// Create base translation vector
+	vec3 tVector = vec3((dir / 2), (dir % 2), 0.0);
+
+	// trasFactor = (dir / abs((int) dir));
+	// 
+	// tVector.x *= trasFactor;
+	// tVector.y *= trasFactor;
+
 	vec3 sv = vec3(1.0, 1.0, 1.0); // Leave z axis untouched
 
-	scene.transformObject("butterfly_0", tv, sv, angolo);
+	scene.transformObject(moving, tVector, sv, angolo);
 
 	glutTimerFunc(50, timeRefresh, 0);
 	glutPostRedisplay();
@@ -110,8 +151,8 @@ void mouseClick(int btn, int state, int x, int y)
 	// Get y in window system
 	y = window.bottom - y;
 
-	if (state == GLUT_UP) mouse.onMouseRelease(btn, state, x, y);
-	if (state == GLUT_DOWN) mouse.onMouseClick(btn, state, x, y);
+	// if (state == GLUT_UP) mouse.onMouseRelease(btn, state, x, y);
+	// if (state == GLUT_DOWN) mouse.onMouseClick(btn, state, x, y);
 
 }
 
@@ -131,7 +172,7 @@ int main(int argc, char* argv[])
 	glutMouseFunc(mouseClick);
 
 	glutKeyboardFunc(myKey);
-	//glutTimerFunc(50, timeRefresh, 0);
+	glutTimerFunc(50, timeRefresh, 0);
 	
 	glewExperimental = GL_TRUE;
 	glewInit();
