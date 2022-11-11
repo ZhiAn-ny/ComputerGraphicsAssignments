@@ -5,7 +5,7 @@
 static unsigned int MatMod, MatProj;
 mat4 Projection;
 
-Scene scene;
+gscene::Scene scene;
 //Mouse mouse;
 
 
@@ -15,12 +15,10 @@ gview::GameView::~GameView() { }
 
 void gview::GameView::draw_scene(void)
 {
-	vector<SceneObject> Scena = scene.getScene();
-
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	scene.drawScene(&MatMod, &MatProj, &Projection);
+	scene.draw_scene(&MatMod, &MatProj, &Projection);
 
 	glutSwapBuffers();
 }
@@ -34,29 +32,29 @@ void gview::GameView::time_refresh(int value)
 	float ray = default_figure_ray;
 	std::string moving = "butterfly_0";
 
-	vec3 objPos = scene.getObjectPosition(moving);
-	Direction dir = scene.getObjectDirection(moving);
+	//vec3 objPos = scene.getObjectPosition(moving);
+	//Direction dir = scene.getObjectDirection(moving);
 
-	float y = (ray * 2 * (dir / abs((int)dir))) + objPos.y;
+	//float y = (ray * 2 * (dir / abs((int)dir))) + objPos.y;
 
-	// Change direction
-	if (y < minObjY)
-		scene.changeObjectDirection(moving, Direction::UP);
-	if (y > maxObjY)
-		scene.changeObjectDirection(moving, Direction::DOWN);
+	//// Change direction
+	//if (y < minObjY)
+	//	scene.changeObjectDirection(moving, Direction::UP);
+	//if (y > maxObjY)
+	//	scene.changeObjectDirection(moving, Direction::DOWN);
 
 
-	// Create base translation vector
-	vec3 tVector = vec3((dir / 2), (dir % 2), 0.0);
+	//// Create base translation vector
+	//vec3 tVector = vec3((dir / 2), (dir % 2), 0.0);
 
-	// trasFactor = (dir / abs((int) dir));
-	// 
-	// tVector.x *= trasFactor;
-	// tVector.y *= trasFactor;
+	//// trasFactor = (dir / abs((int) dir));
+	//// 
+	//// tVector.x *= trasFactor;
+	//// tVector.y *= trasFactor;
 
-	vec3 sv = vec3(1.0, 1.0, 1.0); // Leave z axis untouched
+	//vec3 sv = vec3(1.0, 1.0, 1.0); // Leave z axis untouched
 
-	scene.transformObject(moving, tVector, sv, angolo);
+	//scene.transformObject(moving, tVector, sv, angolo);
 
 	glutTimerFunc(50, time_refresh, 0);
 	glutPostRedisplay();
@@ -90,7 +88,7 @@ void gview::GameView::create_scene_objects()
 	shape = shf.getButterfly(0.0, 0.0, 1, 1);
 	// Set initial direction
 	shape.dir = Direction::UP;
-	scene.addObject(&shape);
+	scene.add_object(&shape);
 	name = shape.name;
 	// Set initial position and scale
 	scene.transformObject(name, vec3(100.0, this->window_.bottom - 200.0, 0.0),
@@ -99,7 +97,7 @@ void gview::GameView::create_scene_objects()
 	{
 		shape = shf.getButterfly(0.0, 0.0, 1, 1);
 		shape.dir = Direction::UP;
-		scene.addObject(&shape);
+		scene.add_object(&shape);
 		name = shape.name;
 		// Set initial position and scale
 		scene.transformObject(name, vec3(100.0, this->window_.bottom / 4, 0.0),
@@ -107,7 +105,7 @@ void gview::GameView::create_scene_objects()
 
 		shape = shf.getButterfly(0.0, 0.0, 1, 1);
 		shape.dir = Direction::UP;
-		scene.addObject(&shape);
+		scene.add_object(&shape);
 		name = shape.name;
 		// Set initial position and scale
 		scene.transformObject(name, vec3(100.0, this->window_.bottom / 4 * 3, 0.0),
@@ -123,8 +121,8 @@ void gview::GameView::set_first_scene()
 	// Coordinates are specified in relation to the usage domain
 	// (i.e. when dealing w/ temperature, the origin could be below zero)
 	Projection = ortho(0.0f, float(this->window_.right), 0.0f, float(this->window_.bottom));
-	MatProj = glGetUniformLocation(scene.getProgramID(), "Projection");
-	MatMod = glGetUniformLocation(scene.getProgramID(), "Model");
+	MatProj = glGetUniformLocation(scene.get_id(), "Projection");
+	MatMod = glGetUniformLocation(scene.get_id(), "Model");
 
 }
 
@@ -145,7 +143,7 @@ void gview::GameView::init_view()
 	glewExperimental = GL_TRUE;
 	glewInit();
 
-	scene.setShaders((char*)"vertexShader.glsl", (char*)"fragmentShader.glsl");
+	scene.set_shaders((char*)"vertexShader.glsl", (char*)"fragmentShader.glsl");
 	this->set_first_scene();
 
 	glEnable(GL_BLEND);

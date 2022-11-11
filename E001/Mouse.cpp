@@ -9,7 +9,7 @@ Mouse::~Mouse()
 {
 }
 
-void Mouse::assignRefScene(Scene* refScene)
+void Mouse::assignRefScene(gscene::Scene* refScene)
 {
 	this->scene = refScene;
 }
@@ -25,7 +25,7 @@ void Mouse::onMouseClick(int btn, int state, int x, int y)
 	{
 	case GLUT_LEFT_BUTTON:
 		shape = shf.getCircle(x, y, 5, 5);
-		(*this->scene).addObject(&shape);
+		(*this->scene).add_object(&shape);
 		break;
 
 	case GLUT_RIGHT_BUTTON:

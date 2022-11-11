@@ -1,43 +1,83 @@
-#pragma once
+#ifndef GAME_SCENE_H_
+#define GMAE_SCENE_H_
+
 #include "Lib.h"
 #include "SceneObject.h"
 #include "ShaderMaker.h"
 
-class Scene
-{
-private:
-	unsigned int programId;
-	vector<SceneObject> _scene;
-	bool isWireframeActive;
+namespace gscene {
 
-	void createVertexArray(SceneObject* fig);
 
-	void bindVerticesGeometry(SceneObject* fig);
+	class Scene {
+	private:
+		unsigned int program_id_ = 0;
+		std::vector<SceneObject> scene_objs_ = {};
+		bool wf_mode_ = false;
 
-	void bindVerticesColor(SceneObject* fig);
+		void createVertexArray(SceneObject* fig);
+		void bindVerticesGeometry(SceneObject* fig);
+		void bindVerticesColor(SceneObject* fig);
 
-	int getSceneLength();
+	public:
+		Scene();
+		~Scene();
 
-public:
-	Scene();
-	~Scene();
+		unsigned int get_id();
 
-	vector<SceneObject> getScene();
-	unsigned int getProgramID();
+		void set_shaders(char * vertsh, char * fragsh);
 
-	void addObject(SceneObject* fig);
+		/** 
+		 * @return The new object's index.
+		 */
+		int add_object(SceneObject* fig);
 
-	void drawScene(unsigned int* MatMod, unsigned int* MatProj, mat4* Projection);
+		SceneObject* get_object(std::string name);
 
-	void setShaders(char* vertexShader, char* fragmentShader);
+		void draw_scene(unsigned int* MatMod, unsigned int* MatProj, mat4* Projection);
 
-	void transformObject(std::string name, vec3 tVector, vec3 sVector, GLfloat angle);
+		void transformObject(std::string name, vec3 tVector, vec3 sVector, GLfloat angle);
+	};
 
-	SceneObject* getObject(std::string name);
+}
 
-	vec3 getObjectPosition(std::string name);
+#endif // !GAME_SCENE_H_
 
-	Direction getObjectDirection(std::string name);
 
-	void changeObjectDirection(std::string name, Direction newDir);
-};
+
+
+//
+//class Scene
+//{
+//private:
+//	unsigned int programId;
+//	vector<SceneObject> _scene;
+//	bool isWireframeActive;
+//
+//	void createVertexArray(SceneObject* fig);
+//
+//	void bindVerticesGeometry(SceneObject* fig);
+//
+//	void bindVerticesColor(SceneObject* fig);
+//
+//	int getSceneLength();
+//
+//public:
+//
+//	vector<SceneObject> getScene();
+//	unsigned int getProgramID();
+//
+//	void addObject(SceneObject* fig);
+//
+//	void drawScene(unsigned int* MatMod, unsigned int* MatProj, mat4* Projection);
+//
+//	void setShaders(char* vertexShader, char* fragmentShader);
+//
+//
+//	SceneObject* getObject(std::string name);
+//
+//	//vec3 getObjectPosition(std::string name);
+//
+//	//Direction getObjectDirection(std::string name);
+//
+//	//void changeObjectDirection(std::string name, Direction newDir);
+//};

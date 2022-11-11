@@ -1,37 +1,60 @@
 #include "Scene.h"
 
-Scene::Scene()
+
+gscene::Scene::Scene() { }
+
+gscene::Scene::~Scene() { }
+
+unsigned int gscene::Scene::get_id()
 {
-	this->isWireframeActive = false;
+	return this->program_id_;
 }
 
-Scene::~Scene()
+void gscene::Scene::set_shaders(char * vertsh, char * fragsh)
 {
+	GLenum ErrorCheckValue = glGetError();
+
+	this->program_id_ = ShaderMaker::createProgram(vertsh, fragsh);
+	glUseProgram(this->program_id_);
 }
 
-vector<SceneObject> Scene::getScene()
-{
-    return this->_scene;
-}
-
-unsigned int Scene::getProgramID()
-{
-	return this->programId;
-}
-
-void Scene::addObject(SceneObject* fig)
+int gscene::Scene::add_object(SceneObject* fig)
 {
 	this->createVertexArray(fig);
 	this->bindVerticesGeometry(fig);
 	this->bindVerticesColor(fig);
 
-	this->_scene.push_back(*fig);
+	this->scene_objs_.push_back(*fig);
+
+	if (this->scene_objs_[this->scene_objs_.size() - 1].name == fig->name)
+		return this->scene_objs_.size() - 1;
+
+	return -1;
 }
 
-void Scene::drawScene(unsigned int* MatMod, unsigned int* MatProj, mat4* Projection)
+//vector<SceneObject> Scene::getScene()
+//{
+//    return this->_scene;
+//}
+//
+//unsigned int Scene::getProgramID()
+//{
+//	return this->programId;
+//}
+//
+//void Scene::addObject(SceneObject* fig)
+//{
+//	this->createVertexArray(fig);
+//	this->bindVerticesGeometry(fig);
+//	this->bindVerticesColor(fig);
+//
+//	this->_scene.push_back(*fig);
+//}
+
+void gscene::Scene::draw_scene(unsigned int* MatMod, unsigned int* MatProj, mat4* Projection)
 {
-	vector<SceneObject> Scena = this->_scene;
-	int length = this->getSceneLength();
+	vector<SceneObject> Scena = this->scene_objs_;
+	int length = this->scene_objs_.size();
 	int index;
 
 	glUniformMatrix4fv(*MatProj, 1, GL_FALSE, value_ptr(*Projection));
@@ -43,28 +66,28 @@ void Scene::drawScene(unsigned int* MatMod, unsigned int* MatProj, mat4* Project
 		glBindVertexArray(Scena[index].VertexArrayObject);
 		glDrawArrays(GL_TRIANGLE_FAN, 0, Scena[index].nVertices);
 
-		if (this->isWireframeActive)
+		if (this->wf_mode_)
 		{
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		}
 	}
 }
 
-void Scene::setShaders(char* vertexShader, char* fragmentShader)
-{
-	GLenum ErrorCheckValue = glGetError();
+//void Scene::setShaders(char* vertexShader, char* fragmentShader)
+//{
+//	GLenum ErrorCheckValue = glGetError();
+//
+//	this->programId = ShaderMaker::createProgram(vertexShader, fragmentShader);
+//	glUseProgram(this->programId);
+//}
 
-	this->programId = ShaderMaker::createProgram(vertexShader, fragmentShader);
-	glUseProgram(this->programId);
-}
-
-void Scene::transformObject(std::string name, vec3 tVector, vec3 sVector, GLfloat angle)
+void gscene::Scene::transformObject(std::string name, vec3 tVector, vec3 sVector, GLfloat angle)
 {
 	vec3 rotationVector = vec3(0.0, 0.0, 1.0); // Always rotate along z axis
 	sVector.z = 1.0; // Leave z dimension untouched
 	tVector.z = 0.0; // Can't move along z axis
 
-	SceneObject* fig = this->getObject(name);
+	SceneObject* fig = this->get_object(name);
 
 	// Update position
 	fig->pos.x += tVector.x;
@@ -77,13 +100,13 @@ void Scene::transformObject(std::string name, vec3 tVector, vec3 sVector, GLfloa
 	(*fig).Model = (*fig).Model * T * R * S;
 }
 
-void Scene::createVertexArray(SceneObject* fig)
+void gscene::Scene::createVertexArray(SceneObject* fig)
 {
 	glGenVertexArrays(1, &fig->VertexArrayObject);
 	glBindVertexArray(fig->VertexArrayObject);
 }
 
-void Scene::bindVerticesGeometry(SceneObject* fig)
+void gscene::Scene::bindVerticesGeometry(SceneObject* fig)
 {
 	glGenBuffers(1, &fig->VertexBufferObject_Geometry);
 	glBindBuffer(GL_ARRAY_BUFFER, fig->VertexBufferObject_Geometry);
@@ -93,7 +116,7 @@ void Scene::bindVerticesGeometry(SceneObject* fig)
 	glEnableVertexAttribArray(0);
 }
 
-void Scene::bindVerticesColor(SceneObject* fig)
+void gscene::Scene::bindVerticesColor(SceneObject* fig)
 {
 	glGenBuffers(1, &fig->VertexBufferObject_Colors);
 	glBindBuffer(GL_ARRAY_BUFFER, fig->VertexBufferObject_Colors);
@@ -102,39 +125,38 @@ void Scene::bindVerticesColor(SceneObject* fig)
 	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (void*)0);
 	glEnableVertexAttribArray(1);
 }
+//
+//int Scene::getSceneLength()
+//{
+//	return this->_scene.size();
+//}
 
-int Scene::getSceneLength()
+SceneObject* gscene::Scene::get_object(std::string name)
 {
-	return this->_scene.size();
-}
-
-SceneObject* Scene::getObject(std::string name)
-{
-	int index;
-	for (index = 0; index < this->_scene.size(); index++)
+	for (int i = 0; i < this->scene_objs_.size(); i++)
 	{
-		if (this->_scene[index].name._Equal(name))
+		if (this->scene_objs_[i].name._Equal(name))
 		{
-			return &(this->_scene[index]);
+			return &(this->scene_objs_[i]);
 		}
 	}
 	return NULL;
 }
 
-vec3 Scene::getObjectPosition(std::string name)
-{
-	SceneObject* fig = this->getObject(name);
-	return fig->pos;
-}
-
-Direction Scene::getObjectDirection(std::string name)
-{
-	SceneObject* fig = this->getObject(name);
-	return fig->dir;
-}
-
-void Scene::changeObjectDirection(std::string name, Direction newDir)
-{
-	SceneObject* fig = this->getObject(name);
-	fig->dir = newDir;
-}
+//vec3 Scene::getObjectPosition(std::string name)
+//{
+//	SceneObject* fig = this->getObject(name);
+//	return fig->pos;
+//}
+//
+//Direction Scene::getObjectDirection(std::string name)
+//{
+//	SceneObject* fig = this->getObject(name);
+//	return fig->dir;
+//}
+//
+//void Scene::changeObjectDirection(std::string name, Direction newDir)
+//{
+//	SceneObject* fig = this->getObject(name);
+//	fig->dir = newDir;
+//}

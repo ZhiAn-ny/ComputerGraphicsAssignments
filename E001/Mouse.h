@@ -6,13 +6,13 @@ class Mouse
 {
 private:
 	bool isHolding;
-	Scene* scene;
+	gscene::Scene* scene;
 
 public:
 	Mouse();
 	~Mouse();
 
-	void assignRefScene(Scene* refScene);
+	void assignRefScene(gscene::Scene* refScene);
 
 	void onMouseClick(int btn, int state, int x, int y);
 
