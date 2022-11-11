@@ -1,19 +1,13 @@
 #ifndef GAME_CONTROLLER_H_
 #define GAME_CONTROLLER_H_
 
-#include <GL/glew.h>
-#include <GL/freeglut.h>
-
-#include "ShaderMaker.h"
-#include "lib.h"
-#include "ShapeFactory.h"
-#include "Scene.h"
-//#include "Mouse.h"
+#include "view.h"
 
 namespace gctrl {
 
 	class GameController {
-
+	private:
+		gview::GameView view = gview::GameView();
 
 	public:
 		GameController();
@@ -22,14 +16,6 @@ namespace gctrl {
 		void init_game();
 
 	};
-
-	void createWindow(const char* name);
-
-	void INIT_VAO();
-
-	void drawScene(void);
-
-	void timeRefresh(int value);
 
 }
 

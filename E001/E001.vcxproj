@@ -139,6 +139,7 @@
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="ShaderMaker.h" />
     <ClInclude Include="ShapeFactory.h" />
+    <ClInclude Include="view.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="controller.cpp" />
@@ -147,6 +148,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShaderMaker.cpp" />
     <ClCompile Include="ShapeFactory.cpp" />
+    <ClCompile Include="view.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
