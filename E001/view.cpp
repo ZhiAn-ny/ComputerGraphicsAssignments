@@ -5,70 +5,15 @@
 static unsigned int MatMod, MatProj;
 mat4 Projection;
 
-RECT window;
 Scene scene;
 //Mouse mouse;
 
-void gview::createWindow(const char* name)
-{
-	int SCREEN_WIDTH = glutGet(GLUT_SCREEN_WIDTH);
-	int SCREEN_HEIGHT = glutGet(GLUT_SCREEN_HEIGHT);
 
-	window = {};
-	window.right = SCREEN_WIDTH / 3;
-	window.bottom = SCREEN_HEIGHT / 2;
+gview::GameView::GameView() { }
 
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
-	glutInitWindowSize(window.right, window.bottom);
-	glutInitWindowPosition(100, 100);
-	glutCreateWindow(name);
-}
+gview::GameView::~GameView() { }
 
-void gview::INIT_VAO()
-{
-	ShapeFactory shf;
-	SceneObject shape;
-	std::string name;
-
-	// Add scene objects to render on start
-	shape = shf.getButterfly(0.0, 0.0, 1, 1);
-	// Set initial direction
-	shape.dir = Direction::UP;
-	scene.addObject(&shape);
-	name = shape.name;
-	// Set initial position and scale
-	scene.transformObject(name, vec3(100.0, window.bottom - 200.0, 0.0),
-		vec3(window.bottom / 10), 0);
-
-	{
-		shape = shf.getButterfly(0.0, 0.0, 1, 1);
-		shape.dir = Direction::UP;
-		scene.addObject(&shape);
-		name = shape.name;
-		// Set initial position and scale
-		scene.transformObject(name, vec3(100.0, window.bottom / 4, 0.0),
-			vec3(window.bottom / 10), 0);
-
-		shape = shf.getButterfly(0.0, 0.0, 1, 1);
-		shape.dir = Direction::UP;
-		scene.addObject(&shape);
-		name = shape.name;
-		// Set initial position and scale
-		scene.transformObject(name, vec3(100.0, window.bottom / 4 * 3, 0.0),
-			vec3(window.bottom / 10), 0);
-	}
-
-
-	// Pass uniform variables to the shader
-	// Coordinates are specified in relation to the usage domain
-	// (i.e. when dealing w/ temperature, the origin could be below zero)
-	Projection = ortho(0.0f, float(window.right), 0.0f, float(window.bottom));
-	MatProj = glGetUniformLocation(scene.getProgramID(), "Projection");
-	MatMod = glGetUniformLocation(scene.getProgramID(), "Model");
-
-}
-
-void gview::drawScene(void)
+void gview::GameView::draw_scene(void)
 {
 	vector<SceneObject> Scena = scene.getScene();
 
@@ -80,13 +25,13 @@ void gview::drawScene(void)
 	glutSwapBuffers();
 }
 
-void gview::timeRefresh(int value)
+void gview::GameView::time_refresh(int value)
 {
 	float angolo = 0.0;
 	float trasFactor;
-	float minObjY = window.bottom / 4;
-	float maxObjY = window.bottom - minObjY;
-	float ray = window.bottom / 10;
+	float minObjY = margin_bottom;
+	float maxObjY = margin_top;
+	float ray = default_figure_ray;
 	std::string moving = "butterfly_0";
 
 	vec3 objPos = scene.getObjectPosition(moving);
@@ -113,16 +58,74 @@ void gview::timeRefresh(int value)
 
 	scene.transformObject(moving, tVector, sv, angolo);
 
-	glutTimerFunc(50, timeRefresh, 0);
+	glutTimerFunc(50, time_refresh, 0);
 	glutPostRedisplay();
 }
 
-gview::GameView::GameView()
+void gview::GameView::init_window(const char* name)
 {
+	int SCREEN_WIDTH = glutGet(GLUT_SCREEN_WIDTH);
+	int SCREEN_HEIGHT = glutGet(GLUT_SCREEN_HEIGHT);
+
+	this->window_.right = SCREEN_WIDTH / 3;
+	this->window_.bottom = SCREEN_HEIGHT / 2;
+
+	gview::margin_bottom = this->window_.bottom / 4;
+	gview::margin_top = this->window_.bottom - gview::margin_bottom;
+	gview::default_figure_ray = this->window_.bottom / 10;
+
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
+	glutInitWindowSize(this->window_.right, this->window_.bottom);
+	glutInitWindowPosition(100, 100);
+	glutCreateWindow((const char*) name);
 }
 
-gview::GameView::~GameView()
+void gview::GameView::create_scene_objects()
 {
+	ShapeFactory shf;
+	SceneObject shape;
+	std::string name;
+
+	// Add scene objects to render on start
+	shape = shf.getButterfly(0.0, 0.0, 1, 1);
+	// Set initial direction
+	shape.dir = Direction::UP;
+	scene.addObject(&shape);
+	name = shape.name;
+	// Set initial position and scale
+	scene.transformObject(name, vec3(100.0, this->window_.bottom - 200.0, 0.0),
+		vec3(this->window_.bottom / 10), 0);
+
+	{
+		shape = shf.getButterfly(0.0, 0.0, 1, 1);
+		shape.dir = Direction::UP;
+		scene.addObject(&shape);
+		name = shape.name;
+		// Set initial position and scale
+		scene.transformObject(name, vec3(100.0, this->window_.bottom / 4, 0.0),
+			vec3(this->window_.bottom / 10), 0);
+
+		shape = shf.getButterfly(0.0, 0.0, 1, 1);
+		shape.dir = Direction::UP;
+		scene.addObject(&shape);
+		name = shape.name;
+		// Set initial position and scale
+		scene.transformObject(name, vec3(100.0, this->window_.bottom / 4 * 3, 0.0),
+			vec3(this->window_.bottom / 10), 0);
+	}
+}
+
+void gview::GameView::set_first_scene()
+{
+	this->create_scene_objects();
+
+	// Pass uniform variables to the shader
+	// Coordinates are specified in relation to the usage domain
+	// (i.e. when dealing w/ temperature, the origin could be below zero)
+	Projection = ortho(0.0f, float(this->window_.right), 0.0f, float(this->window_.bottom));
+	MatProj = glGetUniformLocation(scene.getProgramID(), "Projection");
+	MatMod = glGetUniformLocation(scene.getProgramID(), "Model");
+
 }
 
 void gview::GameView::init_view()
@@ -130,20 +133,20 @@ void gview::GameView::init_view()
 	glutInitContextVersion(4, 0);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
 
-	createWindow("MyGameApp");
+	this->init_window("my_game_app");
 
-	glutDisplayFunc(drawScene);
+	glutDisplayFunc(this->draw_scene);
 
 	// Handle mouse inputs
 	//mouse.assignRefScene(&scene);
 
-	glutTimerFunc(50, timeRefresh, 0);
+	glutTimerFunc(50, this->time_refresh, 0);
 
 	glewExperimental = GL_TRUE;
 	glewInit();
 
 	scene.setShaders((char*)"vertexShader.glsl", (char*)"fragmentShader.glsl");
-	INIT_VAO();
+	this->set_first_scene();
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

@@ -11,8 +11,19 @@
 
 namespace gview {
 
-	class GameView {
+	static float margin_bottom;
+	static float margin_top;
+	static float default_figure_ray;
 
+	class GameView {
+		RECT window_ = {};
+
+		static void draw_scene(void);
+		static void time_refresh(int value);
+
+		void init_window(const char* name);
+		void create_scene_objects();
+		void set_first_scene();
 
 	public:
 		GameView();
@@ -22,13 +33,6 @@ namespace gview {
 
 	};
 
-	void createWindow(const char* name);
-
-	void INIT_VAO();
-
-	void drawScene(void);
-
-	void timeRefresh(int value);
 }
 
 #endif // !GAME_VIEW_H_
