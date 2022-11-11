@@ -11,7 +11,7 @@ typedef enum {
 	RIGHT = 2
 }Direction;
 
-typedef struct {
+class SceneObject {
 public:
 	std::string name;
 
@@ -33,6 +33,6 @@ public:
 
 	// Model matrix: translation * rotation * scale
 	mat4 Model;
-} SceneObject;
+};
 
 
