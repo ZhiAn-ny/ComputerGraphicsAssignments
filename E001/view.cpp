@@ -80,7 +80,7 @@ void gview::GameView::init_window(const char* name)
 
 void gview::GameView::create_scene_objects()
 {
-	ShapeFactory shf;
+	gsf::ShapeFactory shf;
 	gso::SceneObject shape;
 	std::string name;
 
