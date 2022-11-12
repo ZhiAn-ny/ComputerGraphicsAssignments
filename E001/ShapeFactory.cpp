@@ -25,11 +25,7 @@ gso::SceneObject ShapeFactory::getShape(float centerX, float centerY,
 	step = (2 * PI) / fig.nTriangles;
 
 	// Add central vertex to the figure
-	fig.vertices_.push_back(vec3(centerX, centerY, 0.0));
-	fig.colors_.push_back(vec4(1.0, 1.0, 1.0, 1.0));
-
-	fig.topRight = fig.vertices_[0];
-	fig.bottomLeft = fig.vertices_[0];
+	fig.add_vertex(glm::vec3(centerX, centerY, 0.0), color::cyan);
 
 	// Add all the other vertices on the perimeter
 	for (index = 0; index <= fig.nTriangles; index++)
@@ -38,11 +34,7 @@ gso::SceneObject ShapeFactory::getShape(float centerX, float centerY,
 		x = xFunc(centerX, rayX, theta);
 		y = yFunc(centerY, rayY, theta);
 
-		fig.vertices_.push_back(vec3(x, y, 0.0));
-		//Colors
-		fig.colors_.push_back(vec4(1.0, 1.0, 1.0, 1.0));
-
-		this->setCorners(&fig);
+		fig.add_vertex(vec3(x, y, 0.0), color::cyan);
 	}
 	fig.nVertices = fig.vertices_.size();
 

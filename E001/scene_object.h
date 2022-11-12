@@ -40,10 +40,17 @@ namespace gso {
 		glm::mat4 Model = glm::mat4(1.0);
 
 
+		void update_corners();
+		
 	// public:
 		SceneObject();
 		SceneObject(std::string name);
 		~SceneObject();
+
+		std::string get_name();
+
+		void add_vertex(glm::vec3 pos, glm::vec4 color);
+
 	};
 
 }

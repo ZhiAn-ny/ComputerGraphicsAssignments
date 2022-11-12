@@ -1,5 +1,6 @@
 #pragma once
 #include "scene_object.h"
+#include "colors.h"
 
 #define PI 3.14159265358979323846264
 

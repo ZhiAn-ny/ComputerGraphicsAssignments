@@ -132,6 +132,7 @@
     <None Include="vertexShader.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="colors.h" />
     <ClInclude Include="controller.h" />
     <ClInclude Include="Lib.h" />
     <ClInclude Include="scene.h" />

@@ -89,7 +89,7 @@ void gview::GameView::create_scene_objects()
 	// Set initial direction
 	//shape.dir = Direction::UP;
 	scene.add_object(&shape);
-	name = shape.name_;
+	name = shape.get_name();
 	// Set initial position and scale
 	scene.transformObject(name, vec3(100.0, this->window_.bottom - 200.0, 0.0),
 		vec3(this->window_.bottom / 10), 0);
@@ -98,7 +98,7 @@ void gview::GameView::create_scene_objects()
 		shape = shf.getButterfly(0.0, 0.0, 1, 1);
 		//shape.dir = Direction::UP;
 		scene.add_object(&shape);
-		name = shape.name_;
+		name = shape.get_name();
 		// Set initial position and scale
 		scene.transformObject(name, vec3(100.0, this->window_.bottom / 4, 0.0),
 			vec3(this->window_.bottom / 10), 0);
@@ -106,7 +106,7 @@ void gview::GameView::create_scene_objects()
 		shape = shf.getButterfly(0.0, 0.0, 1, 1);
 		//shape.dir = Direction::UP;
 		scene.add_object(&shape);
-		name = shape.name_;
+		name = shape.get_name();
 		// Set initial position and scale
 		scene.transformObject(name, vec3(100.0, this->window_.bottom / 4 * 3, 0.0),
 			vec3(this->window_.bottom / 10), 0);
