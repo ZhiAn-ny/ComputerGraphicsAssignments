@@ -2,7 +2,7 @@
 #define GMAE_SCENE_H_
 
 #include "Lib.h"
-#include "SceneObject.h"
+#include "scene_object.h"
 #include "ShaderMaker.h"
 
 namespace gscene {
@@ -11,12 +11,12 @@ namespace gscene {
 	class Scene {
 	private:
 		unsigned int program_id_ = 0;
-		std::vector<SceneObject> scene_objs_ = {};
+		std::vector<gso::SceneObject> scene_objs_ = {};
 		bool wf_mode_ = false;
 
-		void createVertexArray(SceneObject* fig);
-		void bindVerticesGeometry(SceneObject* fig);
-		void bindVerticesColor(SceneObject* fig);
+		void createVertexArray(gso::SceneObject* fig);
+		void bindVerticesGeometry(gso::SceneObject* fig);
+		void bindVerticesColor(gso::SceneObject* fig);
 
 	public:
 		Scene();
@@ -29,9 +29,9 @@ namespace gscene {
 		/** 
 		 * @return The new object's index.
 		 */
-		int add_object(SceneObject* fig);
+		int add_object(gso::SceneObject* fig);
 
-		SceneObject* get_object(std::string name);
+		gso::SceneObject* get_object(std::string name);
 
 		void draw_scene(unsigned int* MatMod, unsigned int* MatProj, mat4* Projection);
 
@@ -45,7 +45,6 @@ namespace gscene {
 
 
 
-//
 //class Scene
 //{
 //private:

@@ -81,32 +81,32 @@ void gview::GameView::init_window(const char* name)
 void gview::GameView::create_scene_objects()
 {
 	ShapeFactory shf;
-	SceneObject shape;
+	gso::SceneObject shape;
 	std::string name;
 
 	// Add scene objects to render on start
 	shape = shf.getButterfly(0.0, 0.0, 1, 1);
 	// Set initial direction
-	shape.dir = Direction::UP;
+	//shape.dir = Direction::UP;
 	scene.add_object(&shape);
-	name = shape.name;
+	name = shape.name_;
 	// Set initial position and scale
 	scene.transformObject(name, vec3(100.0, this->window_.bottom - 200.0, 0.0),
 		vec3(this->window_.bottom / 10), 0);
 
 	{
 		shape = shf.getButterfly(0.0, 0.0, 1, 1);
-		shape.dir = Direction::UP;
+		//shape.dir = Direction::UP;
 		scene.add_object(&shape);
-		name = shape.name;
+		name = shape.name_;
 		// Set initial position and scale
 		scene.transformObject(name, vec3(100.0, this->window_.bottom / 4, 0.0),
 			vec3(this->window_.bottom / 10), 0);
 
 		shape = shf.getButterfly(0.0, 0.0, 1, 1);
-		shape.dir = Direction::UP;
+		//shape.dir = Direction::UP;
 		scene.add_object(&shape);
-		name = shape.name;
+		name = shape.name_;
 		// Set initial position and scale
 		scene.transformObject(name, vec3(100.0, this->window_.bottom / 4 * 3, 0.0),
 			vec3(this->window_.bottom / 10), 0);

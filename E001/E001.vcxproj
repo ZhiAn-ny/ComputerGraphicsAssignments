@@ -134,9 +134,8 @@
   <ItemGroup>
     <ClInclude Include="controller.h" />
     <ClInclude Include="Lib.h" />
-    <ClInclude Include="Mouse.h" />
     <ClInclude Include="scene.h" />
-    <ClInclude Include="SceneObject.h" />
+    <ClInclude Include="scene_object.h" />
     <ClInclude Include="ShaderMaker.h" />
     <ClInclude Include="ShapeFactory.h" />
     <ClInclude Include="view.h" />
@@ -144,8 +143,8 @@
   <ItemGroup>
     <ClCompile Include="controller.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="scene.cpp" />
+    <ClCompile Include="scene_object.cpp" />
     <ClCompile Include="ShaderMaker.cpp" />
     <ClCompile Include="ShapeFactory.cpp" />
     <ClCompile Include="view.cpp" />

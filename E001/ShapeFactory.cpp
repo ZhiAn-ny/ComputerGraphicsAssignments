@@ -11,12 +11,12 @@ ShapeFactory::~ShapeFactory()
 {
 }
 
-SceneObject ShapeFactory::getShape(float centerX, float centerY,
+gso::SceneObject ShapeFactory::getShape(float centerX, float centerY,
 								   float rayX, float rayY,
 								   float (*xFunc)(float, float, float),
 								   float (*yFunc)(float, float, float))
 {
-	SceneObject fig = {};
+	gso::SceneObject fig = {};
 	int index;
 	float step;
 	float theta, x, y;
@@ -25,11 +25,11 @@ SceneObject ShapeFactory::getShape(float centerX, float centerY,
 	step = (2 * PI) / fig.nTriangles;
 
 	// Add central vertex to the figure
-	fig.vertices.push_back(vec3(centerX, centerY, 0.0));
-	fig.colors.push_back(vec4(1.0, 1.0, 1.0, 1.0));
+	fig.vertices_.push_back(vec3(centerX, centerY, 0.0));
+	fig.colors_.push_back(vec4(1.0, 1.0, 1.0, 1.0));
 
-	fig.topRight = fig.vertices[0];
-	fig.bottomLeft = fig.vertices[0];
+	fig.topRight = fig.vertices_[0];
+	fig.bottomLeft = fig.vertices_[0];
 
 	// Add all the other vertices on the perimeter
 	for (index = 0; index <= fig.nTriangles; index++)
@@ -38,36 +38,36 @@ SceneObject ShapeFactory::getShape(float centerX, float centerY,
 		x = xFunc(centerX, rayX, theta);
 		y = yFunc(centerY, rayY, theta);
 
-		fig.vertices.push_back(vec3(x, y, 0.0));
+		fig.vertices_.push_back(vec3(x, y, 0.0));
 		//Colors
-		fig.colors.push_back(vec4(1.0, 1.0, 1.0, 1.0));
+		fig.colors_.push_back(vec4(1.0, 1.0, 1.0, 1.0));
 
 		this->setCorners(&fig);
 	}
-	fig.nVertices = fig.vertices.size();
+	fig.nVertices = fig.vertices_.size();
 
 	// set center as reference for object's position
-	fig.pos = fig.vertices[0];
+	fig.pos_ = fig.vertices_[0];
 	fig.Model = mat4(1.0);
 	return fig;
 }
 
-void ShapeFactory::setColor(SceneObject* fig, vec4 center, vec4(*colorFunc)(SceneObject, int))
+void ShapeFactory::setColor(gso::SceneObject* fig, vec4 center, vec4(*colorFunc)(gso::SceneObject, int))
 {
 	int index = 0;
 
-	fig->colors[index] = center;
+	fig->colors_[index] = center;
 
 	// Add all the other vertices on the perimeter
-	for (index = 1; index < fig->colors.size(); index++)
+	for (index = 1; index < fig->colors_.size(); index++)
 	{
-		fig->colors[index] = colorFunc(*fig, index);
+		fig->colors_[index] = colorFunc(*fig, index);
 	}
 }
 
-void ShapeFactory::setCorners(SceneObject* fig)
+void ShapeFactory::setCorners(gso::SceneObject* fig)
 {
-	vec3 lastVertex = fig->vertices[fig->vertices.size() - 1];
+	vec3 lastVertex = fig->vertices_[fig->vertices_.size() - 1];
 
 	if (lastVertex.x <= fig->bottomLeft.x && lastVertex.y <= fig->bottomLeft.y)
 	{
@@ -79,52 +79,52 @@ void ShapeFactory::setCorners(SceneObject* fig)
 	}
 }
 
-SceneObject ShapeFactory::getHeart(float centerX, float centerY, float rayX, float rayY)
+gso::SceneObject ShapeFactory::getHeart(float centerX, float centerY, float rayX, float rayY)
 {
 	vec4 darkYellow = vec4(255.0 / 255.0, 75.0 / 255.0, 0.0, 1.0);
-	SceneObject fig = this->getShape(centerX, centerY, rayX, rayY,
+	gso::SceneObject fig = this->getShape(centerX, centerY, rayX, rayY,
 		[](float x, float r, float t) {return (float)(x + r * (16 * pow(sin(t), 3)) / 16);},
 		[](float y, float r, float t) {return y + r * ((13 * cos(t) - 5 * cos(2 * t) - 2 * cos(3 * t) - cos(4 * t)) / 16);});
 
-	fig.name = "heart_";
-	fig.name += std::to_string(this->heartCounter);
+	fig.name_ = "heart_";
+	fig.name_ += std::to_string(this->heartCounter);
 
 	this->setColor(&fig, darkYellow,
-		[](SceneObject f, int i) {return vec4(1.0, 204.0 / 255.0, 0.0, 1.0);});
+		[](gso::SceneObject f, int i) {return vec4(1.0, 204.0 / 255.0, 0.0, 1.0);});
 
 	this->heartCounter++;
 	return fig;
 }
 
-SceneObject ShapeFactory::getButterfly(float centerX, float centerY, float rayX, float rayY)
+gso::SceneObject ShapeFactory::getButterfly(float centerX, float centerY, float rayX, float rayY)
 {
 	vec4 darkOrange = vec4(150.0 / 255.0, 75.0 / 255.0, 0.0, 1.0);
-	SceneObject fig = this->getShape(centerX, centerY, rayX, rayY,
+	gso::SceneObject fig = this->getShape(centerX, centerY, rayX, rayY,
 		[](float x, float r, float t) {return (float)(x + r * (sin(t) * (exp(cos(t)) - 2 * cos(4 * t)) + pow(sin(t / 12), 5)) / 4); },
 		[](float y, float r, float t) {return (float)(y + r * (cos(t) * (exp(cos(t)) - 2 * cos(4 * t)) + pow(sin(t / 12), 5)) / 4); });
 
-	fig.name = "butterfly_";
-	fig.name += std::to_string(this->butterflyCounter);
+	fig.name_ = "butterfly_";
+	fig.name_ += std::to_string(this->butterflyCounter);
 
 	this->setColor(&fig, darkOrange,
-		[](SceneObject f, int i) {return vec4(1.0, 0.0, 0.0, 0.0); });
+		[](gso::SceneObject f, int i) {return vec4(1.0, 0.0, 0.0, 0.0); });
 
 	this->butterflyCounter++;
 	return fig;
 }
 
-SceneObject ShapeFactory::getCircle(float centerX, float centerY, float rayX, float rayY)
+gso::SceneObject ShapeFactory::getCircle(float centerX, float centerY, float rayX, float rayY)
 {
 	vec4 color = vec4(0.0, 75 / 255, 1, 1);
-	SceneObject fig = this->getShape(centerX, centerY, rayX, rayY,
+	gso::SceneObject fig = this->getShape(centerX, centerY, rayX, rayY,
 		[](float x, float r, float t) {return (float)(x + r * cos(t)); },
 		[](float y, float r, float t) {return (float)(y + r * sin(t)); });
 
-	fig.name = "circle_";
-	fig.name += std::to_string(this->circleCounter);
+	fig.name_ = "circle_";
+	fig.name_ += std::to_string(this->circleCounter);
 
 	this->setColor(&fig, color,
-		[](SceneObject f, int i) {return vec4(0, 125/255.0, 1.0, 1.0); });
+		[](gso::SceneObject f, int i) {return vec4(0, 125/255.0, 1.0, 1.0); });
 
 	this->circleCounter++;
 	return fig;
