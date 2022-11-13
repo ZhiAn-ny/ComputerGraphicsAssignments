@@ -27,26 +27,25 @@ void gview::GameView::time_refresh(int value)
 {
 	float angolo = 0.0;
 	float trasFactor;
-	float minObjY = margin_bottom;
-	float maxObjY = margin_top;
-	float ray = default_figure_ray;
 	std::string moving = "butterfly_0";
 
-	gso::SceneObject* shape =  obj_layer.get_object(moving);
+	std::string bottom = "butterfly_1";
+	std::string top = "butterfly_2";
+
+	gso::SceneObject* shape = obj_layer.get_object(moving);
+	gso::SceneObject* bshape = obj_layer.get_object(bottom);
+	gso::SceneObject* tshape =  obj_layer.get_object(top);
 
 	gso::Direction dir = shape->get_direction();
 	glm::vec3 pos = shape->get_position();
 
-
-	float y = (ray * 2 * ((int) dir / abs((int) dir))) + pos.y;
-
 	// Change direction
-	if (y < minObjY)
+	if (shape->is_colliding(*bshape))
 		shape->change_direction(gso::Direction::kUp);
-	if (y > maxObjY)
+	if (shape->is_colliding(*tshape))
 		shape->change_direction(gso::Direction::kDown);
 
-	shape->move(1.0);
+	shape->move(0.1);
 
 	glutTimerFunc(50, time_refresh, 0);
 	glutPostRedisplay();

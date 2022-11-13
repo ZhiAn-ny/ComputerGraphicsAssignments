@@ -19,16 +19,28 @@ int gso::SceneObject::get_triangles()
 	return this->nTriangles;
 }
 
-void gso::SceneObject::update_corners()
+void gso::SceneObject::update_object_corners()
 {
 	glm::vec3 last = this->vertices_[this->vertices_.size() - 1];
 
-	if (last.x <= this->bottomLeft.x && last.y <= this->bottomLeft.y) {
-		this->bottomLeft = last;
+	if (last.x <= this->obj_bottom_left_.x && last.y <= this->obj_bottom_left_.y) {
+		this->obj_bottom_left_ = glm::vec4(last.x, last.y, 0.0, 1.0);
 	}
-	if (last.x >= this->topRight.x && last.y >= this->topRight.y) {
-		this->topRight = last;
+	if (last.x >= this->obj_top_right_.x && last.y >= this->obj_top_right_.y) {
+		this->obj_top_right_ = glm::vec4(last.x, last.y, 0.0, 1.0);
 	}
+}
+
+void gso::SceneObject::update_position()
+{
+	this->pos_ = glm::vec4(0.0);
+	this->bottomLeft = this->obj_bottom_left_;
+	this->topRight = this->obj_top_right_;
+
+	this->bottomLeft = this->Model * this->bottomLeft;
+	this->topRight = this->Model * this->topRight;
+	this->pos_ = this->Model * this->pos_;
+
 }
 
 void gso::SceneObject::add_vertex(glm::vec3 pos, glm::vec4 color)
@@ -36,7 +48,7 @@ void gso::SceneObject::add_vertex(glm::vec3 pos, glm::vec4 color)
 	this->vertices_.push_back(vec3(pos.x, pos.y, 0.0));
 	this->colors_.push_back(color);
 	this->nVertices++;
-	this->update_corners();
+	this->update_object_corners();
 }
 
 void gso::SceneObject::set_color(glm::vec4 center, glm::vec4 others)
@@ -55,6 +67,36 @@ gso::Direction gso::SceneObject::get_direction()
 glm::vec3 gso::SceneObject::get_position()
 {
 	return this->pos_;
+}
+
+glm::vec3 gso::SceneObject::get_top_right()
+{
+	return this->topRight;
+}
+
+glm::vec3 gso::SceneObject::get_bottom_left()
+{
+	return this->bottomLeft;
+}
+
+bool gso::SceneObject::is_colliding(glm::vec3 pos)
+{
+	if (pos.x >= this->bottomLeft.x && pos.x <= this->topRight.x &&
+		pos.y >= this->bottomLeft.y && pos.y <= this->topRight.y) 
+			return true;
+
+	return false;
+}
+
+bool gso::SceneObject::is_colliding(SceneObject other)
+{
+	bool xcol = (this->bottomLeft.x <= other.topRight.x 
+				&& this->topRight.x >= other.bottomLeft.x);
+
+	bool ycol = (this->bottomLeft.y <= other.topRight.y
+				&& this->topRight.y >= other.bottomLeft.y);
+
+	return xcol && ycol;
 }
 
 void gso::SceneObject::createVertexArray()
@@ -113,15 +155,13 @@ void gso::SceneObject::transform(vec3 tVector, vec3 sVector, GLfloat angle)
 	sVector.z = 1.0; // Leave z dimension untouched
 	tVector.z = 0.0; // Can't move along z axis
 
-	// Update position
-	this->pos_.x += tVector.x;
-	this->pos_.y += tVector.y;
-
 	mat4 T = translate(mat4(1.0), tVector);
 	mat4 S = scale(mat4(1.0), sVector);
 	mat4 R = rotate(mat4(1.0), angle, rotationVector);
 
 	this->Model = this->Model * T * R * S;
+
+	this->update_position();
 }
 
 void gso::SceneObject::render(unsigned int* MatMod)

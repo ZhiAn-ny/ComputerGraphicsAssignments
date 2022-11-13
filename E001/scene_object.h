@@ -30,17 +30,23 @@ namespace gso {
 		int nTriangles = default_triangle_number;
 		int nVertices = 0;
 
-		glm::vec3 pos_ = {};
+		glm::vec4 pos_ = {};
 		gso::Direction dir_ = gso::Direction::kUp;
 
-		glm::vec3 bottomLeft = {};
-		glm::vec3 topRight = {};
+		// Bottom left corner in the object's coordinates.
+		glm::vec4 obj_bottom_left_ = {};
+		// Top right corner in the object's coordinates.
+		glm::vec4 obj_top_right_ = {};
+
+		glm::vec4 bottomLeft = {};
+		glm::vec4 topRight = {};
 
 		// Model matrix: translation * rotation * scale
 		glm::mat4 Model = glm::mat4(1.0);
 
 
-		void update_corners();
+		void update_object_corners();
+		void update_position();
 
 		void createVertexArray();
 		void bindVerticesGeometry();
@@ -62,6 +68,14 @@ namespace gso {
 		gso::Direction get_direction();
 
 		glm::vec3 get_position();
+
+		glm::vec3 get_top_right();
+
+		glm::vec3 get_bottom_left();
+
+		bool is_colliding(glm::vec3 pos);
+
+		bool is_colliding(SceneObject other);
 
 		void bind();
 

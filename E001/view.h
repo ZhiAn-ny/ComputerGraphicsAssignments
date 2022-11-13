@@ -7,7 +7,7 @@
 #include "ShaderMaker.h"
 #include "lib.h"
 #include "shape_factory.h"
-#include "Scene.h"
+#include "scene.h"
 
 namespace gview {
 
