@@ -1,11 +1,11 @@
 #include "view.h"
 
-
+// GLOBAL VARIABLES
 
 static unsigned int MatMod, MatProj;
 mat4 Projection;
 
-gscene::Scene scene;
+gscene::Scene obj_layer;
 //Mouse mouse;
 
 
@@ -18,7 +18,7 @@ void gview::GameView::draw_scene(void)
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	scene.draw_scene(&MatMod, &MatProj, &Projection);
+	obj_layer.draw_scene(&MatMod, &MatProj, &Projection);
 
 	glutSwapBuffers();
 }
@@ -88,28 +88,28 @@ void gview::GameView::create_scene_objects()
 	shape = shf.getButterfly(0.0, 0.0, 1, 1);
 	// Set initial direction
 	//shape.dir = Direction::UP;
-	scene.add_object(&shape);
+	shape.transform(glm::vec3(100.0, this->window_.bottom - 200.0, 0.0),
+		glm::vec3(this->window_.bottom / 10), 0);
+	obj_layer.add_object(&shape);
 	name = shape.get_name();
 	// Set initial position and scale
-	scene.transformObject(name, vec3(100.0, this->window_.bottom - 200.0, 0.0),
-		vec3(this->window_.bottom / 10), 0);
 
 	{
 		shape = shf.getButterfly(0.0, 0.0, 1, 1);
 		//shape.dir = Direction::UP;
-		scene.add_object(&shape);
+		shape.transform(glm::vec3(100.0, this->window_.bottom / 4, 0.0),
+			glm::vec3(this->window_.bottom / 10), 0);
+		obj_layer.add_object(&shape);
 		name = shape.get_name();
 		// Set initial position and scale
-		scene.transformObject(name, vec3(100.0, this->window_.bottom / 4, 0.0),
-			vec3(this->window_.bottom / 10), 0);
 
 		shape = shf.getButterfly(0.0, 0.0, 1, 1);
 		//shape.dir = Direction::UP;
-		scene.add_object(&shape);
+		shape.transform(glm::vec3(100.0, this->window_.bottom / 4 * 3, 0.0),
+			glm::vec3(this->window_.bottom / 10), 0);
+		obj_layer.add_object(&shape);
 		name = shape.get_name();
 		// Set initial position and scale
-		scene.transformObject(name, vec3(100.0, this->window_.bottom / 4 * 3, 0.0),
-			vec3(this->window_.bottom / 10), 0);
 	}
 }
 
@@ -121,8 +121,8 @@ void gview::GameView::set_first_scene()
 	// Coordinates are specified in relation to the usage domain
 	// (i.e. when dealing w/ temperature, the origin could be below zero)
 	Projection = ortho(0.0f, float(this->window_.right), 0.0f, float(this->window_.bottom));
-	MatProj = glGetUniformLocation(scene.get_id(), "Projection");
-	MatMod = glGetUniformLocation(scene.get_id(), "Model");
+	MatProj = glGetUniformLocation(obj_layer.get_id(), "Projection");
+	MatMod = glGetUniformLocation(obj_layer.get_id(), "Model");
 
 }
 
@@ -143,7 +143,7 @@ void gview::GameView::init_view()
 	glewExperimental = GL_TRUE;
 	glewInit();
 
-	scene.set_shaders((char*)"vertexShader.glsl", (char*)"fragmentShader.glsl");
+	obj_layer.set_shaders((char*)"vertexShader.glsl", (char*)"fragmentShader.glsl");
 	this->set_first_scene();
 
 	glEnable(GL_BLEND);

@@ -2,8 +2,8 @@
 #define GMAE_SCENE_H_
 
 #include "Lib.h"
-#include "scene_object.h"
 #include "ShaderMaker.h"
+#include "scene_object.h"
 
 namespace gscene {
 
@@ -33,9 +33,10 @@ namespace gscene {
 
 		gso::SceneObject* get_object(std::string name);
 
-		void draw_scene(unsigned int* MatMod, unsigned int* MatProj, mat4* Projection);
+		void draw_scene(unsigned int* MatMod, unsigned int* MatProj, glm::mat4* Projection);
 
-		void transformObject(std::string name, vec3 tVector, vec3 sVector, GLfloat angle);
+		/** Deprecated */
+		void transformObject(std::string name, glm::vec3 tVector, glm::vec3 sVector, GLfloat angle);
 	};
 
 }
@@ -67,7 +68,7 @@ namespace gscene {
 //
 //	void addObject(SceneObject* fig);
 //
-//	void drawScene(unsigned int* MatMod, unsigned int* MatProj, mat4* Projection);
+//	void drawScene(unsigned int* MatMod, unsigned int* MatProj, glm::mat4* Projection);
 //
 //	void setShaders(char* vertexShader, char* fragmentShader);
 //

@@ -95,7 +95,7 @@ gso::SceneObject* gscene::Scene::get_object(std::string name)
 	return NULL;
 }
 
-void gscene::Scene::draw_scene(unsigned int* MatMod, unsigned int* MatProj, mat4* Projection)
+void gscene::Scene::draw_scene(unsigned int* MatMod, unsigned int* MatProj, glm::mat4* Projection)
 {
 	vector<gso::SceneObject> Scena = this->scene_objs_;
 	int length = this->scene_objs_.size();

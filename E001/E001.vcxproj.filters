@@ -33,7 +33,7 @@
     <ClInclude Include="Scene.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
-    <ClInclude Include="ShapeFactory.h">
+    <ClInclude Include="shape_factory.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
     <ClInclude Include="controller.h">
@@ -59,7 +59,7 @@
     <ClCompile Include="Scene.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
-    <ClCompile Include="ShapeFactory.cpp">
+    <ClCompile Include="shape_factory.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
     <ClCompile Include="controller.cpp">

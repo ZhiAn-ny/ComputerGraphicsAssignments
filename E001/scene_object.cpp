@@ -41,3 +41,21 @@ void gso::SceneObject::set_color(glm::vec4 center, glm::vec4 others)
 		this->colors_[i] = others;
 	}
 }
+
+void gso::SceneObject::transform(vec3 tVector, vec3 sVector, GLfloat angle)
+{
+
+	vec3 rotationVector = vec3(0.0, 0.0, 1.0); // Always rotate along z axis
+	sVector.z = 1.0; // Leave z dimension untouched
+	tVector.z = 0.0; // Can't move along z axis
+
+	// Update position
+	this->pos_.x += tVector.x;
+	this->pos_.y += tVector.y;
+
+	mat4 T = translate(mat4(1.0), tVector);
+	mat4 S = scale(mat4(1.0), sVector);
+	mat4 R = rotate(mat4(1.0), angle, rotationVector);
+
+	this->Model = this->Model * T * R * S;
+}

@@ -53,6 +53,8 @@ namespace gso {
 
 		void set_color(glm::vec4 center, glm::vec4 others);
 
+		void transform(vec3 tVector, vec3 sVector, GLfloat angle);
+
 	};
 
 }
