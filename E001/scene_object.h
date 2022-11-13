@@ -17,7 +17,7 @@ namespace gso {
 	};
 
 	class SceneObject {
-	public:
+	private:
 		std::string name_ = {};
 
 		GLuint VertexArrayObject;
@@ -41,13 +41,19 @@ namespace gso {
 
 
 		void update_corners();
+
+		void createVertexArray();
+		void bindVerticesGeometry();
+		void bindVerticesColor();
 		
-	// public:
+	public:
 		SceneObject();
 		SceneObject(std::string name);
 		~SceneObject();
 
 		std::string get_name();
+
+		int get_triangles();
 
 		void add_vertex(glm::vec3 pos, glm::vec4 color);
 
@@ -57,11 +63,15 @@ namespace gso {
 
 		glm::vec3 get_position();
 
+		void bind();
+
 		void change_direction(gso::Direction new_dir);
 
 		void move(float distance);
 
 		void transform(vec3 tVector, vec3 sVector, GLfloat angle);
+
+		void render(unsigned int* MatMod);
 
 	};
 

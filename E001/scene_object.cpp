@@ -14,6 +14,11 @@ std::string gso::SceneObject::get_name()
 	return this->name_;
 }
 
+int gso::SceneObject::get_triangles()
+{
+	return this->nTriangles;
+}
+
 void gso::SceneObject::update_corners()
 {
 	glm::vec3 last = this->vertices_[this->vertices_.size() - 1];
@@ -52,6 +57,39 @@ glm::vec3 gso::SceneObject::get_position()
 	return this->pos_;
 }
 
+void gso::SceneObject::createVertexArray()
+{
+	glGenVertexArrays(1, &this->VertexArrayObject);
+	glBindVertexArray(this->VertexArrayObject);
+}
+
+void gso::SceneObject::bindVerticesGeometry()
+{
+	glGenBuffers(1, &this->VertexBufferObject_Geometry);
+	glBindBuffer(GL_ARRAY_BUFFER, this->VertexBufferObject_Geometry);
+	glBufferData(GL_ARRAY_BUFFER, this->vertices_.size() * sizeof(vec3), this->vertices_.data(), GL_STATIC_DRAW); // .data() usato per ottenere l'indirizzo di partenza del vettore (come &)
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glEnableVertexAttribArray(0);
+}
+
+void gso::SceneObject::bindVerticesColor()
+{
+	glGenBuffers(1, &this->VertexBufferObject_Colors);
+	glBindBuffer(GL_ARRAY_BUFFER, this->VertexBufferObject_Colors);
+	glBufferData(GL_ARRAY_BUFFER, this->colors_.size() * sizeof(vec4), this->colors_.data(), GL_STATIC_DRAW);
+
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glEnableVertexAttribArray(1);
+}
+
+void gso::SceneObject::bind()
+{
+	this->createVertexArray();
+	this->bindVerticesGeometry();
+	this->bindVerticesColor();
+}
+
 void gso::SceneObject::change_direction(gso::Direction new_dir)
 {
 	this->dir_ = new_dir;
@@ -84,4 +122,12 @@ void gso::SceneObject::transform(vec3 tVector, vec3 sVector, GLfloat angle)
 	mat4 R = rotate(mat4(1.0), angle, rotationVector);
 
 	this->Model = this->Model * T * R * S;
+}
+
+void gso::SceneObject::render(unsigned int* MatMod)
+{
+	// Create object's uniform matrix
+	glUniformMatrix4fv(*MatMod, 1, GL_FALSE, value_ptr(this->Model));
+	glBindVertexArray(this->VertexArrayObject);
+	glDrawArrays(GL_TRIANGLE_FAN, 0, this->nVertices);
 }

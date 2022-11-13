@@ -14,10 +14,6 @@ namespace gscene {
 		std::vector<gso::SceneObject> scene_objs_ = {};
 		bool wf_mode_ = false;
 
-		void createVertexArray(gso::SceneObject* fig);
-		void bindVerticesGeometry(gso::SceneObject* fig);
-		void bindVerticesColor(gso::SceneObject* fig);
-
 	public:
 		Scene();
 		~Scene();

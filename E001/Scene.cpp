@@ -1,32 +1,6 @@
 #include "Scene.h"
 
 
-void gscene::Scene::createVertexArray(gso::SceneObject* fig)
-{
-	glGenVertexArrays(1, &fig->VertexArrayObject);
-	glBindVertexArray(fig->VertexArrayObject);
-}
-
-void gscene::Scene::bindVerticesGeometry(gso::SceneObject* fig)
-{
-	glGenBuffers(1, &fig->VertexBufferObject_Geometry);
-	glBindBuffer(GL_ARRAY_BUFFER, fig->VertexBufferObject_Geometry);
-	glBufferData(GL_ARRAY_BUFFER, fig->vertices_.size() * sizeof(vec3), fig->vertices_.data(), GL_STATIC_DRAW); // .data() usato per ottenere l'indirizzo di partenza del vettore (come &)
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	glEnableVertexAttribArray(0);
-}
-
-void gscene::Scene::bindVerticesColor(gso::SceneObject* fig)
-{
-	glGenBuffers(1, &fig->VertexBufferObject_Colors);
-	glBindBuffer(GL_ARRAY_BUFFER, fig->VertexBufferObject_Colors);
-	glBufferData(GL_ARRAY_BUFFER, fig->colors_.size() * sizeof(vec4), fig->colors_.data(), GL_STATIC_DRAW);
-	
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	glEnableVertexAttribArray(1);
-}
-
 gscene::Scene::Scene() { }
 
 gscene::Scene::~Scene() { }
@@ -46,9 +20,7 @@ void gscene::Scene::set_shaders(char * vertsh, char * fragsh)
 
 int gscene::Scene::add_object(gso::SceneObject* fig)
 {
-	this->createVertexArray(fig);
-	this->bindVerticesGeometry(fig);
-	this->bindVerticesColor(fig);
+	fig->bind();
 
 	this->scene_objs_.push_back(*fig);
 
@@ -80,10 +52,7 @@ void gscene::Scene::draw_scene(unsigned int* MatMod, unsigned int* MatProj, glm:
 
 	for (index = 0; index < length; index++)
 	{
-		// Create object's uniform matrix
-		glUniformMatrix4fv(*MatMod, 1, GL_FALSE, value_ptr(Scena[index].Model));
-		glBindVertexArray(Scena[index].VertexArrayObject);
-		glDrawArrays(GL_TRIANGLE_FAN, 0, Scena[index].nVertices);
+		Scena[index].render(MatMod);
 
 		if (this->wf_mode_)
 		{

@@ -9,14 +9,14 @@ gso::SceneObject gsf::ShapeFactory::getShape(float centerX, float centerY,
 	float (*yFunc)(float, float, float), std::string name)
 {
 	gso::SceneObject fig = gso::SceneObject(name);
-	float step = (2 * pi) / fig.nTriangles;
+	float step = (2 * pi) / fig.get_triangles();
 	float theta, x, y;
 
 	// Add central vertex to the figure
 	fig.add_vertex(glm::vec3(centerX, centerY, 0.0), color::cyan);
 
 	// Add all the other vertices on the perimeter
-	for (int i = 0; i <= fig.nTriangles; i++)
+	for (int i = 0; i <= fig.get_triangles(); i++)
 	{
 		theta = i * step;
 		x = xFunc(centerX, rayX, theta);
@@ -24,11 +24,7 @@ gso::SceneObject gsf::ShapeFactory::getShape(float centerX, float centerY,
 
 		fig.add_vertex(glm::vec3(x, y, 0.0), color::cyan);
 	}
-	fig.nVertices = fig.vertices_.size();
-
-	// set center as reference for object's position
-	fig.pos_ = fig.vertices_[0];
-	fig.Model = glm::mat4(1.0);
+	
 	return fig;
 }
 
