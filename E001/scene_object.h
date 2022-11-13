@@ -53,6 +53,14 @@ namespace gso {
 
 		void set_color(glm::vec4 center, glm::vec4 others);
 
+		gso::Direction get_direction();
+
+		glm::vec3 get_position();
+
+		void change_direction(gso::Direction new_dir);
+
+		void move(float distance);
+
 		void transform(vec3 tVector, vec3 sVector, GLfloat angle);
 
 	};

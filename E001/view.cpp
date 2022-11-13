@@ -32,29 +32,21 @@ void gview::GameView::time_refresh(int value)
 	float ray = default_figure_ray;
 	std::string moving = "butterfly_0";
 
-	//vec3 objPos = scene.getObjectPosition(moving);
-	//Direction dir = scene.getObjectDirection(moving);
+	gso::SceneObject* shape =  obj_layer.get_object(moving);
 
-	//float y = (ray * 2 * (dir / abs((int)dir))) + objPos.y;
-
-	//// Change direction
-	//if (y < minObjY)
-	//	scene.changeObjectDirection(moving, Direction::UP);
-	//if (y > maxObjY)
-	//	scene.changeObjectDirection(moving, Direction::DOWN);
+	gso::Direction dir = shape->get_direction();
+	glm::vec3 pos = shape->get_position();
 
 
-	//// Create base translation vector
-	//vec3 tVector = vec3((dir / 2), (dir % 2), 0.0);
+	float y = (ray * 2 * ((int) dir / abs((int) dir))) + pos.y;
 
-	//// trasFactor = (dir / abs((int) dir));
-	//// 
-	//// tVector.x *= trasFactor;
-	//// tVector.y *= trasFactor;
+	// Change direction
+	if (y < minObjY)
+		shape->change_direction(gso::Direction::kUp);
+	if (y > maxObjY)
+		shape->change_direction(gso::Direction::kDown);
 
-	//vec3 sv = vec3(1.0, 1.0, 1.0); // Leave z axis untouched
-
-	//scene.transformObject(moving, tVector, sv, angolo);
+	shape->move(1.0);
 
 	glutTimerFunc(50, time_refresh, 0);
 	glutPostRedisplay();
@@ -149,4 +141,9 @@ void gview::GameView::init_view()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glutMainLoop();
+}
+
+gscene::Scene* gview::GameView::get_obj_layer_scene()
+{
+	return &obj_layer;
 }

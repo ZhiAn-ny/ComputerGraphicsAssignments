@@ -35,49 +35,8 @@ namespace gscene {
 
 		void draw_scene(unsigned int* MatMod, unsigned int* MatProj, glm::mat4* Projection);
 
-		/** Deprecated */
-		void transformObject(std::string name, glm::vec3 tVector, glm::vec3 sVector, GLfloat angle);
 	};
 
 }
 
 #endif // !GAME_SCENE_H_
-
-
-
-
-//class Scene
-//{
-//private:
-//	unsigned int programId;
-//	vector<SceneObject> _scene;
-//	bool isWireframeActive;
-//
-//	void createVertexArray(SceneObject* fig);
-//
-//	void bindVerticesGeometry(SceneObject* fig);
-//
-//	void bindVerticesColor(SceneObject* fig);
-//
-//	int getSceneLength();
-//
-//public:
-//
-//	vector<SceneObject> getScene();
-//	unsigned int getProgramID();
-//
-//	void addObject(SceneObject* fig);
-//
-//	void drawScene(unsigned int* MatMod, unsigned int* MatProj, glm::mat4* Projection);
-//
-//	void setShaders(char* vertexShader, char* fragmentShader);
-//
-//
-//	SceneObject* getObject(std::string name);
-//
-//	//vec3 getObjectPosition(std::string name);
-//
-//	//Direction getObjectDirection(std::string name);
-//
-//	//void changeObjectDirection(std::string name, Direction newDir);
-//};

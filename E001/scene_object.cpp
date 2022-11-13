@@ -42,6 +42,32 @@ void gso::SceneObject::set_color(glm::vec4 center, glm::vec4 others)
 	}
 }
 
+gso::Direction gso::SceneObject::get_direction()
+{
+	return this->dir_;
+}
+
+glm::vec3 gso::SceneObject::get_position()
+{
+	return this->pos_;
+}
+
+void gso::SceneObject::change_direction(gso::Direction new_dir)
+{
+	this->dir_ = new_dir;
+}
+
+void gso::SceneObject::move(float distance)
+{
+	int dir_value = (int) this->dir_;
+	glm::vec3 tVector = glm::vec3((dir_value / 2), (dir_value % 2), 0.0);
+	glm::vec3 sVector = glm::vec3(1.0);
+
+	tVector *= distance;
+
+	this->transform(tVector, sVector, 0);
+}
+
 void gso::SceneObject::transform(vec3 tVector, vec3 sVector, GLfloat angle)
 {
 
