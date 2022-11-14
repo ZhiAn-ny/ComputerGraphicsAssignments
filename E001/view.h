@@ -16,10 +16,10 @@ namespace gview {
 	static float default_figure_ray;
 
 	class GameView {
-		RECT window_ = {};
 
 		static void draw_scene(void);
 		static void time_refresh(int value);
+		static void reshape(int w, int h);
 
 		void init_window(const char* name);
 		void create_scene_objects();

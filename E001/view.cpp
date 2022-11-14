@@ -2,12 +2,16 @@
 
 // GLOBAL VARIABLES
 
-static unsigned int MatMod, MatProj;
+RECT window = {};
+RECT window_update = {};
+
+static unsigned int MatMod, MatProj, locres;
 mat4 Projection;
 
 gscene::Scene obj_layer;
 //Mouse mouse;
 
+/******************************************************************************/
 
 gview::GameView::GameView() { }
 
@@ -17,6 +21,8 @@ void gview::GameView::draw_scene(void)
 {
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	glUniform2f(locres, window_update.right, window_update.bottom);
 
 	obj_layer.draw_scene(&MatMod, &MatProj, &Projection);
 
@@ -34,7 +40,7 @@ void gview::GameView::time_refresh(int value)
 
 	gso::SceneObject* shape = obj_layer.get_object(moving);
 	gso::SceneObject* bshape = obj_layer.get_object(bottom);
-	gso::SceneObject* tshape =  obj_layer.get_object(top);
+	gso::SceneObject* tshape = obj_layer.get_object(top);
 
 	gso::Direction dir = shape->get_direction();
 	glm::vec3 pos = shape->get_position();
@@ -51,22 +57,39 @@ void gview::GameView::time_refresh(int value)
 	glutPostRedisplay();
 }
 
+void gview::GameView::reshape(int w, int h)
+{
+	// World ratio
+	float ratio = (float)(window.right) / (float)(window.bottom);
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	int width = h * ratio;
+	int left = (w - width) / 2;
+	glViewport(left, 0, width, h);
+	gluOrtho2D(0, window.right, window.bottom, 0);
+	glMatrixMode(GL_MODELVIEW);
+
+	glutPostRedisplay();
+}
+
 void gview::GameView::init_window(const char* name)
 {
 	int SCREEN_WIDTH = glutGet(GLUT_SCREEN_WIDTH);
 	int SCREEN_HEIGHT = glutGet(GLUT_SCREEN_HEIGHT);
 
-	this->window_.right = SCREEN_WIDTH / 3;
-	this->window_.bottom = SCREEN_HEIGHT / 2;
+	window.right = SCREEN_WIDTH / 3;
+	window.bottom = SCREEN_HEIGHT / 2;
 
-	gview::margin_bottom = this->window_.bottom / 4;
-	gview::margin_top = this->window_.bottom - gview::margin_bottom;
-	gview::default_figure_ray = this->window_.bottom / 10;
+	gview::margin_bottom = window.bottom / 4;
+	gview::margin_top = window.bottom - gview::margin_bottom;
+	gview::default_figure_ray = window.bottom / 10;
 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
-	glutInitWindowSize(this->window_.right, this->window_.bottom);
+	glutInitWindowSize(window.right, window.bottom);
 	glutInitWindowPosition(100, 100);
-	glutCreateWindow((const char*) name);
+	glutCreateWindow((const char*)name);
 }
 
 void gview::GameView::create_scene_objects()
@@ -79,8 +102,8 @@ void gview::GameView::create_scene_objects()
 	shape = shf.getButterfly(0.0, 0.0, 1, 1);
 	// Set initial direction
 	//shape.dir = Direction::UP;
-	shape.transform(glm::vec3(100.0, this->window_.bottom - 200.0, 0.0),
-		glm::vec3(this->window_.bottom / 10), 0);
+	shape.transform(glm::vec3(100.0, window.bottom - 200.0, 0.0),
+		glm::vec3(window.bottom / 10), 0);
 	obj_layer.add_object(&shape);
 	name = shape.get_name();
 	// Set initial position and scale
@@ -88,20 +111,27 @@ void gview::GameView::create_scene_objects()
 	{
 		shape = shf.getButterfly(0.0, 0.0, 1, 1);
 		//shape.dir = Direction::UP;
-		shape.transform(glm::vec3(100.0, this->window_.bottom / 4, 0.0),
-			glm::vec3(this->window_.bottom / 10), 0);
+		shape.transform(glm::vec3(100.0, window.bottom / 4, 0.0),
+			glm::vec3(window.bottom / 10), 0);
 		obj_layer.add_object(&shape);
 		name = shape.get_name();
 		// Set initial position and scale
 
 		shape = shf.getButterfly(0.0, 0.0, 1, 1);
 		//shape.dir = Direction::UP;
-		shape.transform(glm::vec3(100.0, this->window_.bottom / 4 * 3, 0.0),
-			glm::vec3(this->window_.bottom / 10), 0);
+		shape.transform(glm::vec3(100.0, window.bottom / 4 * 3, 0.0),
+			glm::vec3(window.bottom / 10), 0);
 		obj_layer.add_object(&shape);
 		name = shape.get_name();
 		// Set initial position and scale
 	}
+
+	//shape = shf.get_curve();
+	//shape.transform(glm::vec3(250.0, window.bottom / 4 * 3, 0.0),
+	//	glm::vec3(window.bottom / 10), 0);
+	//obj_layer.add_object(&shape);
+	//name = shape.get_name();
+
 }
 
 void gview::GameView::set_first_scene()
@@ -111,7 +141,7 @@ void gview::GameView::set_first_scene()
 	// Pass uniform variables to the shader
 	// Coordinates are specified in relation to the usage domain
 	// (i.e. when dealing w/ temperature, the origin could be below zero)
-	Projection = ortho(0.0f, float(this->window_.right), 0.0f, float(this->window_.bottom));
+	Projection = ortho(0.0f, float(window.right), 0.0f, float(window.bottom));
 	MatProj = glGetUniformLocation(obj_layer.get_id(), "Projection");
 	MatMod = glGetUniformLocation(obj_layer.get_id(), "Model");
 
@@ -130,6 +160,8 @@ void gview::GameView::init_view()
 	//mouse.assignRefScene(&scene);
 
 	glutTimerFunc(50, this->time_refresh, 0);
+
+	glutReshapeFunc(this->reshape);
 
 	glewExperimental = GL_TRUE;
 	glewInit();
