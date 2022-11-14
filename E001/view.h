@@ -6,10 +6,12 @@
 
 #include "ShaderMaker.h"
 #include "lib.h"
+#include "controller.h"
 #include "shape_factory.h"
-#include "scene.h"
 
 namespace gview {
+
+	static gctrl::GameController controller = {};
 
 	static float margin_bottom;
 	static float margin_top;
@@ -20,6 +22,7 @@ namespace gview {
 		static void draw_scene(void);
 		static void time_refresh(int value);
 		static void reshape(int w, int h);
+		static void keyboard_handler(unsigned char key, int x, int y);
 
 		void init_window(const char* name);
 		void create_scene_objects();

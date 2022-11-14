@@ -9,8 +9,13 @@ gctrl::GameController::~GameController()
 {
 }
 
-void gctrl::GameController::init_game()
+void gctrl::GameController::init_game(gscene::Scene* scene)
 {
-	this->view.init_view();
+	this->scene_ = scene;
+}
+
+void gctrl::GameController::game_loop()
+{
+
 
 }

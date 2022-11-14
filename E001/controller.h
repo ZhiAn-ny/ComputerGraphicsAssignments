@@ -1,19 +1,23 @@
 #ifndef GAME_CONTROLLER_H_
 #define GAME_CONTROLLER_H_
 
-#include "view.h"
+#include "Lib.h"
+#include "scene_object.h"
+#include "scene.h"
 
 namespace gctrl {
 
 	class GameController {
 	private:
-		gview::GameView view = gview::GameView();
+		gscene::Scene* scene_ = {};
 
 	public:
 		GameController();
 		~GameController();
 
-		void init_game();
+		void init_game(gscene::Scene* scene);
+
+		void game_loop();
 
 	};
 

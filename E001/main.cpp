@@ -1,12 +1,11 @@
-#include "controller.h"
+#include "view.h"
 
 
 int main(int argc, char* argv[])
 {
 	glutInit(&argc, argv);
 
-	gctrl::GameController controller = gctrl::GameController();
+	gview::GameView game = gview::GameView();
 
-	controller.init_game();
-
+	game.init_view();
 }

@@ -74,6 +74,24 @@ void gview::GameView::reshape(int w, int h)
 	glutPostRedisplay();
 }
 
+void gview::GameView::keyboard_handler(unsigned char key, int x, int y)
+{
+	switch (key) {
+	case ' ':
+
+		break;
+	case 'w':
+	case 'W':
+
+		break;
+	case 's':
+	case 'S':
+
+		break;
+	}
+	glutPostRedisplay();
+}
+
 void gview::GameView::init_window(const char* name)
 {
 	int SCREEN_WIDTH = glutGet(GLUT_SCREEN_WIDTH);
@@ -152,16 +170,19 @@ void gview::GameView::init_view()
 	glutInitContextVersion(4, 0);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
 
+	controller = gctrl::GameController();
+	controller.init_game(&obj_layer);
+
 	this->init_window("my_game_app");
 
 	glutDisplayFunc(this->draw_scene);
+	glutTimerFunc(50, this->time_refresh, 0);
+	glutReshapeFunc(this->reshape);
 
 	// Handle mouse inputs
 	//mouse.assignRefScene(&scene);
+	glutKeyboardFunc(this->keyboard_handler);
 
-	glutTimerFunc(50, this->time_refresh, 0);
-
-	glutReshapeFunc(this->reshape);
 
 	glewExperimental = GL_TRUE;
 	glewInit();
