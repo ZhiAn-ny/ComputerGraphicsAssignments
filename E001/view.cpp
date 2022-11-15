@@ -118,9 +118,9 @@ void gview::GameView::create_scene_objects()
 	std::string name;
 
 	// Add scene objects to render on start
-	shape = shf.get_curve();
+	shape = shf.get_wing();
 	shape.transform(glm::vec3(100.0, window.bottom - 200.0, 0.0),
-		glm::vec3(window.bottom / 10), 0);
+		glm::vec3(10), 0);
 	obj_layer.add_object(&shape);
 	
 	//shape = shf.get_butterfly(0.0, 0.0, 1, 1);

@@ -38,7 +38,7 @@ namespace gsf {
 
 		gso::SceneObject get_circle(float centerX, float centerY, float rayX, float rayY);
 	
-		gso::SceneObject get_curve();
+		gso::SceneObject get_wing();
 	};
 
 }

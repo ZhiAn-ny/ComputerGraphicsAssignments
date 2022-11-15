@@ -94,15 +94,25 @@ gso::SceneObject gsf::ShapeFactory::get_circle(float centerX, float centerY, flo
 	return fig;
 }
 
-gso::SceneObject gsf::ShapeFactory::get_curve()
+gso::SceneObject gsf::ShapeFactory::get_wing()
 {
-	std::string name = "Curva";
+	std::string name = "wing";
 
 	std::vector<glm::vec3> cps = {
-		glm::vec3(-2.5, 2.0, 0.0),
-		glm::vec3(0, -2.0, 0.0),
-		glm::vec3(2.5, 2.0, 0.0),
-		glm::vec3(0, 1.0, 0.0),
+		glm::vec3(-1.0, -16.0, 0.0),
+		glm::vec3(-2.0, -12.0, 0.0),
+		glm::vec3(-9.0, -10.0, 0.0),
+		glm::vec3(-6.0, -6.0, 0.0),
+		glm::vec3(-14.0, -1.0, 0.0),
+		glm::vec3(-7.0, 1.0, 0.0),
+		glm::vec3(-10.0, 11.0, 0.0),
+		glm::vec3(-1.0, 10.0, 0.0),
+		glm::vec3(-1.0, 17.0, 0.0),
+		glm::vec3(11.0, 0.0, 0.0),
+		glm::vec3(5.0, -7.0, 0.0),
+		glm::vec3(7.0, -15.0, 0.0),
+		glm::vec3(7.0, -17.0, 0.0),
+		glm::vec3(-1.0, -16.0, 0.0)
 	};
 
 	gso::HermiteShape h = this->new_hermite(cps, name);
