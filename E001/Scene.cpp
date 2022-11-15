@@ -44,15 +44,13 @@ gso::SceneObject* gscene::Scene::get_object(std::string name)
 
 void gscene::Scene::draw_scene(unsigned int* MatMod, unsigned int* MatProj, glm::mat4* Projection)
 {
-	vector<gso::SceneObject> Scena = this->scene_objs_;
 	int length = this->scene_objs_.size();
-	int index;
 
 	glUniformMatrix4fv(*MatProj, 1, GL_FALSE, value_ptr(*Projection));
 
-	for (index = 0; index < length; index++)
+	for (int i = 0; i < length; i++)
 	{
-		Scena[index].render(MatMod);
+		this->scene_objs_[i].render(MatMod);
 
 		if (this->wf_mode_)
 		{

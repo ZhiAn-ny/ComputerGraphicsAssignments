@@ -88,7 +88,7 @@ bool gso::SceneObject::is_colliding(glm::vec3 pos)
 	return false;
 }
 
-bool gso::SceneObject::is_colliding(SceneObject other)
+bool gso::SceneObject::is_colliding(gso::SceneObject other)
 {
 	bool xcol = (this->bottomLeft.x <= other.topRight.x 
 				&& this->topRight.x >= other.bottomLeft.x);
