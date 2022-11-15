@@ -1,12 +1,16 @@
 #ifndef GAME_SHAPE_FACTORY_H_
 #define GAME_SHAPE_FACTORY_H_
 
+#define _USE_MATH_DEFINES
+
+#include <math.h>
+
 #include "scene_object.h"
+#include "hermite.h"
 #include "colors.h"
 
-namespace gsf {
 
-	const float pi = 3.14159265358979323846264;
+namespace gsf {
 
 	class ShapeFactory {
 	private:
@@ -14,23 +18,27 @@ namespace gsf {
 		unsigned int butterflyCounter = 0;
 		unsigned int circleCounter = 0;
 
-		gso::SceneObject getShape(float centerX, float centerY, float rayX, 
+		gso::SceneObject new_shape(float centerX, float centerY, float rayX, 
 			float rayY, float(*xFunc)(float, float, float), 
 			float(*yFunc)(float, float, float));
 
-		gso::SceneObject getShape(float centerX, float centerY, float rayX, 
+		gso::SceneObject new_shape(float centerX, float centerY, float rayX, 
 			float rayY, float(*xFunc)(float, float, float), 
 			float(*yFunc)(float, float, float), std::string name);
+
+		gso::HermiteShape new_hermite(std::vector<glm::vec3> cp, std::string name);
 
 	public:
 		ShapeFactory();
 		~ShapeFactory();
 
-		gso::SceneObject getHeart(float centerX, float centerY, float rayX, float rayY);
+		gso::SceneObject get_heart(float centerX, float centerY, float rayX, float rayY);
 
-		gso::SceneObject getButterfly(float centerX, float centerY, float rayX, float rayY);
+		gso::SceneObject get_butterfly(float centerX, float centerY, float rayX, float rayY);
 
-		gso::SceneObject getCircle(float centerX, float centerY, float rayX, float rayY);
+		gso::SceneObject get_circle(float centerX, float centerY, float rayX, float rayY);
+	
+		gso::SceneObject get_curve();
 	};
 
 }

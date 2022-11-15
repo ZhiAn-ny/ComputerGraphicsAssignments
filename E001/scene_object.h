@@ -18,15 +18,6 @@ namespace gso {
 
 	class SceneObject {
 	private:
-		std::string name_ = {};
-
-		GLuint VertexArrayObject;
-		GLuint VertexBufferObject_Geometry;
-		GLuint VertexBufferObject_Colors;
-
-		std::vector<glm::vec3> vertices_ = {};
-		std::vector<glm::vec4> colors_ = {};
-
 		int nTriangles = default_triangle_number;
 		int nVertices = 0;
 
@@ -41,9 +32,6 @@ namespace gso {
 		glm::vec4 bottomLeft = {};
 		glm::vec4 topRight = {};
 
-		// Model matrix: translation * rotation * scale
-		glm::mat4 Model = glm::mat4(1.0);
-
 
 		void update_object_corners();
 		void update_position();
@@ -51,6 +39,19 @@ namespace gso {
 		void createVertexArray();
 		void bindVerticesGeometry();
 		void bindVerticesColor();
+
+	protected:
+		std::string name_ = {};
+
+		GLuint VertexArrayObject;
+		GLuint VertexBufferObject_Geometry;
+		GLuint VertexBufferObject_Colors;
+
+		// Model matrix: translation * rotation * scale
+		glm::mat4 Model = glm::mat4(1.0);
+
+		std::vector<glm::vec3> vertices_ = {};
+		std::vector<glm::vec4> colors_ = {};
 		
 	public:
 		SceneObject();
@@ -75,7 +76,7 @@ namespace gso {
 
 		bool is_colliding(glm::vec3 pos);
 
-		bool is_colliding(SceneObject other);
+		bool is_colliding(gso::SceneObject other);
 
 		void bind();
 

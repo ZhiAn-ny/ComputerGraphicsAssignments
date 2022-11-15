@@ -33,25 +33,25 @@ void gview::GameView::time_refresh(int value)
 {
 	float angolo = 0.0;
 	float trasFactor;
-	std::string moving = "butterfly_0";
+	//std::string moving = "butterfly_0";
 
-	std::string bottom = "butterfly_1";
-	std::string top = "butterfly_2";
+	//std::string bottom = "butterfly_1";
+	//std::string top = "butterfly_2";
 
-	gso::SceneObject* shape = obj_layer.get_object(moving);
-	gso::SceneObject* bshape = obj_layer.get_object(bottom);
-	gso::SceneObject* tshape = obj_layer.get_object(top);
+	//gso::SceneObject* shape = obj_layer.get_object(moving);
+	//gso::SceneObject* bshape = obj_layer.get_object(bottom);
+	//gso::SceneObject* tshape = obj_layer.get_object(top);
 
-	gso::Direction dir = shape->get_direction();
-	glm::vec3 pos = shape->get_position();
+	//gso::Direction dir = shape->get_direction();
+	//glm::vec3 pos = shape->get_position();
 
-	// Change direction
-	if (shape->is_colliding(*bshape))
-		shape->change_direction(gso::Direction::kUp);
-	if (shape->is_colliding(*tshape))
-		shape->change_direction(gso::Direction::kDown);
+	//// Change direction
+	//if (shape->is_colliding(*bshape))
+	//	shape->change_direction(gso::Direction::kUp);
+	//if (shape->is_colliding(*tshape))
+	//	shape->change_direction(gso::Direction::kDown);
 
-	shape->move(0.1);
+	//shape->move(0.1);
 
 	glutTimerFunc(50, time_refresh, 0);
 	glutPostRedisplay();
@@ -114,41 +114,40 @@ void gview::GameView::create_scene_objects()
 {
 	gsf::ShapeFactory shf;
 	gso::SceneObject shape;
+	gso::HermiteShape h_shape;
 	std::string name;
 
 	// Add scene objects to render on start
-	shape = shf.getButterfly(0.0, 0.0, 1, 1);
-	// Set initial direction
-	//shape.dir = Direction::UP;
+	shape = shf.get_curve();
 	shape.transform(glm::vec3(100.0, window.bottom - 200.0, 0.0),
 		glm::vec3(window.bottom / 10), 0);
 	obj_layer.add_object(&shape);
-	name = shape.get_name();
-	// Set initial position and scale
+	
+	//shape = shf.get_butterfly(0.0, 0.0, 1, 1);
 
-	{
-		shape = shf.getButterfly(0.0, 0.0, 1, 1);
-		//shape.dir = Direction::UP;
-		shape.transform(glm::vec3(100.0, window.bottom / 4, 0.0),
-			glm::vec3(window.bottom / 10), 0);
-		obj_layer.add_object(&shape);
-		name = shape.get_name();
-		// Set initial position and scale
-
-		shape = shf.getButterfly(0.0, 0.0, 1, 1);
-		//shape.dir = Direction::UP;
-		shape.transform(glm::vec3(100.0, window.bottom / 4 * 3, 0.0),
-			glm::vec3(window.bottom / 10), 0);
-		obj_layer.add_object(&shape);
-		name = shape.get_name();
-		// Set initial position and scale
-	}
-
-	//shape = shf.get_curve();
-	//shape.transform(glm::vec3(250.0, window.bottom / 4 * 3, 0.0),
+	//shape.transform(glm::vec3(100.0, window.bottom - 200.0, 0.0),
 	//	glm::vec3(window.bottom / 10), 0);
 	//obj_layer.add_object(&shape);
 	//name = shape.get_name();
+	//// Set initial position and scale
+
+	//{
+	//	shape = shf.get_butterfly(0.0, 0.0, 1, 1);
+	//	//shape.dir = Direction::UP;
+	//	shape.transform(glm::vec3(100.0, window.bottom / 4, 0.0),
+	//		glm::vec3(window.bottom / 10), 0);
+	//	obj_layer.add_object(&shape);
+	//	name = shape.get_name();
+	//	// Set initial position and scale
+
+	//	shape = shf.get_butterfly(0.0, 0.0, 1, 1);
+	//	//shape.dir = Direction::UP;
+	//	shape.transform(glm::vec3(100.0, window.bottom / 4 * 3, 0.0),
+	//		glm::vec3(window.bottom / 10), 0);
+	//	obj_layer.add_object(&shape);
+	//	name = shape.get_name();
+	//	// Set initial position and scale
+	//}
 
 }
 

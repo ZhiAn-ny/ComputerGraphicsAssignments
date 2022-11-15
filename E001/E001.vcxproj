@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClInclude Include="colors.h" />
     <ClInclude Include="controller.h" />
+    <ClInclude Include="hermite.h" />
     <ClInclude Include="Lib.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="scene_object.h" />
@@ -143,6 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="controller.cpp" />
+    <ClCompile Include="hermite.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="scene_object.cpp" />
