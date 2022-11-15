@@ -32,6 +32,8 @@ namespace gso {
 		glm::vec4 bottomLeft = {};
 		glm::vec4 topRight = {};
 
+		GLenum render_mode_ = GL_TRIANGLE_FAN;
+
 
 		void update_object_corners();
 		void update_position();
@@ -65,6 +67,8 @@ namespace gso {
 		void add_vertex(glm::vec3 pos, glm::vec4 color);
 
 		void set_color(glm::vec4 center, glm::vec4 others);
+
+		void set_render_mode(GLenum mode);
 
 		float get_height();
 

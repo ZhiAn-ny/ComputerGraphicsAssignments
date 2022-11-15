@@ -40,7 +40,10 @@ namespace gsf {
 
 		gso::SceneObject get_circle(float centerX, float centerY, float rayX, float rayY);
 	
-		gso::SceneObject get_wing();
+		gso::SceneObject get_dragon_wing();
+		gso::SceneObject get_dragon_head();
+		gso::SceneObject get_dragon_tail();
+		gso::SceneObject get_dragon_body();
 	};
 
 }

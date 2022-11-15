@@ -59,6 +59,11 @@ void gso::SceneObject::set_color(glm::vec4 center, glm::vec4 others)
 	}
 }
 
+void gso::SceneObject::set_render_mode(GLenum mode)
+{
+	this->render_mode_ = mode;
+}
+
 float gso::SceneObject::get_height()
 {
 	return abs(this->bottomLeft.y - this->topRight.y);
@@ -168,5 +173,5 @@ void gso::SceneObject::render(unsigned int* MatMod)
 	// Create object's uniform matrix
 	glUniformMatrix4fv(*MatMod, 1, GL_FALSE, value_ptr(this->Model));
 	glBindVertexArray(this->VertexArrayObject);
-	glDrawArrays(GL_TRIANGLE_FAN, 0, this->nVertices);
+	glDrawArrays(this->render_mode_, 0, this->nVertices);
 }

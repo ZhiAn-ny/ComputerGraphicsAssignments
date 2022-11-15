@@ -126,9 +126,26 @@ void gview::GameView::create_scene_objects()
 	gso::HermiteShape h_shape;
 	std::string name;
 
+	glm::vec2 dragon_center = glm::vec2(window.right / 5*3, window.bottom/2);
+
 	// Add scene objects to render on start
-	shape = shf.get_wing();
-	shape.transform(glm::vec3(window.right/5, window.bottom - 200.0, 0.0),
+	shape = shf.get_dragon_tail();
+	shape.transform(glm::vec3(dragon_center.x -100, dragon_center.y - 40, 0.0),
+		glm::vec3(7), 0);
+	obj_layer.add_object(&shape);
+
+	shape = shf.get_dragon_body();
+	shape.transform(glm::vec3(dragon_center.x + 80, dragon_center.y , 0.0),
+		glm::vec3(7), 0);
+	obj_layer.add_object(&shape);
+
+	shape = shf.get_dragon_wing();
+	shape.transform(glm::vec3(dragon_center.x + 30, dragon_center.y + 130, 0.0),
+		glm::vec3(7), 0);
+	obj_layer.add_object(&shape);
+
+	shape = shf.get_dragon_head();
+	shape.transform(glm::vec3(dragon_center.x + 177, dragon_center.y + 30, 0.0),
 		glm::vec3(7), 0);
 	obj_layer.add_object(&shape);
 	

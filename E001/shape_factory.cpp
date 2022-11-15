@@ -108,7 +108,7 @@ gso::SceneObject gsf::ShapeFactory::get_circle(float centerX, float centerY, flo
 	return fig;
 }
 
-gso::SceneObject gsf::ShapeFactory::get_wing()
+gso::SceneObject gsf::ShapeFactory::get_dragon_wing()
 {
 	std::string name = "wing";
 
@@ -148,5 +148,112 @@ gso::SceneObject gsf::ShapeFactory::get_wing()
 
 	gso::HermiteShape h = this->new_hermite(cps, tbc, name);
 
+	return h;
+}
+
+gso::SceneObject gsf::ShapeFactory::get_dragon_head()
+{
+	std::string name = "head";
+
+	std::vector<glm::vec3> cps = {
+		glm::vec3(-1.0, 2.5, 0.0),
+		glm::vec3(1.0, 2.5, 0.0),
+		glm::vec3(2.0, 1.5, 0.0),
+		glm::vec3(5.0, 1.5, 0.0),
+		glm::vec3(4.3, -0.5, 0.0),
+		glm::vec3(1.0, -0.5, 0.0),
+		glm::vec3(3.5, -1.3, 0.0),
+		glm::vec3(3.0, -2.0, 0.0),
+		glm::vec3(0.0, -1.5, 0.0),
+		glm::vec3(-2.0, -2.5, 0.0),
+		glm::vec3(-1.5, -1.5, 0.0),
+		glm::vec3(-4.0, -0.5, 0.0),
+		glm::vec3(-2.0, 0.0, 0.0),
+		glm::vec3(-4.0, 1.5, 0.0),
+		glm::vec3(-2.0, 1.5, 0.0),
+		glm::vec3(-6.0, 4.5, 0.0),
+		glm::vec3(-1.0, 2.5, 0.0),
+	};
+
+	std::vector<glm::vec3> tbc = {
+		glm::vec3(0.0),
+		glm::vec3(0.0),
+		glm::vec3(0.0),
+		glm::vec3(0.5, 1.0, -1.0),
+		glm::vec3(1.0, 1.0, -1.0),
+		glm::vec3(0.0),
+		glm::vec3(1.0, 1.0, -1.0),
+		glm::vec3(1.0, 1.0, -1.0),
+		glm::vec3(1.0, 1.0, -1.0),
+		glm::vec3(1.0, 1.0, -1.0),
+		glm::vec3(1.0, 1.0, -1.0),
+		glm::vec3(1.0, 1.0, -1.0),
+		glm::vec3(1.0, 1.0, -1.0),
+		glm::vec3(1.0, 1.0, -1.0),
+		glm::vec3(1.0, 1.0, -1.0),
+		glm::vec3(1.0, 1.0, -1.0),
+		glm::vec3(0.0)
+	};
+
+	gso::HermiteShape h = this->new_hermite(cps, tbc, name);
+	return h;
+}
+
+gso::SceneObject gsf::ShapeFactory::get_dragon_tail()
+{
+	std::string name = "tail";
+
+	std::vector<glm::vec3> cps = {
+		glm::vec3(-18.0, 5.0, 0.0),
+		glm::vec3(-5.0, 2.0, 0.0),
+		glm::vec3(2.0, 5.0, 0.0),
+		glm::vec3(7.0, 8.0, 0.0),
+		glm::vec3(15.0, 10.0, 0.0),
+		glm::vec3(12.0, 4.0, 0.0),
+		glm::vec3(-2.0, -1.0, 0.0),
+		glm::vec3(-9.0, 0.0, 0.0),
+		glm::vec3(-18.0 ,5.0, 0.0),
+	};
+
+	//std::vector<glm::vec3> tbc = {
+	//	glm::vec3(0.0, 1.0, -1.0),
+	//	glm::vec3(0.0, 1.0, -1.0),
+	//	glm::vec3(0.0, 1.0, -1.0),
+	//	glm::vec3(0.0, 1.0, -1.0),
+	//	glm::vec3(0.0, 1.0, -1.0),
+	//	glm::vec3(0.0, 1.0, -1.0),
+	//	glm::vec3(0.0, 1.0, -1.0),
+	//	glm::vec3(0.0, 1.0, -1.0),
+	//	glm::vec3(0.0, 1.0, -1.0),
+	//};
+
+	gso::HermiteShape h = this->new_hermite(cps, name);
+	return h;
+
+}
+
+gso::SceneObject gsf::ShapeFactory::get_dragon_body()
+{
+	std::string name = "body";
+
+	std::vector<glm::vec3> cps = {
+		glm::vec3(-13.0, -2.0, 0.0),
+		glm::vec3(-10.0, -3.0, 0.0),
+		glm::vec3( -8.0, -5.0, 0.0),
+		glm::vec3( -4.0, -6.0, 0.0),
+		glm::vec3(  1.0, -5.0, 0.0),
+		glm::vec3(  4.0, -1.0, 0.0),
+		glm::vec3(  9.0,  2.0, 0.0),
+		glm::vec3( 10.0,  2.0, 0.0),
+		glm::vec3( 13.0,  3.0, 0.0),
+		glm::vec3( 13.0,  7.0, 0.0),
+		glm::vec3(  8.0,  7.0, 0.0),
+		glm::vec3(  5.0,  5.0, 0.0),
+		glm::vec3( -1.0,  3.0, 0.0),
+		glm::vec3(-15.0,  4.0, 0.0),
+		glm::vec3(-13.0, -2.0, 0.0),
+	};
+
+	gso::HermiteShape h = this->new_hermite(cps, name);
 	return h;
 }
