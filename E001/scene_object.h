@@ -82,7 +82,7 @@ namespace gso {
 
 		void move(float distance);
 
-		void transform(vec3 tVector, vec3 sVector, GLfloat angle);
+		void transform(glm::vec3 tVector, glm::vec3 sVector, GLfloat angle);
 
 		void render(unsigned int* MatMod);
 
