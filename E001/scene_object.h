@@ -66,13 +66,11 @@ namespace gso {
 
 		void set_color(glm::vec4 center, glm::vec4 others);
 
-		gso::Direction get_direction();
+		float get_height();
 
-		glm::vec3 get_position();
+		float get_width();
 
-		glm::vec3 get_top_right();
-
-		glm::vec3 get_bottom_left();
+		float get_original_ratio();
 
 		bool is_colliding(glm::vec3 pos);
 

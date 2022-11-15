@@ -53,6 +53,14 @@ void gview::GameView::time_refresh(int value)
 
 	//shape->move(0.1);
 
+	//gso::SceneObject* wing = obj_layer.get_object("wing");
+
+	//float ratio = wing->get_width() / wing->get_height()
+
+	//
+
+	//wing->transform(glm::vec3(0.0), glm::vec3(1.0, 1.1, 1.0), 0.0);
+
 	glutTimerFunc(50, time_refresh, 0);
 	glutPostRedisplay();
 }
@@ -120,7 +128,7 @@ void gview::GameView::create_scene_objects()
 	// Add scene objects to render on start
 	shape = shf.get_wing();
 	shape.transform(glm::vec3(100.0, window.bottom - 200.0, 0.0),
-		glm::vec3(10), 0);
+		glm::vec3(2), 0);
 	obj_layer.add_object(&shape);
 	
 	//shape = shf.get_butterfly(0.0, 0.0, 1, 1);

@@ -59,24 +59,21 @@ void gso::SceneObject::set_color(glm::vec4 center, glm::vec4 others)
 	}
 }
 
-gso::Direction gso::SceneObject::get_direction()
+float gso::SceneObject::get_height()
 {
-	return this->dir_;
+	return abs(this->bottomLeft.y - this->topRight.y);
 }
 
-glm::vec3 gso::SceneObject::get_position()
+float gso::SceneObject::get_width()
 {
-	return this->pos_;
+	return abs(this->bottomLeft.x - this->topRight.x);
 }
 
-glm::vec3 gso::SceneObject::get_top_right()
+float gso::SceneObject::get_original_ratio()
 {
-	return this->topRight;
-}
-
-glm::vec3 gso::SceneObject::get_bottom_left()
-{
-	return this->bottomLeft;
+	float w = abs(this->obj_bottom_left_.x - this->obj_top_right_.x);
+	float h = abs(this->obj_bottom_left_.y - this->obj_top_right_.y);
+	return w / h;
 }
 
 bool gso::SceneObject::is_colliding(glm::vec3 pos)
