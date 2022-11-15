@@ -79,10 +79,24 @@ float gso::HermiteShape::DX(int i, float* t)
 	float T, B, C;
 	T = B = C = 0;
 
-	if (this->derivates_[i].x == 0)
+	if (this->derivates_[i].x != 0)
+		return this->derivates_[i].x;
+
+	if (this->tbc_.size() == 0)
 		return dx(i, t, T, B, C);
 
-	return this->derivates_[i].x;
+	return dx(i, t, this->tbc_[i].x, this->tbc_[i].y, this->tbc_[i].z);
+
+
+
+	//if (this->derivates_[i].x == 0) {
+	//	if (this->tbc_.size() == this->derivates_.size()) {
+	//		return dx(i, t, T, B, C);
+	//	}
+	//	return dx(i, t, T, B, C);
+	//}
+
+	//return this->derivates_[i].x;
 }
 
 float gso::HermiteShape::DY(int i, float* t)
@@ -90,10 +104,13 @@ float gso::HermiteShape::DY(int i, float* t)
 	float T, B, C;
 	T = B = C = 0;
 
-	if (this->derivates_[i].y == 0)
+	if (this->derivates_[i].y != 0)
+		return this->derivates_[i].y;
+		
+	if (this->tbc_.size() == 0)
 		return dy(i, t, T, B, C);
 
-	return this->derivates_[i].y;
+	return dy(i, t, this->tbc_[i].x, this->tbc_[i].y, this->tbc_[i].z);
 }
 
 void gso::HermiteShape::interpolation(float* t)
@@ -147,6 +164,17 @@ void gso::HermiteShape::add_control_point(glm::vec3 cp)
 	this->cp_.push_back(cp);
 	this->colors_.push_back(color::white);
 	this->derivates_.push_back(glm::vec3(0.0));
+
+	this->build_curve();
+	this->bind();
+}
+
+void gso::HermiteShape::add_control_point(glm::vec3 cp, glm::vec3 tbc)
+{
+	this->cp_.push_back(cp);
+	this->colors_.push_back(color::white);
+	this->derivates_.push_back(glm::vec3(0.0));
+	this->tbc_.push_back(tbc);
 
 	this->build_curve();
 	this->bind();

@@ -104,9 +104,10 @@ void gview::GameView::init_window(const char* name)
 {
 	int SCREEN_WIDTH = glutGet(GLUT_SCREEN_WIDTH);
 	int SCREEN_HEIGHT = glutGet(GLUT_SCREEN_HEIGHT);
+	int INITIAL_POS = 50;
 
-	window.right = SCREEN_WIDTH / 3;
-	window.bottom = SCREEN_HEIGHT / 2;
+	window.right = SCREEN_WIDTH / 3 * 2;
+	window.bottom = SCREEN_HEIGHT / 6 * 5;
 
 	gview::margin_bottom = window.bottom / 4;
 	gview::margin_top = window.bottom - gview::margin_bottom;
@@ -114,7 +115,7 @@ void gview::GameView::init_window(const char* name)
 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowSize(window.right, window.bottom);
-	glutInitWindowPosition(100, 100);
+	glutInitWindowPosition(INITIAL_POS, INITIAL_POS/2);
 	glutCreateWindow((const char*)name);
 }
 
@@ -127,8 +128,8 @@ void gview::GameView::create_scene_objects()
 
 	// Add scene objects to render on start
 	shape = shf.get_wing();
-	shape.transform(glm::vec3(100.0, window.bottom - 200.0, 0.0),
-		glm::vec3(2), 0);
+	shape.transform(glm::vec3(window.right/5, window.bottom - 200.0, 0.0),
+		glm::vec3(7), 0);
 	obj_layer.add_object(&shape);
 	
 	//shape = shf.get_butterfly(0.0, 0.0, 1, 1);

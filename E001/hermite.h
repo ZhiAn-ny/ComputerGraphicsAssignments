@@ -9,6 +9,7 @@ namespace gso {
 	class HermiteShape : public SceneObject {
 		std::vector<glm::vec3> cp_ = {};
 		std::vector<glm::vec3> derivates_ = {};
+		std::vector<glm::vec3> tbc_ = {};
 
 		static float phi0(float t);
  		static float phi1(float t);
@@ -31,6 +32,7 @@ namespace gso {
  		~HermiteShape();
 
 		void add_control_point(glm::vec3 cp);
+		void add_control_point(glm::vec3 cp, glm::vec3 tbc);
 
 	};
 

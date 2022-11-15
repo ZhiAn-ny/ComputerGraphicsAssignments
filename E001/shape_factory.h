@@ -28,6 +28,8 @@ namespace gsf {
 
 		gso::HermiteShape new_hermite(std::vector<glm::vec3> cp, std::string name);
 
+		gso::HermiteShape new_hermite(std::vector<glm::vec3> cp, std::vector<glm::vec3> tbc, std::string name);
+
 	public:
 		ShapeFactory();
 		~ShapeFactory();

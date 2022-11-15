@@ -49,6 +49,20 @@ gso::HermiteShape gsf::ShapeFactory::new_hermite(std::vector<glm::vec3> cp, std:
 	return fig;
 }
 
+gso::HermiteShape gsf::ShapeFactory::new_hermite(std::vector<glm::vec3> cp, std::vector<glm::vec3> tbc, std::string name)
+{
+	if (cp.size() != tbc.size()) return this->new_hermite(cp, name);
+
+	gso::HermiteShape fig = gso::HermiteShape(name);
+
+	for (int i = 0; i < cp.size(); i++)
+	{
+		fig.add_control_point(cp[i], tbc[i]);
+	}
+
+	return fig;
+}
+
 gso::SceneObject gsf::ShapeFactory::get_heart(float centerX, float centerY, float rayX, float rayY)
 {
 	std::string name = "heart_" + std::to_string(this->heartCounter);
@@ -115,7 +129,24 @@ gso::SceneObject gsf::ShapeFactory::get_wing()
 		glm::vec3(-1.0, -16.0, 0.0)
 	};
 
-	gso::HermiteShape h = this->new_hermite(cps, name);
+	std::vector<glm::vec3> tbc = {
+		glm::vec3(0.0, 1.0, -1.0),
+		glm::vec3(0.0, 1.0, -1.0),
+		glm::vec3(0.0, 1.0, -1.0),
+		glm::vec3(0.0, 1.0, -1.0),
+		glm::vec3(0.0, 1.0, -1.0),
+		glm::vec3(0.0, 1.0, -1.0),
+		glm::vec3(0.0, 1.0, -1.0),
+		glm::vec3(0.0, 1.0, -1.0),
+		glm::vec3(0.0, 0.0, 0.0),
+		glm::vec3(0.0, 0.0, 0.0),
+		glm::vec3(0.0, 0.0, 0.0),
+		glm::vec3(0.0, 0.0, 0.0),
+		glm::vec3(0.0, 0.0, 0.0),
+		glm::vec3(0.0, 0.0, 0.0)
+	};
+
+	gso::HermiteShape h = this->new_hermite(cps, tbc, name);
 
 	return h;
 }
