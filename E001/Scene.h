@@ -27,7 +27,13 @@ namespace gscene {
 		 */
 		int add_object(gso::SceneObject* fig);
 
+		void add_object_at(gso::SceneObject* fig, int index);
+
+		void remove_first();
+
 		gso::SceneObject* get_object(std::string name);
+
+		std::vector<gso::SceneObject*> get_starts_with(std::string name);
 
 		void draw_scene(unsigned int* MatMod, unsigned int* MatProj, glm::mat4* Projection);
 

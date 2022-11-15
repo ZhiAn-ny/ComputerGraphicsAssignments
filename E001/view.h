@@ -33,7 +33,6 @@ namespace gview {
 		~GameView();
 
 		void init_view();
-		gscene::Scene* get_obj_layer_scene();
 
 	};
 

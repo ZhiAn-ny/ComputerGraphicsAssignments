@@ -33,7 +33,10 @@ void gso::SceneObject::update_object_corners()
 
 void gso::SceneObject::update_position()
 {
-	this->pos_ = glm::vec4(0.0);
+	this->pos_ = glm::vec4(this->vertices_[0].x, this->vertices_[0].y, 0.0, 1.0);
+	this->pos_.x = this->vertices_[0].x;
+	this->pos_.y = this->vertices_[0].y;
+
 	this->bottomLeft = this->obj_bottom_left_;
 	this->topRight = this->obj_top_right_;
 
@@ -72,6 +75,16 @@ float gso::SceneObject::get_height()
 float gso::SceneObject::get_width()
 {
 	return abs(this->bottomLeft.x - this->topRight.x);
+}
+
+glm::vec4 gso::SceneObject::get_position()
+{
+	return this->pos_;
+}
+
+glm::mat4 gso::SceneObject::get_model()
+{
+	return this->Model;
 }
 
 float gso::SceneObject::get_original_ratio()

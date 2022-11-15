@@ -74,6 +74,10 @@ namespace gso {
 
 		float get_width();
 
+		glm::vec4 get_position();
+
+		glm::mat4 get_model();
+
 		float get_original_ratio();
 
 		bool is_colliding(glm::vec3 pos);

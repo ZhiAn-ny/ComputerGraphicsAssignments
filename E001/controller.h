@@ -2,7 +2,7 @@
 #define GAME_CONTROLLER_H_
 
 #include "Lib.h"
-#include "scene_object.h"
+#include "shape_factory.h"
 #include "scene.h"
 
 namespace gctrl {
@@ -17,7 +17,15 @@ namespace gctrl {
 	private:
 		gscene::Scene* scene_ = {};
 
+		static bool is_outside_window(gso::SceneObject* fig);
+
+		void move_dragon(gso::Direction dir);
+
+		void fire();
+
 	public:
+		RECT window = {};
+
 		GameController();
 		~GameController();
 
