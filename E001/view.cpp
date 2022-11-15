@@ -5,7 +5,7 @@
 RECT window = {};
 RECT window_update = {};
 
-static unsigned int MatMod, MatProj, locres;
+static unsigned int MatMod, MatProj, loctime, locres;
 mat4 Projection;
 
 gscene::Scene obj_layer;
@@ -22,6 +22,8 @@ void gview::GameView::draw_scene(void)
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
+	// Pass tme and resolution to fragment shader
+	glUniform1f(loctime, glutGet(GLUT_ELAPSED_TIME) / 1000.0);
 	glUniform2f(locres, window_update.right, window_update.bottom);
 
 	obj_layer.draw_scene(&MatMod, &MatProj, &Projection);
@@ -162,6 +164,8 @@ void gview::GameView::set_first_scene()
 	Projection = ortho(0.0f, float(window.right), 0.0f, float(window.bottom));
 	MatProj = glGetUniformLocation(obj_layer.get_id(), "Projection");
 	MatMod = glGetUniformLocation(obj_layer.get_id(), "Model");
+	loctime = glGetUniformLocation(obj_layer.get_id(), "time");
+	locres = glGetUniformLocation(obj_layer.get_id(), "resolution");
 
 }
 
@@ -187,7 +191,7 @@ void gview::GameView::init_view()
 	glewExperimental = GL_TRUE;
 	glewInit();
 
-	obj_layer.set_shaders((char*)"vertexShader.glsl", (char*)"fragmentShader.glsl");
+	obj_layer.set_shaders((char*)"vertexShader.glsl", (char*)"testFS.glsl");
 	this->set_first_scene();
 
 	glEnable(GL_BLEND);

@@ -1,18 +1,23 @@
 #version 330 core
 
 
-layout (location = 0) in vec3 aPos;   // the position variable has attribute position 0
-layout (location = 1) in vec4 aColor; // the color variable has attribute position 1
+// the position variable has attribute position 0
+layout (location = 0) in vec3 aPos;   
 
-uniform mat4 Projection; // matrice che trasforma le coordinate da mondo a normalizzate schermo
-uniform mat4 Model;	     // deve aver il prodotto delle matrici di trasformzione per i vertici prima di essere disegnati
+// the color variable has attribute position 1
+layout (location = 1) in vec4 aColor; 
 
-out vec4 ourColor; // output a color to the fragment shader
+// matrix which normalize world coordinates to screen coordinates
+uniform mat4 Projection; 
 
-void main(){	
+// define object's transformations
+uniform mat4 Model;	     
 
+// output a color to the fragment shader
+out vec4 ourColor; 
+
+void main()
+{
 	gl_Position = Projection * Model * vec4(aPos.x,aPos.y,aPos.z,1.0);
-	ourColor=aColor;
-	
+	ourColor = aColor;
 }
-
