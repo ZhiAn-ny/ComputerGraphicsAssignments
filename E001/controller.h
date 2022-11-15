@@ -7,6 +7,12 @@
 
 namespace gctrl {
 
+	enum class GameAction {
+		kFire,
+		kMoveUp,
+		kMoveDown
+	};
+
 	class GameController {
 	private:
 		gscene::Scene* scene_ = {};
@@ -17,6 +23,9 @@ namespace gctrl {
 
 		void init_game(gscene::Scene* scene);
 
+		void action(GameAction action);
+
+		// TODO:
 		void game_loop();
 
 	};

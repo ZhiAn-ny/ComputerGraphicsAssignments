@@ -86,15 +86,15 @@ void gview::GameView::keyboard_handler(unsigned char key, int x, int y)
 {
 	switch (key) {
 	case ' ':
-
+		controller.action(gctrl::GameAction::kFire);
 		break;
 	case 'w':
 	case 'W':
-
+		controller.action(gctrl::GameAction::kMoveUp);
 		break;
 	case 's':
 	case 'S':
-
+		controller.action(gctrl::GameAction::kMoveDown);
 		break;
 	}
 	glutPostRedisplay();
