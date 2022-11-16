@@ -2,7 +2,7 @@
 
 uniform float time;
 uniform vec2 resolution;
-uniform bool isBackground;
+uniform unsigned int isBackground;
 
 const vec3 water_base_color = vec3(0.2, 0.1, 1.0);
 vec3 color = vec3(1.0);
@@ -60,6 +60,11 @@ void main()
 {
 	float v = 0.0;
 	vec2 ndc = convert_to_ndc();
+
+	if (isBackground == 0) {
+		FragColor = ourColor;
+		return;
+	}
 
 	// Refer to bottom half of the window
 	if (ndc.y > -1 && ndc.y < 0) {
