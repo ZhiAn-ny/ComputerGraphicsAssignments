@@ -35,31 +35,14 @@ void gview::GameView::time_refresh(int value)
 {
 	float angolo = 0.0;
 	float trasFactor;
-	std::string moving = "butterfly_0";
 
-	std::string bottom = "butterfly_1";
-	std::string top = "butterfly_2";
-
-	gso::SceneObject* shape = obj_layer.get_object(moving);
-	gso::SceneObject* bshape = obj_layer.get_object(bottom);
-	gso::SceneObject* tshape = obj_layer.get_object(top);
-
-	gso::Direction dir = shape->get_direction();
-	glm::vec3 pos = shape->get_position();
-
-	// Change direction
-	if (shape->is_colliding(*bshape))
-		shape->change_direction(gso::Direction::kUp);
-	if (shape->is_colliding(*tshape))
-		shape->change_direction(gso::Direction::kDown);
-
-	shape->move(0.1);
+	controller.game_loop();
 
 	glutTimerFunc(50, time_refresh, 0);
 	glutPostRedisplay();
 }
 
-void gview::GameView::reshape(int w, int h)
+void gview::GameView::reshape(int width, int height)
 {
 	// World ratio
 	float ratio = (float)(window.right) / (float)(window.bottom);
@@ -67,9 +50,15 @@ void gview::GameView::reshape(int w, int h)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	int width = h * ratio;
-	int left = (w - width) / 2;
-	glViewport(left, 0, width, h);
+	int w = height * ratio;
+	int left = (width - w) / 2;
+
+	window_update.right = width;
+	window_update.bottom = height;
+
+	controller.set_window(window_update);
+
+	glViewport(left, 0, w, height);
 	gluOrtho2D(0, window.right, window.bottom, 0);
 	glMatrixMode(GL_MODELVIEW);
 
@@ -78,85 +67,88 @@ void gview::GameView::reshape(int w, int h)
 
 void gview::GameView::keyboard_handler(unsigned char key, int x, int y)
 {
+	glm::vec2 null_position = glm::vec2(0);
 	switch (key) {
 	case ' ':
-
+		controller.action(gctrl::GameAction::kFire, null_position);
 		break;
 	case 'w':
 	case 'W':
-
+		controller.action(gctrl::GameAction::kMoveDragonUp, null_position);
 		break;
 	case 's':
 	case 'S':
-
+		controller.action(gctrl::GameAction::kMoveDragonDown, null_position);
 		break;
 	}
 	glutPostRedisplay();
+}
+
+void gview::GameView::mouse_handler(int button, int state, int x, int y)
+{
+	if (state == GLUT_DOWN) {
+		controller.action(gctrl::GameAction::kAddEnemy, glm::vec2(x,y));
+
+	}
 }
 
 void gview::GameView::init_window(const char* name)
 {
 	int SCREEN_WIDTH = glutGet(GLUT_SCREEN_WIDTH);
 	int SCREEN_HEIGHT = glutGet(GLUT_SCREEN_HEIGHT);
+	int INITIAL_POS = 50;
 
-	window.right = SCREEN_WIDTH / 3;
-	window.bottom = SCREEN_HEIGHT / 2;
+	window.right = SCREEN_WIDTH / 3 * 2;
+	window.bottom = SCREEN_HEIGHT / 6 * 5;
 
-	gview::margin_bottom = window.bottom / 4;
-	gview::margin_top = window.bottom - gview::margin_bottom;
-	gview::default_figure_ray = window.bottom / 10;
+	window_update = window;
+
+	controller.set_window(window_update);
 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowSize(window.right, window.bottom);
-	glutInitWindowPosition(100, 100);
+	glutInitWindowPosition(INITIAL_POS, INITIAL_POS/2);
 	glutCreateWindow((const char*)name);
 }
 
-void gview::GameView::create_scene_objects()
+void gview::GameView::create_dragon()
 {
 	gsf::ShapeFactory shf;
 	gso::SceneObject shape;
 	std::string name;
 
-	// Add scene objects to render on start
-	shape = shf.getButterfly(0.0, 0.0, 1, 1);
-	// Set initial direction
-	//shape.dir = Direction::UP;
-	shape.transform(glm::vec3(100.0, window.bottom - 200.0, 0.0),
-		glm::vec3(window.bottom / 10), 0);
-	obj_layer.add_object(&shape);
-	name = shape.get_name();
-	// Set initial position and scale
+	{// Compose dragon
+		glm::vec2 dragon_center = glm::vec2(window.right / 5, window.bottom / 2);
 
-	{
-		shape = shf.getButterfly(0.0, 0.0, 1, 1);
-		//shape.dir = Direction::UP;
-		shape.transform(glm::vec3(100.0, window.bottom / 4, 0.0),
-			glm::vec3(window.bottom / 10), 0);
+		shape = shf.get_dragon_tail();
+		shape.set_color(color::dark_dreen, color::medium_green);
+		shape.transform(glm::vec3(dragon_center.x - 100, dragon_center.y - 40, 0.0),
+			glm::vec3(7), 0);
 		obj_layer.add_object(&shape);
-		name = shape.get_name();
-		// Set initial position and scale
 
-		shape = shf.getButterfly(0.0, 0.0, 1, 1);
-		//shape.dir = Direction::UP;
-		shape.transform(glm::vec3(100.0, window.bottom / 4 * 3, 0.0),
-			glm::vec3(window.bottom / 10), 0);
+		shape = shf.get_dragon_body();
+		shape.set_color(color::dark_dreen, color::medium_green);
+		shape.transform(glm::vec3(dragon_center.x + 80, dragon_center.y, 0.0),
+			glm::vec3(7), 0);
 		obj_layer.add_object(&shape);
-		name = shape.get_name();
-		// Set initial position and scale
+
+		shape = shf.get_dragon_wing();
+		shape.set_color(color::dark_dreen, color::dark_yellow);
+		shape.transform(glm::vec3(dragon_center.x + 30, dragon_center.y + 130, 0.0),
+			glm::vec3(7), 0);
+		obj_layer.add_object(&shape);
+
+		shape = shf.get_dragon_head();
+		shape.set_color(color::medium_green, color::dark_yellow);
+		shape.transform(glm::vec3(dragon_center.x + 177, dragon_center.y + 30, 0.0),
+			glm::vec3(7), 0);
+		obj_layer.add_object(&shape);
 	}
-
-	//shape = shf.get_curve();
-	//shape.transform(glm::vec3(250.0, window.bottom / 4 * 3, 0.0),
-	//	glm::vec3(window.bottom / 10), 0);
-	//obj_layer.add_object(&shape);
-	//name = shape.get_name();
-
 }
 
 void gview::GameView::set_first_scene()
 {
-	this->create_scene_objects();
+	this->create_dragon();
 
 	// Pass uniform variables to the shader
 	// Coordinates are specified in relation to the usage domain
@@ -174,19 +166,18 @@ void gview::GameView::init_view()
 	glutInitContextVersion(4, 0);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
 
+	this->init_window("my_game_app");
+
 	controller = gctrl::GameController();
 	controller.init_game(&obj_layer);
-
-	this->init_window("my_game_app");
+	controller.set_window(window);
 
 	glutDisplayFunc(this->draw_scene);
 	glutTimerFunc(50, this->time_refresh, 0);
 	glutReshapeFunc(this->reshape);
 
-	// Handle mouse inputs
-	//mouse.assignRefScene(&scene);
+	glutMouseFunc(this->mouse_handler);
 	glutKeyboardFunc(this->keyboard_handler);
-
 
 	glewExperimental = GL_TRUE;
 	glewInit();
@@ -197,9 +188,4 @@ void gview::GameView::init_view()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glutMainLoop();
-}
-
-gscene::Scene* gview::GameView::get_obj_layer_scene()
-{
-	return &obj_layer;
 }

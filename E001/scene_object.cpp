@@ -33,7 +33,10 @@ void gso::SceneObject::update_object_corners()
 
 void gso::SceneObject::update_position()
 {
-	this->pos_ = glm::vec4(0.0);
+	this->pos_ = glm::vec4(this->vertices_[0].x, this->vertices_[0].y, 0.0, 1.0);
+	this->pos_.x = this->vertices_[0].x;
+	this->pos_.y = this->vertices_[0].y;
+
 	this->bottomLeft = this->obj_bottom_left_;
 	this->topRight = this->obj_top_right_;
 
@@ -59,24 +62,51 @@ void gso::SceneObject::set_color(glm::vec4 center, glm::vec4 others)
 	}
 }
 
-gso::Direction gso::SceneObject::get_direction()
+void gso::SceneObject::set_render_mode(GLenum mode)
 {
-	return this->dir_;
+	this->render_mode_ = mode;
 }
 
-glm::vec3 gso::SceneObject::get_position()
+void gso::SceneObject::set_basculation_direction(gso::Direction dir)
+{
+	this->basc_dir_ = dir;
+}
+
+gso::Direction gso::SceneObject::get_basculation_direction()
+{
+	return this->basc_dir_;
+}
+
+float gso::SceneObject::get_height()
+{
+	return abs(this->bottomLeft.y - this->topRight.y);
+}
+
+float gso::SceneObject::get_width()
+{
+	return abs(this->bottomLeft.x - this->topRight.x);
+}
+
+glm::vec4 gso::SceneObject::get_position()
 {
 	return this->pos_;
 }
 
-glm::vec3 gso::SceneObject::get_top_right()
+glm::mat4 gso::SceneObject::get_model()
 {
-	return this->topRight;
+	return this->Model;
 }
 
-glm::vec3 gso::SceneObject::get_bottom_left()
+float gso::SceneObject::get_ratio()
 {
-	return this->bottomLeft;
+	return this->get_width() / this->get_height();
+}
+
+float gso::SceneObject::get_original_ratio()
+{
+	float w = abs(this->obj_bottom_left_.x - this->obj_top_right_.x);
+	float h = abs(this->obj_bottom_left_.y - this->obj_top_right_.y);
+	return w / h;
 }
 
 bool gso::SceneObject::is_colliding(glm::vec3 pos)
@@ -88,7 +118,7 @@ bool gso::SceneObject::is_colliding(glm::vec3 pos)
 	return false;
 }
 
-bool gso::SceneObject::is_colliding(SceneObject other)
+bool gso::SceneObject::is_colliding(gso::SceneObject other)
 {
 	bool xcol = (this->bottomLeft.x <= other.topRight.x 
 				&& this->topRight.x >= other.bottomLeft.x);
@@ -148,16 +178,18 @@ void gso::SceneObject::move(float distance)
 	this->transform(tVector, sVector, 0);
 }
 
-void gso::SceneObject::transform(vec3 tVector, vec3 sVector, GLfloat angle)
+
+
+void gso::SceneObject::transform(glm::vec3 tVector, glm::vec3 sVector, GLfloat angle)
 {
 
-	vec3 rotationVector = vec3(0.0, 0.0, 1.0); // Always rotate along z axis
+	glm::vec3 rotationVector = glm::vec3(0.0, 0.0, 1.0); // Always rotate along z axis
 	sVector.z = 1.0; // Leave z dimension untouched
 	tVector.z = 0.0; // Can't move along z axis
 
-	mat4 T = translate(mat4(1.0), tVector);
-	mat4 S = scale(mat4(1.0), sVector);
-	mat4 R = rotate(mat4(1.0), angle, rotationVector);
+	glm::mat4 T = translate(glm::mat4(1.0), tVector);
+	glm::mat4 S = scale(glm::mat4(1.0), sVector);
+	glm::mat4 R = rotate(glm::mat4(1.0), angle, rotationVector);
 
 	this->Model = this->Model * T * R * S;
 
@@ -169,5 +201,5 @@ void gso::SceneObject::render(unsigned int* MatMod)
 	// Create object's uniform matrix
 	glUniformMatrix4fv(*MatMod, 1, GL_FALSE, value_ptr(this->Model));
 	glBindVertexArray(this->VertexArrayObject);
-	glDrawArrays(GL_TRIANGLE_FAN, 0, this->nVertices);
+	glDrawArrays(this->render_mode_, 0, this->nVertices);
 }

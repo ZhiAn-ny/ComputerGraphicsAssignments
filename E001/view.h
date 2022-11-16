@@ -23,9 +23,10 @@ namespace gview {
 		static void time_refresh(int value);
 		static void reshape(int w, int h);
 		static void keyboard_handler(unsigned char key, int x, int y);
+		static void mouse_handler(int button, int state, int x, int y);
 
 		void init_window(const char* name);
-		void create_scene_objects();
+		void create_dragon();
 		void set_first_scene();
 
 	public:
@@ -33,7 +34,6 @@ namespace gview {
 		~GameView();
 
 		void init_view();
-		gscene::Scene* get_obj_layer_scene();
 
 	};
 

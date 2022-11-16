@@ -18,20 +18,12 @@ namespace gso {
 
 	class SceneObject {
 	private:
-		std::string name_ = {};
-
-		GLuint VertexArrayObject;
-		GLuint VertexBufferObject_Geometry;
-		GLuint VertexBufferObject_Colors;
-
-		std::vector<glm::vec3> vertices_ = {};
-		std::vector<glm::vec4> colors_ = {};
-
 		int nTriangles = default_triangle_number;
 		int nVertices = 0;
 
 		glm::vec4 pos_ = {};
 		gso::Direction dir_ = gso::Direction::kUp;
+		gso::Direction basc_dir_ = {};
 
 		// Bottom left corner in the object's coordinates.
 		glm::vec4 obj_bottom_left_ = {};
@@ -41,8 +33,7 @@ namespace gso {
 		glm::vec4 bottomLeft = {};
 		glm::vec4 topRight = {};
 
-		// Model matrix: translation * rotation * scale
-		glm::mat4 Model = glm::mat4(1.0);
+		GLenum render_mode_ = GL_TRIANGLE_FAN;
 
 
 		void update_object_corners();
@@ -51,6 +42,23 @@ namespace gso {
 		void createVertexArray();
 		void bindVerticesGeometry();
 		void bindVerticesColor();
+
+		float get_height();
+
+		float get_width();
+
+	protected:
+		std::string name_ = {};
+
+		GLuint VertexArrayObject;
+		GLuint VertexBufferObject_Geometry;
+		GLuint VertexBufferObject_Colors;
+
+		// Model matrix: translation * rotation * scale
+		glm::mat4 Model = glm::mat4(1.0);
+
+		std::vector<glm::vec3> vertices_ = {};
+		std::vector<glm::vec4> colors_ = {};
 		
 	public:
 		SceneObject();
@@ -65,17 +73,23 @@ namespace gso {
 
 		void set_color(glm::vec4 center, glm::vec4 others);
 
-		gso::Direction get_direction();
+		void set_render_mode(GLenum mode);
 
-		glm::vec3 get_position();
+		void set_basculation_direction(gso::Direction dir);
 
-		glm::vec3 get_top_right();
+		gso::Direction get_basculation_direction();
 
-		glm::vec3 get_bottom_left();
+		glm::vec4 get_position();
+
+		glm::mat4 get_model();
+
+		float get_ratio();
+
+		float get_original_ratio();
 
 		bool is_colliding(glm::vec3 pos);
 
-		bool is_colliding(SceneObject other);
+		bool is_colliding(gso::SceneObject other);
 
 		void bind();
 
@@ -83,7 +97,7 @@ namespace gso {
 
 		void move(float distance);
 
-		void transform(vec3 tVector, vec3 sVector, GLfloat angle);
+		void transform(glm::vec3 tVector, glm::vec3 sVector, GLfloat angle);
 
 		void render(unsigned int* MatMod);
 

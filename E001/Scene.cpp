@@ -30,6 +30,23 @@ int gscene::Scene::add_object(gso::SceneObject* fig)
 	return -1;
 }
 
+void gscene::Scene::add_object_at(gso::SceneObject* fig, int index)
+{
+	fig->bind();
+
+	this->scene_objs_.insert(this->scene_objs_.begin() + index, *fig);
+}
+
+void gscene::Scene::remove_object(std::string name)
+{
+	for (int i = 0; i < this->scene_objs_.size(); i++) {
+		if (this->scene_objs_[i].get_name()._Equal(name)) {
+			this->scene_objs_.erase(this->scene_objs_.begin() + i);
+			return;
+		}
+	}
+}
+
 gso::SceneObject* gscene::Scene::get_object(std::string name)
 {
 	for (int i = 0; i < this->scene_objs_.size(); i++)
@@ -42,17 +59,27 @@ gso::SceneObject* gscene::Scene::get_object(std::string name)
 	return NULL;
 }
 
+std::vector<gso::SceneObject*> gscene::Scene::get_starts_with(std::string name)
+{
+	std::vector<gso::SceneObject*> list = {};
+
+	for (int i = 0; i < this->scene_objs_.size(); i++) {
+		if (this->scene_objs_[i].get_name().rfind(name, 0) == 0)
+			list.push_back(&this->scene_objs_[i]);
+	}
+
+	return list;
+}
+
 void gscene::Scene::draw_scene(unsigned int* MatMod, unsigned int* MatProj, glm::mat4* Projection)
 {
-	vector<gso::SceneObject> Scena = this->scene_objs_;
 	int length = this->scene_objs_.size();
-	int index;
 
 	glUniformMatrix4fv(*MatProj, 1, GL_FALSE, value_ptr(*Projection));
 
-	for (index = 0; index < length; index++)
+	for (int i = 0; i < length; i++)
 	{
-		Scena[index].render(MatMod);
+		this->scene_objs_[i].render(MatMod);
 
 		if (this->wf_mode_)
 		{
