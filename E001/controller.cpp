@@ -1,7 +1,5 @@
 #include "controller.h"
 
-RECT window_ = {};
-
 gctrl::GameController::GameController()
 {
 }
@@ -13,7 +11,8 @@ gctrl::GameController::~GameController()
 bool gctrl::GameController::is_outside_window(gso::SceneObject* fig)
 {
 	glm::vec4 pos = fig->get_position();
-	if (pos.x < 0 || pos.x > window_.right || pos.y < 0 || pos.y > window_.bottom)
+	if (pos.x < 0 || pos.x > this->window.right 
+		|| pos.y < 0 || pos.y > this->window.bottom)
 		return true;
 
 	return false;
@@ -31,8 +30,7 @@ void gctrl::GameController::move_dragon(gso::Direction dir)
 
 void gctrl::GameController::fire()
 {
-	gsf::ShapeFactory shf;
-	gso::SceneObject shape = shf.get_circle(0.0, 0.0, 1, 1);
+	gso::SceneObject shape = this->shape_factory.get_circle(0.0, 0.0, 1, 1);
 	gso::SceneObject head = *this->scene_->get_object("head");
 	glm::vec4 pos = head.get_position();
 
@@ -64,6 +62,11 @@ void gctrl::GameController::action(GameAction action)
 	}
 }
 
+void gctrl::GameController::set_window(RECT window)
+{
+	this->window = window;
+}
+
 void gctrl::GameController::game_loop()
 {
 	std::vector<gso::SceneObject*> fireballs = this->scene_->get_starts_with("circle");
@@ -73,9 +76,12 @@ void gctrl::GameController::game_loop()
 		fireballs[i]->move(2);
 	}
 
-	window_.right = this->window.right;
-	window_.bottom = this->window.bottom;
-	it = remove_if(fireballs.begin(), fireballs.end(), this->is_outside_window);
+	for (int i = 0; i < fireballs.size(); i++) {
 
+		if (this->is_outside_window(fireballs[i])) {
+ 			this->scene_->remove_object(fireballs[i]->get_name());
+		}
+	}
+	
 
 }

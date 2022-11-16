@@ -33,33 +33,6 @@ void gview::GameView::time_refresh(int value)
 {
 	float angolo = 0.0;
 	float trasFactor;
-	//std::string moving = "butterfly_0";
-
-	//std::string bottom = "butterfly_1";
-	//std::string top = "butterfly_2";
-
-	//gso::SceneObject* shape = obj_layer.get_object(moving);
-	//gso::SceneObject* bshape = obj_layer.get_object(bottom);
-	//gso::SceneObject* tshape = obj_layer.get_object(top);
-
-	//gso::Direction dir = shape->get_direction();
-	//glm::vec3 pos = shape->get_position();
-
-	//// Change direction
-	//if (shape->is_colliding(*bshape))
-	//	shape->change_direction(gso::Direction::kUp);
-	//if (shape->is_colliding(*tshape))
-	//	shape->change_direction(gso::Direction::kDown);
-
-	//shape->move(0.1);
-
-	//gso::SceneObject* wing = obj_layer.get_object("wing");
-
-	//float ratio = wing->get_width() / wing->get_height()
-
-	//
-
-	//wing->transform(glm::vec3(0.0), glm::vec3(1.0, 1.1, 1.0), 0.0);
 
 	controller.game_loop();
 
@@ -67,7 +40,7 @@ void gview::GameView::time_refresh(int value)
 	glutPostRedisplay();
 }
 
-void gview::GameView::reshape(int w, int h)
+void gview::GameView::reshape(int width, int height)
 {
 	// World ratio
 	float ratio = (float)(window.right) / (float)(window.bottom);
@@ -75,16 +48,15 @@ void gview::GameView::reshape(int w, int h)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	int height = h * ratio;
-	int width = (w - height) / 2;
+	int w = height * ratio;
+	int left = (width - w) / 2;
 
 	window_update.right = width;
 	window_update.bottom = height;
 
-	controller.window.right = width;
-	controller.window.bottom = height;
+	controller.set_window(window_update);
 
-	glViewport(width, 0, height, h);
+	glViewport(left, 0, w, height);
 	gluOrtho2D(0, window.right, window.bottom, 0);
 	glMatrixMode(GL_MODELVIEW);
 
@@ -118,8 +90,9 @@ void gview::GameView::init_window(const char* name)
 	window.right = SCREEN_WIDTH / 3 * 2;
 	window.bottom = SCREEN_HEIGHT / 6 * 5;
 
-	controller.window.right = window.right;
-	controller.window.bottom = window.bottom;
+	window_update = window;
+
+	controller.set_window(window_update);
 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowSize(window.right, window.bottom);
@@ -191,6 +164,7 @@ void gview::GameView::init_view()
 
 	controller = gctrl::GameController();
 	controller.init_game(&obj_layer);
+	controller.set_window(window);
 
 	glutDisplayFunc(this->draw_scene);
 	glutTimerFunc(50, this->time_refresh, 0);

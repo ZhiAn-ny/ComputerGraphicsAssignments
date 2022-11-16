@@ -29,7 +29,7 @@ namespace gscene {
 
 		void add_object_at(gso::SceneObject* fig, int index);
 
-		void remove_first();
+		void remove_object(std::string name);
 
 		gso::SceneObject* get_object(std::string name);
 

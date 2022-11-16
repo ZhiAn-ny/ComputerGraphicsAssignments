@@ -87,16 +87,6 @@ float gso::HermiteShape::DX(int i, float* t)
 
 	return dx(i, t, this->tbc_[i].x, this->tbc_[i].y, this->tbc_[i].z);
 
-
-
-	//if (this->derivates_[i].x == 0) {
-	//	if (this->tbc_.size() == this->derivates_.size()) {
-	//		return dx(i, t, T, B, C);
-	//	}
-	//	return dx(i, t, T, B, C);
-	//}
-
-	//return this->derivates_[i].x;
 }
 
 float gso::HermiteShape::DY(int i, float* t)

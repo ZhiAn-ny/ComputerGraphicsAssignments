@@ -37,9 +37,14 @@ void gscene::Scene::add_object_at(gso::SceneObject* fig, int index)
 	this->scene_objs_.insert(this->scene_objs_.begin() + index, *fig);
 }
 
-void gscene::Scene::remove_first()
+void gscene::Scene::remove_object(std::string name)
 {
-	this->scene_objs_.erase(this->scene_objs_.begin());
+	for (int i = 0; i < this->scene_objs_.size(); i++) {
+		if (this->scene_objs_[i].get_name()._Equal(name)) {
+			this->scene_objs_.erase(this->scene_objs_.begin() + i);
+			return;
+		}
+	}
 }
 
 gso::SceneObject* gscene::Scene::get_object(std::string name)

@@ -15,16 +15,17 @@ namespace gctrl {
 
 	class GameController {
 	private:
+		RECT window = {};
+		gsf::ShapeFactory shape_factory = gsf::ShapeFactory();
 		gscene::Scene* scene_ = {};
 
-		static bool is_outside_window(gso::SceneObject* fig);
+		bool is_outside_window(gso::SceneObject* fig);
 
 		void move_dragon(gso::Direction dir);
 
 		void fire();
 
 	public:
-		RECT window = {};
 
 		GameController();
 		~GameController();
@@ -33,7 +34,8 @@ namespace gctrl {
 
 		void action(GameAction action);
 
-		// TODO:
+		void set_window(RECT window);
+
 		void game_loop();
 
 	};
