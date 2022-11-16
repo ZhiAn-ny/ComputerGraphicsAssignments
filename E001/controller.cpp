@@ -61,6 +61,26 @@ void gctrl::GameController::update_fireballs()
 	}
 }
 
+void gctrl::GameController::update_butterflies()
+{
+	std::vector<gso::SceneObject*> butterflies = this->scene_->get_starts_with("butterfly");
+	float scale_factor;
+
+	for (int i = 0; i < butterflies.size(); i++) {
+		if (butterflies[i]->get_ratio() > butterflies[i]->get_original_ratio() * 1.1) {
+			butterflies[i]->set_basculation_direction(gso::Direction::kLeft);
+		}
+		else if (butterflies[i]->get_ratio() < butterflies[i]->get_original_ratio() / 2) {
+			butterflies[i]->set_basculation_direction(gso::Direction::kRight);
+		}
+
+		scale_factor = (butterflies[i]->get_basculation_direction() 
+						== gso::Direction::kLeft) ? 0.8 : 1.2;
+
+		butterflies[i]->transform(glm::vec3(0), glm::vec3(scale_factor, 1, 1), 0);
+	}
+}
+
 void gctrl::GameController::add_enemy(glm::vec2 pos)
 {
 	gso::SceneObject shape = this->shape_factory.get_butterfly(0, 0, 1, 1);
@@ -68,6 +88,7 @@ void gctrl::GameController::add_enemy(glm::vec2 pos)
 	shape.transform(glm::vec3(pos.x, this->window.bottom - pos.y, 0.0),
 		glm::vec3(50), 0);
 	shape.set_color(color::red, color::transparent);
+	shape.set_basculation_direction(gso::Direction::kLeft);
 	shape.change_direction(gso::Direction::kRight);
 
 	this->scene_->add_object(&shape);
@@ -118,6 +139,8 @@ void gctrl::GameController::set_window(RECT window)
 void gctrl::GameController::game_loop()
 {
 	this->update_fireballs();
+	
+	this->update_butterflies();
 	
 	this->check_collisions();
 

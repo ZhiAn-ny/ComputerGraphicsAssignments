@@ -142,13 +142,6 @@ void gview::GameView::create_dragon()
 			glm::vec3(7), 0);
 		obj_layer.add_object(&shape);
 	}
-
-	//shape = shf.get_butterfly(0.0, 0.0, 1, 1);
-	//shape.transform(glm::vec3(window.right - 100.0, window.bottom - 200.0, 0.0),
-	//	glm::vec3(75), 0);
-	//shape.set_color(color::red, color::transparent);
-	//obj_layer.add_object(&shape);
-
 }
 
 void gview::GameView::set_first_scene()

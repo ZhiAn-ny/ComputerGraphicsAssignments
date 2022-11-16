@@ -67,6 +67,16 @@ void gso::SceneObject::set_render_mode(GLenum mode)
 	this->render_mode_ = mode;
 }
 
+void gso::SceneObject::set_basculation_direction(gso::Direction dir)
+{
+	this->basc_dir_ = dir;
+}
+
+gso::Direction gso::SceneObject::get_basculation_direction()
+{
+	return this->basc_dir_;
+}
+
 float gso::SceneObject::get_height()
 {
 	return abs(this->bottomLeft.y - this->topRight.y);
@@ -85,6 +95,11 @@ glm::vec4 gso::SceneObject::get_position()
 glm::mat4 gso::SceneObject::get_model()
 {
 	return this->Model;
+}
+
+float gso::SceneObject::get_ratio()
+{
+	return this->get_width() / this->get_height();
 }
 
 float gso::SceneObject::get_original_ratio()

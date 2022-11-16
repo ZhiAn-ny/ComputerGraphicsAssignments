@@ -28,6 +28,8 @@ namespace gctrl {
 
 		void update_fireballs();
 
+		void update_butterflies();
+
 		void add_enemy(glm::vec2 pos);
 
 		void fire();

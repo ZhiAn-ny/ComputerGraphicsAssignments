@@ -23,6 +23,7 @@ namespace gso {
 
 		glm::vec4 pos_ = {};
 		gso::Direction dir_ = gso::Direction::kUp;
+		gso::Direction basc_dir_ = {};
 
 		// Bottom left corner in the object's coordinates.
 		glm::vec4 obj_bottom_left_ = {};
@@ -41,6 +42,10 @@ namespace gso {
 		void createVertexArray();
 		void bindVerticesGeometry();
 		void bindVerticesColor();
+
+		float get_height();
+
+		float get_width();
 
 	protected:
 		std::string name_ = {};
@@ -70,13 +75,15 @@ namespace gso {
 
 		void set_render_mode(GLenum mode);
 
-		float get_height();
+		void set_basculation_direction(gso::Direction dir);
 
-		float get_width();
+		gso::Direction get_basculation_direction();
 
 		glm::vec4 get_position();
 
 		glm::mat4 get_model();
+
+		float get_ratio();
 
 		float get_original_ratio();
 
