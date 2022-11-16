@@ -65,20 +65,29 @@ void gview::GameView::reshape(int width, int height)
 
 void gview::GameView::keyboard_handler(unsigned char key, int x, int y)
 {
+	glm::vec2 null_position = glm::vec2(0);
 	switch (key) {
 	case ' ':
-		controller.action(gctrl::GameAction::kFire);
+		controller.action(gctrl::GameAction::kFire, null_position);
 		break;
 	case 'w':
 	case 'W':
-		controller.action(gctrl::GameAction::kMoveUp);
+		controller.action(gctrl::GameAction::kMoveDragonUp, null_position);
 		break;
 	case 's':
 	case 'S':
-		controller.action(gctrl::GameAction::kMoveDown);
+		controller.action(gctrl::GameAction::kMoveDragonDown, null_position);
 		break;
 	}
 	glutPostRedisplay();
+}
+
+void gview::GameView::mouse_handler(int button, int state, int x, int y)
+{
+	if (state == GLUT_DOWN) {
+		controller.action(gctrl::GameAction::kAddEnemy, glm::vec2(x,y));
+
+	}
 }
 
 void gview::GameView::init_window(const char* name)
@@ -100,7 +109,7 @@ void gview::GameView::init_window(const char* name)
 	glutCreateWindow((const char*)name);
 }
 
-void gview::GameView::create_scene_objects()
+void gview::GameView::create_dragon()
 {
 	gsf::ShapeFactory shf;
 	gso::SceneObject shape;
@@ -134,17 +143,17 @@ void gview::GameView::create_scene_objects()
 		obj_layer.add_object(&shape);
 	}
 
-	shape = shf.get_butterfly(0.0, 0.0, 1, 1);
-	shape.transform(glm::vec3(window.right - 100.0, window.bottom - 200.0, 0.0),
-		glm::vec3(75), 0);
-	shape.set_color(color::red, color::transparent);
-	obj_layer.add_object(&shape);
+	//shape = shf.get_butterfly(0.0, 0.0, 1, 1);
+	//shape.transform(glm::vec3(window.right - 100.0, window.bottom - 200.0, 0.0),
+	//	glm::vec3(75), 0);
+	//shape.set_color(color::red, color::transparent);
+	//obj_layer.add_object(&shape);
 
 }
 
 void gview::GameView::set_first_scene()
 {
-	this->create_scene_objects();
+	this->create_dragon();
 
 	// Pass uniform variables to the shader
 	// Coordinates are specified in relation to the usage domain
@@ -170,8 +179,7 @@ void gview::GameView::init_view()
 	glutTimerFunc(50, this->time_refresh, 0);
 	glutReshapeFunc(this->reshape);
 
-	// Handle mouse inputs
-	//mouse.assignRefScene(&scene);
+	glutMouseFunc(this->mouse_handler);
 	glutKeyboardFunc(this->keyboard_handler);
 
 	glewExperimental = GL_TRUE;

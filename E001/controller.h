@@ -9,8 +9,9 @@ namespace gctrl {
 
 	enum class GameAction {
 		kFire,
-		kMoveUp,
-		kMoveDown
+		kMoveDragonUp,
+		kMoveDragonDown,
+		kAddEnemy
 	};
 
 	class GameController {
@@ -21,7 +22,13 @@ namespace gctrl {
 
 		bool is_outside_window(gso::SceneObject* fig);
 
+		void check_collisions();
+
 		void move_dragon(gso::Direction dir);
+
+		void update_fireballs();
+
+		void add_enemy(glm::vec2 pos);
 
 		void fire();
 
@@ -32,7 +39,7 @@ namespace gctrl {
 
 		void init_game(gscene::Scene* scene);
 
-		void action(GameAction action);
+		void action(GameAction action, glm::vec2 pos);
 
 		void set_window(RECT window);
 

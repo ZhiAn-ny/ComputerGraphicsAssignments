@@ -18,6 +18,23 @@ bool gctrl::GameController::is_outside_window(gso::SceneObject* fig)
 	return false;
 }
 
+void gctrl::GameController::check_collisions()
+{
+	std::vector<gso::SceneObject*> fireballs = this->scene_->get_starts_with("circle");
+	std::vector<gso::SceneObject*> targets = this->scene_->get_starts_with("butterfly");
+
+	for (int i = 0; i < targets.size(); i++) {
+		for (int j = 0; j < fireballs.size(); j++) {
+			if (fireballs[j]->is_colliding(*targets[i])) {
+				this->scene_->remove_object(targets[i]->get_name());
+				this->scene_->remove_object(fireballs[j]->get_name());
+
+				j = fireballs.size();
+			}
+		}
+	}
+}
+
 void gctrl::GameController::move_dragon(gso::Direction dir)
 {
 	std::vector<std::string> parts = { "head", "body", "tail", "wing" };
@@ -26,6 +43,34 @@ void gctrl::GameController::move_dragon(gso::Direction dir)
 		part->change_direction(dir);
 		part->move(0.5);
 	}
+}
+
+void gctrl::GameController::update_fireballs()
+{
+	std::vector<gso::SceneObject*> fireballs = this->scene_->get_starts_with("circle");
+
+	for (int i = 0; i < fireballs.size(); i++) {
+		fireballs[i]->move(2);
+	}
+
+	for (int i = 0; i < fireballs.size(); i++) {
+
+		if (this->is_outside_window(fireballs[i])) {
+			this->scene_->remove_object(fireballs[i]->get_name());
+		}
+	}
+}
+
+void gctrl::GameController::add_enemy(glm::vec2 pos)
+{
+	gso::SceneObject shape = this->shape_factory.get_butterfly(0, 0, 1, 1);
+
+	shape.transform(glm::vec3(pos.x, this->window.bottom - pos.y, 0.0),
+		glm::vec3(50), 0);
+	shape.set_color(color::red, color::transparent);
+	shape.change_direction(gso::Direction::kRight);
+
+	this->scene_->add_object(&shape);
 }
 
 void gctrl::GameController::fire()
@@ -47,17 +92,20 @@ void gctrl::GameController::init_game(gscene::Scene* scene)
 	this->scene_ = scene;
 }
 
-void gctrl::GameController::action(GameAction action)
+void gctrl::GameController::action(GameAction action, glm::vec2 pos)
 {
 	switch (action) {
 	case GameAction::kFire:
 		this->fire();
 		break;
-	case GameAction::kMoveUp:
+	case GameAction::kMoveDragonUp:
 		this->move_dragon(gso::Direction::kUp);
 		break;
-	case GameAction::kMoveDown:
+	case GameAction::kMoveDragonDown:
 		this->move_dragon(gso::Direction::kDown);
+		break;
+	case GameAction::kAddEnemy:
+		this->add_enemy(pos);
 		break;
 	}
 }
@@ -69,19 +117,8 @@ void gctrl::GameController::set_window(RECT window)
 
 void gctrl::GameController::game_loop()
 {
-	std::vector<gso::SceneObject*> fireballs = this->scene_->get_starts_with("circle");
-	std::vector<gso::SceneObject*>::iterator it;
-
-	for (int i = 0; i < fireballs.size(); i++) {
-		fireballs[i]->move(2);
-	}
-
-	for (int i = 0; i < fireballs.size(); i++) {
-
-		if (this->is_outside_window(fireballs[i])) {
- 			this->scene_->remove_object(fireballs[i]->get_name());
-		}
-	}
+	this->update_fireballs();
 	
+	this->check_collisions();
 
 }
