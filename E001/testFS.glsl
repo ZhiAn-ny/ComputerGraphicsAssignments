@@ -4,8 +4,8 @@ uniform float time;
 uniform vec2 resolution;
 uniform unsigned int isBackground;
 
-const vec3 water_base_color = vec3(0.2, 0.1, 1.0);
-vec3 color = vec3(1.0);
+const vec3 water_base_color = vec3(0.2, 0.3, 0.37);
+vec3 color = vec3(0.5, 0.65, 0.75);
 
 // Interpolated values from the vertex shaders
 in vec4 ourColor;
@@ -67,7 +67,6 @@ void main()
 	}
 
 	// Refer to bottom half of the window
-	if (ndc.y > -1 && ndc.y < 0) {
 		v = calculate_v(ndc);
 
 		if (v > 0.0) {
@@ -81,10 +80,4 @@ void main()
 
 		FragColor = vec4(color, 1.0);
 
-	} else { // !(ndc.y > -1 && ndc.y < 0)
-
-		// Referring to upper half of the window
-		// Assign to each fragment the interpolated color
-		FragColor = ourColor;
-	}
 }
