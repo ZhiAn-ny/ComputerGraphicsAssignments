@@ -27,6 +27,7 @@ namespace gview {
 
 		void init_window(const char* name);
 		void create_dragon();
+		void create_background();
 		void set_first_scene();
 
 	public:

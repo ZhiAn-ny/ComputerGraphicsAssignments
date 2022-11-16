@@ -2,6 +2,7 @@
 
 uniform float time;
 uniform vec2 resolution;
+uniform bool isBackground;
 
 const vec3 water_base_color = vec3(0.2, 0.1, 1.0);
 vec3 color = vec3(1.0);

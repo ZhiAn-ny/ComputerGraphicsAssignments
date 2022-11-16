@@ -5,10 +5,11 @@
 RECT window = {};
 RECT window_update = {};
 
-static unsigned int MatMod, MatProj, loctime, locres;
-mat4 Projection;
+static unsigned int MatMod, MatProj, loctime, locres, isBackground;
+glm::mat4 Projection;
 
 gscene::Scene obj_layer;
+gso::SceneObject bg = gso::SceneObject("bg");
 //Mouse mouse;
 
 /******************************************************************************/
@@ -26,6 +27,10 @@ void gview::GameView::draw_scene(void)
 	glUniform1f(loctime, glutGet(GLUT_ELAPSED_TIME) / 1000.0);
 	glUniform2f(locres, window_update.right, window_update.bottom);
 
+	glUniform1ui(isBackground, 1);
+	bg.render(&MatMod);
+
+	glUniform1ui(isBackground, 0);
 	obj_layer.draw_scene(&MatMod, &MatProj, &Projection);
 
 	glutSwapBuffers();
@@ -88,7 +93,6 @@ void gview::GameView::mouse_handler(int button, int state, int x, int y)
 {
 	if (state == GLUT_DOWN) {
 		controller.action(gctrl::GameAction::kAddEnemy, glm::vec2(x,y));
-
 	}
 }
 
@@ -146,9 +150,29 @@ void gview::GameView::create_dragon()
 	}
 }
 
+void gview::GameView::create_background()
+{
+	bg.add_vertex(glm::vec3(0), color::white);
+	bg.add_vertex(glm::vec3(-1, 1, 0), color::white);
+	bg.add_vertex(glm::vec3(1, 1, 0), color::white);
+	bg.add_vertex(glm::vec3(1, -1, 0), color::white);
+	bg.add_vertex(glm::vec3(-1, -1, 0), color::white);
+	bg.add_vertex(glm::vec3(-1, 1, 0), color::white);
+
+	bg.transform(
+		glm::vec3(window.right / 2, window.bottom / 2, 0), 
+		glm::vec3(window.right, window.bottom, 1), 
+		0
+	);
+
+	bg.bind();
+}
+
 void gview::GameView::set_first_scene()
 {
 	this->create_dragon();
+	
+	this->create_background();
 
 	// Pass uniform variables to the shader
 	// Coordinates are specified in relation to the usage domain
@@ -158,7 +182,7 @@ void gview::GameView::set_first_scene()
 	MatMod = glGetUniformLocation(obj_layer.get_id(), "Model");
 	loctime = glGetUniformLocation(obj_layer.get_id(), "time");
 	locres = glGetUniformLocation(obj_layer.get_id(), "resolution");
-
+	isBackground = glGetUniformLocation(obj_layer.get_id(), "isBackground");
 }
 
 void gview::GameView::init_view()
