@@ -72,11 +72,11 @@ void main()
 		v = calculate_v(ndc);
 
 		if (v > 0.0) {
-			vec3 water_color = water_base_color * v;
+			//vec3 water_color = water_base_color * v;
 			color = mix(
 				vec3(ourColor.r, ourColor.g, ourColor.b),
-				water_color,
-				0.8
+				water_base_color,
+				v
 			);
 		}
 

@@ -57,7 +57,7 @@ void gso::SceneObject::add_vertex(glm::vec3 pos, glm::vec4 color)
 void gso::SceneObject::set_color(glm::vec4 center, glm::vec4 others)
 {
 	this->colors_[0] = center;
-	for (int i = 1; i < this->colors_.size() - 1; i++) {
+	for (int i = 1; i < this->colors_.size(); i++) {
 		this->colors_[i] = others;
 	}
 }
