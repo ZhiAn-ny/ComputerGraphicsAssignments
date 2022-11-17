@@ -30,7 +30,7 @@ vec2 convert_to_ndc()
 	);
 }
 
-float calculate_v(vec2 ndc)
+float calculate_alpha(vec2 ndc)
 {
 	// Build frequency components of the sinusoidal noise
 	float n0 = noise(ndc.x * 3.18, 0.3);
@@ -41,26 +41,26 @@ float calculate_v(vec2 ndc)
 
 	// Determine color based on distance from bottom
 	if (ndc.y < -0.8 - n4)
-		return 0.1; // 1st from bottom
+		return 1.0; // 1st from bottom
 
 	if (ndc.y < -0.6 - n3)
 		return 0.8; // 2nd from bottom
 
 	if (ndc.y < -0.4 - n2)
-		return 0.4; // 3rd from bottom
+		return 0.6; // 3rd from bottom
 
 	if (ndc.y < -0.2 - n1)
-		return 0.6; // 2nd from top
+		return 0.4; // 2nd from top
 
 	if (ndc.y < -n0)
-		return 0.8; // 1st from top
+		return 0.2; // 1st from top
 
 	return 0.0; //bg upper (lightest)
 }
 
 void main()
 {
-	float v = 0.0;
+	float alpha = 0.0;
 	vec2 ndc = convert_to_ndc();
 
 	if (isBackground == 0) {
@@ -69,14 +69,13 @@ void main()
 	}
 
 	// Render background
-		v = calculate_v(ndc);
+		alpha = calculate_alpha(ndc);
 
-		if (v > 0.0) {
-			//vec3 water_color = water_base_color * v;
+		if (alpha > 0.0) {
 			color = mix(
 				vec3(ourColor.r, ourColor.g, ourColor.b),
 				water_base_color,
-				v
+				alpha
 			);
 		}
 
