@@ -11,8 +11,8 @@ gctrl::GameController::~GameController()
 bool gctrl::GameController::is_outside_window(gso::SceneObject* fig)
 {
 	glm::vec4 pos = fig->get_position();
-	if (pos.x < 0 || pos.x > this->window.right 
-		|| pos.y < 0 || pos.y > this->window.bottom)
+	if (pos.x < 0 || pos.x > this->window_.right 
+		|| pos.y < 0 || pos.y > this->window_.bottom)
 		return true;
 
 	return false;
@@ -26,8 +26,8 @@ void gctrl::GameController::check_collisions()
 	for (int i = 0; i < targets.size(); i++) {
 		for (int j = 0; j < fireballs.size(); j++) {
 			if (fireballs[j]->is_colliding(*targets[i])) {
-				this->scene_->remove_object(targets[i]->get_name());
-				this->scene_->remove_object(fireballs[j]->get_name());
+				this->logic_.kill(targets[i]->get_name());
+				this->logic_.kill(fireballs[j]->get_name());
 
 				j = fireballs.size();
 			}
@@ -37,11 +37,11 @@ void gctrl::GameController::check_collisions()
 
 void gctrl::GameController::move_dragon(gso::Direction dir)
 {
-	std::vector<std::string> parts = { "head", "body", "tail", "wing" };
-	for (int i = 0; i < parts.size(); i++) {
-		gso::SceneObject* part = this->scene_->get_object(parts[i]);
-		part->change_direction(dir);
-		part->move(0.5);
+	std::vector<gso::SceneObject*> dragon = this->scene_->get_starts_with(actors::dragon);
+
+	for (int i = 0; i < dragon.size(); i++) {
+		dragon[i]->change_direction(dir);
+		dragon[i]->move(0.5);
 	}
 }
 
@@ -85,7 +85,7 @@ void gctrl::GameController::add_enemy(glm::vec2 pos)
 {
 	gso::SceneObject shape = this->shape_factory.get_butterfly(0, 0, 1, 1);
 
-	shape.transform(glm::vec3(pos.x, this->window.bottom - pos.y, 0.0),
+	shape.transform(glm::vec3(pos.x, this->window_.bottom - pos.y, 0.0),
 		glm::vec3(50), 0);
 	shape.set_color(color::dark_blue_gray, color::transparent);
 	shape.set_basculation_direction(gso::Direction::kLeft);
@@ -97,7 +97,7 @@ void gctrl::GameController::add_enemy(glm::vec2 pos)
 void gctrl::GameController::fire()
 {
 	gso::SceneObject shape = this->shape_factory.get_circle(0.0, 0.0, 1, 1);
-	gso::SceneObject head = *this->scene_->get_object("head");
+	gso::SceneObject head = *this->scene_->get_object(actors::dragon + "_" + body::head);
 	glm::vec4 pos = head.get_position();
 
 	shape.transform(glm::vec3(pos.x, pos.y, 0.0),
@@ -111,6 +111,7 @@ void gctrl::GameController::fire()
 void gctrl::GameController::init_game(gscene::Scene* scene)
 {
 	this->scene_ = scene;
+	this->logic_.init_logic(scene);
 }
 
 void gctrl::GameController::action(GameAction action, glm::vec2 pos)
@@ -120,10 +121,12 @@ void gctrl::GameController::action(GameAction action, glm::vec2 pos)
 		this->fire();
 		break;
 	case GameAction::kMoveDragonUp:
-		this->move_dragon(gso::Direction::kUp);
+		if (this->logic_.can_move(actors::dragon, gso::Direction::kUp))
+			this->move_dragon(gso::Direction::kUp);
 		break;
 	case GameAction::kMoveDragonDown:
-		this->move_dragon(gso::Direction::kDown);
+		if (this->logic_.can_move(actors::dragon, gso::Direction::kDown))
+			this->move_dragon(gso::Direction::kDown);
 		break;
 	case GameAction::kAddEnemy:
 		this->add_enemy(pos);
@@ -133,7 +136,8 @@ void gctrl::GameController::action(GameAction action, glm::vec2 pos)
 
 void gctrl::GameController::set_window(RECT window)
 {
-	this->window = window;
+	this->window_ = window;
+	this->logic_.set_world_boundaries(window);
 }
 
 void gctrl::GameController::game_loop()

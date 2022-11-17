@@ -8,6 +8,7 @@
 #include "scene_object.h"
 #include "hermite.h"
 #include "colors.h"
+#include "actors.h"
 
 
 namespace gsf {

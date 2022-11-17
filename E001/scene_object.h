@@ -33,29 +33,28 @@ namespace gso {
 		glm::vec4 bottomLeft = {};
 		glm::vec4 topRight = {};
 
-		GLenum render_mode_ = GL_TRIANGLE_FAN;
-
-
-		void update_object_corners();
-		void update_position();
-
-		void createVertexArray();
-		void bindVerticesGeometry();
-		void bindVerticesColor();
-
-		float get_height();
-
-		float get_width();
-
-	protected:
-		std::string name_ = {};
-
 		GLuint VertexArrayObject;
 		GLuint VertexBufferObject_Geometry;
 		GLuint VertexBufferObject_Colors;
 
 		// Model matrix: translation * rotation * scale
 		glm::mat4 Model = glm::mat4(1.0);
+
+		GLenum render_mode_ = GL_TRIANGLE_FAN;
+
+
+		void createVertexArray();
+		void bindVerticesGeometry();
+		void bindVerticesColor();
+
+		void update_object_corners();
+		void update_position();
+
+		float get_height();
+		float get_width();
+
+	protected:
+		std::string name_ = {};
 
 		std::vector<glm::vec3> vertices_ = {};
 		std::vector<glm::vec4> colors_ = {};

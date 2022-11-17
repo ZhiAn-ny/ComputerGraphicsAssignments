@@ -2,8 +2,9 @@
 #define GAME_CONTROLLER_H_
 
 #include "Lib.h"
+#include "logic.h"
 #include "shape_factory.h"
-#include "scene.h"
+#include "actors.h"
 
 namespace gctrl {
 
@@ -16,7 +17,8 @@ namespace gctrl {
 
 	class GameController {
 	private:
-		RECT window = {};
+		glog::GameLogic logic_ = glog::GameLogic();
+		RECT window_ = {};
 		gsf::ShapeFactory shape_factory = gsf::ShapeFactory();
 		gscene::Scene* scene_ = {};
 

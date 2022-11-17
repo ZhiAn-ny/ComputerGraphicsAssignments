@@ -206,7 +206,7 @@ void gview::GameView::init_view()
 	glewExperimental = GL_TRUE;
 	glewInit();
 
-	obj_layer.set_shaders((char*)"vertexShader.glsl", (char*)"testFS.glsl");
+	obj_layer.set_shaders((char*)"vertexShader.glsl", (char*)"fragmentShader.glsl");
 	this->set_first_scene();
 
 	glEnable(GL_BLEND);

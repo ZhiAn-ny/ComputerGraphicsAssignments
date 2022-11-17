@@ -128,15 +128,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="fragmentShader.glsl" />
-    <None Include="testFS.glsl" />
     <None Include="packages.config" />
     <None Include="vertexShader.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="actors.h" />
     <ClInclude Include="colors.h" />
     <ClInclude Include="controller.h" />
     <ClInclude Include="hermite.h" />
     <ClInclude Include="Lib.h" />
+    <ClInclude Include="logic.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="scene_object.h" />
     <ClInclude Include="ShaderMaker.h" />
@@ -146,6 +147,7 @@
   <ItemGroup>
     <ClCompile Include="controller.cpp" />
     <ClCompile Include="hermite.cpp" />
+    <ClCompile Include="logic.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="scene_object.cpp" />

@@ -110,7 +110,7 @@ gso::SceneObject gsf::ShapeFactory::get_circle(float centerX, float centerY, flo
 
 gso::SceneObject gsf::ShapeFactory::get_dragon_wing()
 {
-	std::string name = "wing";
+	std::string name = actors::dragon + "_" + body::wing;
 
 	std::vector<glm::vec3> cps = {
 		glm::vec3(-1.0, -16.0, 0.0),
@@ -153,7 +153,7 @@ gso::SceneObject gsf::ShapeFactory::get_dragon_wing()
 
 gso::SceneObject gsf::ShapeFactory::get_dragon_head()
 {
-	std::string name = "head";
+	std::string name = actors::dragon + "_" + body::head;
 
 	std::vector<glm::vec3> cps = {
 		glm::vec3(-1.0, 2.5, 0.0),
@@ -201,7 +201,7 @@ gso::SceneObject gsf::ShapeFactory::get_dragon_head()
 
 gso::SceneObject gsf::ShapeFactory::get_dragon_tail()
 {
-	std::string name = "tail";
+	std::string name = actors::dragon + "_" + body::tail;
 
 	std::vector<glm::vec3> cps = {
 		glm::vec3(-18.0, 5.0, 0.0),
@@ -238,7 +238,7 @@ gso::SceneObject gsf::ShapeFactory::get_dragon_tail()
 
 gso::SceneObject gsf::ShapeFactory::get_dragon_body()
 {
-	std::string name = "body";
+	std::string name = actors::dragon + "_" + body::body;
 
 	std::vector<glm::vec3> cps = {
 		glm::vec3(-13.0, -2.0, 0.0),
