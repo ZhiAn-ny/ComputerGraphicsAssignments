@@ -5,9 +5,10 @@ uniform vec2 resolution;
 uniform unsigned int isBackground;
 
 // Background color
-vec3 color = vec3((243.0/255.0), (234.0/255.0), (191.0/255.0));
+//vec3 color = vec3((243.0/255.0), (234.0/255.0), (191.0/255.0)); // sand
+vec3 color = vec3((183.0/255.0), (206.0/255.0), (220.0/255.0)); // light_blue_gray
 
-const vec3 water_base_color = vec3((220.0/255.0), (152.0/255.0), (81.0/255.0));
+const vec3 water_base_color = vec3((31.0/255.0), (38.0/255.0), (64.0/255.0));
 
 // Interpolated values from the vertex shaders
 in vec4 ourColor;
@@ -41,19 +42,19 @@ float calculate_alpha(vec2 ndc)
 
 	// Determine color based on distance from bottom
 	if (ndc.y < -0.8 - n4)
-		return 1.0; // 1st from bottom
+		return 0.9; // 1st from bottom
 
 	if (ndc.y < -0.6 - n3)
-		return 0.8; // 2nd from bottom
+		return 0.7; // 2nd from bottom
 
 	if (ndc.y < -0.4 - n2)
-		return 0.6; // 3rd from bottom
+		return 0.5; // 3rd from bottom
 
 	if (ndc.y < -0.2 - n1)
-		return 0.4; // 2nd from top
+		return 0.3; // 2nd from top
 
 	if (ndc.y < -n0)
-		return 0.2; // 1st from top
+		return 0.1; // 1st from top
 
 	return 0.0; //bg upper (lightest)
 }
@@ -73,7 +74,7 @@ void main()
 
 		if (alpha > 0.0) {
 			color = mix(
-				vec3(ourColor.r, ourColor.g, ourColor.b),
+				vec3(color.r, color.g, color.b),
 				water_base_color,
 				alpha
 			);
