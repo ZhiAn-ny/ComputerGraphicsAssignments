@@ -125,25 +125,25 @@ void gview::GameView::create_dragon()
 		glm::vec2 dragon_center = glm::vec2(window.right / 5, window.bottom / 2);
 
 		shape = shf.get_dragon_tail();
-		shape.set_color(color::dark_dreen, color::medium_green);
+		shape.set_color(color::dark_crimson, color::crimson);
 		shape.transform(glm::vec3(dragon_center.x - 100, dragon_center.y - 40, 0.0),
 			glm::vec3(7), 0);
 		obj_layer.add_object(&shape);
 
 		shape = shf.get_dragon_body();
-		shape.set_color(color::dark_dreen, color::medium_green);
+		shape.set_color(color::dark_crimson, color::crimson);
 		shape.transform(glm::vec3(dragon_center.x + 80, dragon_center.y, 0.0),
 			glm::vec3(7), 0);
 		obj_layer.add_object(&shape);
 
 		shape = shf.get_dragon_wing();
-		shape.set_color(color::dark_dreen, color::dark_yellow);
+		shape.set_color(color::crimson, color::orange);
 		shape.transform(glm::vec3(dragon_center.x + 30, dragon_center.y + 130, 0.0),
 			glm::vec3(7), 0);
 		obj_layer.add_object(&shape);
 
 		shape = shf.get_dragon_head();
-		shape.set_color(color::medium_green, color::dark_yellow);
+		shape.set_color(color::crimson, color::orange);
 		shape.transform(glm::vec3(dragon_center.x + 177, dragon_center.y + 30, 0.0),
 			glm::vec3(7), 0);
 		obj_layer.add_object(&shape);

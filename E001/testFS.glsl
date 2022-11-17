@@ -4,8 +4,10 @@ uniform float time;
 uniform vec2 resolution;
 uniform unsigned int isBackground;
 
-const vec3 water_base_color = vec3(0.2, 0.3, 0.37);
-vec3 color = vec3(0.5, 0.65, 0.75);
+// Background color
+vec3 color = vec3((243.0/255.0), (234.0/255.0), (191.0/255.0));
+
+const vec3 water_base_color = vec3((220.0/255.0), (152.0/255.0), (81.0/255.0));
 
 // Interpolated values from the vertex shaders
 in vec4 ourColor;
@@ -39,21 +41,21 @@ float calculate_v(vec2 ndc)
 
 	// Determine color based on distance from bottom
 	if (ndc.y < -0.8 - n4)
-		return 1.0;
+		return 0.1; // 1st from bottom
 
 	if (ndc.y < -0.6 - n3)
-		return 0.8;
+		return 0.8; // 2nd from bottom
 
 	if (ndc.y < -0.4 - n2)
-		return 0.6;
+		return 0.4; // 3rd from bottom
 
 	if (ndc.y < -0.2 - n1)
-		return 0.4;
+		return 0.6; // 2nd from top
 
 	if (ndc.y < -n0)
-		return 0.3;
+		return 0.8; // 1st from top
 
-	return 0.0;
+	return 0.0; //bg upper (lightest)
 }
 
 void main()
@@ -66,7 +68,7 @@ void main()
 		return;
 	}
 
-	// Refer to bottom half of the window
+	// Render background
 		v = calculate_v(ndc);
 
 		if (v > 0.0) {

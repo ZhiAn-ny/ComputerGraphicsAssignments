@@ -87,7 +87,7 @@ void gctrl::GameController::add_enemy(glm::vec2 pos)
 
 	shape.transform(glm::vec3(pos.x, this->window.bottom - pos.y, 0.0),
 		glm::vec3(50), 0);
-	shape.set_color(color::red, color::transparent);
+	shape.set_color(color::dark_blue_gray, color::transparent);
 	shape.set_basculation_direction(gso::Direction::kLeft);
 	shape.change_direction(gso::Direction::kRight);
 
