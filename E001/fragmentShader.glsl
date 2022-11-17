@@ -16,9 +16,9 @@ out vec4 FragColor;
 
 float noise(float x, float amplitude)
 {
-	float n = 0.05 * sin(x * 8.0 + time) 
-			+ 0.005 * sin(x * 27.3 + 0.5 * time) 
-			+ 0.01 * sin(time);
+	float n = 0.25 * sin(x * 8.0 + time) // rotation clockwise
+			+ 0.035 * sin(x * 27.3 + 0.5 + time) // rotation anti-clockwise
+			- 0.3 * sin(1); // vertical pulse
 	return n * amplitude;
 }
 
