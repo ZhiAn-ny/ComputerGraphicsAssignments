@@ -45,6 +45,68 @@ void gctrl::GameController::move_dragon(gso::Direction dir)
 	}
 }
 
+void gctrl::GameController::flap_wing()
+{
+	static float s = 7;
+	gso::SceneObject* wing = this->scene_->get_object(actors::dragon + "_" + body::wing);
+
+	// Original model matrix
+	static glm::mat4 orig = glm::mat4(1);
+	static float orig_h;
+	static glm::vec3 pos;
+
+	if (orig == glm::mat4(1)) {
+		orig = wing->get_model();
+		orig_h = wing->get_height();
+		pos = wing->get_position();
+	}
+
+	glm::mat4 m = wing->get_model();;
+	float h = wing->get_height();
+
+
+	// current y scale factor.
+	float y = m.operator[](1).y;
+	float offset;
+
+	glm::mat4 T = glm::mat4(0);
+	glm::mat4 M = glm::mat4(1);
+	glm::mat4 S = glm::mat4(1);
+
+	switch (wing->get_basculation_direction())
+	{
+	case gso::Direction::kNone:
+		wing->set_basculation_direction(gso::Direction::kDown);
+		break;
+
+	case gso::Direction::kDown:
+		s = s - 0.7;
+		offset = (orig_h - orig_h / 7 * s) / 2;
+
+		T = translate(mat4(1), vec3(pos.x, pos.y-offset, 0));
+		S = scale(mat4(1), vec3(7, s, 7));
+		if (s < -7) wing->set_basculation_direction(gso::Direction::kUp);
+
+		break;
+		
+	case gso::Direction::kUp:
+		s = s + 0.7;
+		offset = (orig_h / 7 * s - orig_h) / 2;
+
+		T = translate(mat4(1), vec3(pos.x, pos.y+offset, 0));
+		S = scale(mat4(1), vec3(7, s, 7));
+		if (s > 7) wing->set_basculation_direction(gso::Direction::kDown);
+
+		break;
+	}
+
+
+	m = M * T * S;
+
+	wing->set_model(m);
+	wing->update_position();
+}
+
 void gctrl::GameController::update_fireballs()
 {
 	std::vector<gso::SceneObject*> fireballs = this->scene_->get_starts_with("circle");
@@ -142,6 +204,8 @@ void gctrl::GameController::set_window(RECT window)
 
 void gctrl::GameController::game_loop()
 {
+	this->flap_wing();
+
 	this->update_fireballs();
 	
 	this->update_butterflies();

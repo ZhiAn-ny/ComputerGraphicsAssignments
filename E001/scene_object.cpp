@@ -97,6 +97,11 @@ glm::mat4 gso::SceneObject::get_model()
 	return this->Model;
 }
 
+void gso::SceneObject::set_model(glm::mat4 model_matrix)
+{
+	this->Model = model_matrix;
+}
+
 float gso::SceneObject::get_ratio()
 {
 	return this->get_width() / this->get_height();

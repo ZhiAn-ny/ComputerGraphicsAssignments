@@ -28,6 +28,8 @@ namespace gctrl {
 
 		void move_dragon(gso::Direction dir);
 
+		void flap_wing();
+
 		void update_fireballs();
 
 		void update_butterflies();

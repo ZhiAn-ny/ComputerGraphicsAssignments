@@ -13,7 +13,8 @@ namespace gso {
 		kUp = 1,
 		kDown = -1,
 		kLeft = -2,
-		kRight = 2
+		kRight = 2,
+		kNone = 0
 	};
 
 	class SceneObject {
@@ -48,10 +49,7 @@ namespace gso {
 		void bindVerticesColor();
 
 		void update_object_corners();
-		void update_position();
 
-		float get_height();
-		float get_width();
 
 	protected:
 		std::string name_ = {};
@@ -80,8 +78,17 @@ namespace gso {
 
 		glm::vec4 get_position();
 
+		float get_height();
+
+		float get_width();
+
 		glm::mat4 get_model();
 
+		void set_model(glm::mat4 model_matrix);
+
+		/**
+		 * @returns width/height ratio
+		 */
 		float get_ratio();
 
 		float get_original_ratio();
@@ -93,6 +100,8 @@ namespace gso {
 		void bind();
 
 		void change_direction(gso::Direction new_dir);
+
+		void update_position();
 
 		void move(float distance);
 
