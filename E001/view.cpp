@@ -138,7 +138,7 @@ void gview::GameView::create_dragon()
 
 		shape = shf.get_dragon_wing();
 		shape.set_color(color::crimson, color::orange);
-		shape.transform(glm::vec3(dragon_center.x + 30, dragon_center.y + 130, 0.0),
+		shape.transform(glm::vec3(dragon_center.x + 30, dragon_center.y + 115, 0.0),
 			glm::vec3(7), 0);
 		obj_layer.add_object(&shape);
 

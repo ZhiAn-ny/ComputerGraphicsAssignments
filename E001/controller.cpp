@@ -47,26 +47,20 @@ void gctrl::GameController::move_dragon(gso::Direction dir)
 
 void gctrl::GameController::flap_wing()
 {
-	static float s = 7;
+	int orig_scale = 7;
+	static float s = orig_scale;
 	gso::SceneObject* wing = this->scene_->get_object(actors::dragon + "_" + body::wing);
 
-	// Original model matrix
-	static glm::mat4 orig = glm::mat4(1);
-	static float orig_h;
+	static float orig_h = -1.0;
 	static glm::vec3 pos;
 
-	if (orig == glm::mat4(1)) {
-		orig = wing->get_model();
+	if (orig_h < 0) {
 		orig_h = wing->get_height();
 		pos = wing->get_position();
 	}
+	pos.y = this->scene_->get_object(actors::dragon + "_" + body::body)
+						->get_position().y + 115;
 
-	glm::mat4 m = wing->get_model();;
-	float h = wing->get_height();
-
-
-	// current y scale factor.
-	float y = m.operator[](1).y;
 	float offset;
 
 	glm::mat4 T = glm::mat4(0);
@@ -81,29 +75,26 @@ void gctrl::GameController::flap_wing()
 
 	case gso::Direction::kDown:
 		s = s - 0.7;
-		offset = (orig_h - orig_h / 7 * s) / 2;
+		offset = (orig_h - orig_h / orig_scale * s) / 2;
 
 		T = translate(mat4(1), vec3(pos.x, pos.y-offset, 0));
-		S = scale(mat4(1), vec3(7, s, 7));
-		if (s < -7) wing->set_basculation_direction(gso::Direction::kUp);
-
+		S = scale(mat4(1), vec3(orig_scale, s, orig_scale));
+		if (s < -orig_scale) 
+			wing->set_basculation_direction(gso::Direction::kUp);
 		break;
 		
 	case gso::Direction::kUp:
 		s = s + 0.7;
-		offset = (orig_h / 7 * s - orig_h) / 2;
+		offset = (orig_h / orig_scale * s - orig_h) / 2;
 
 		T = translate(mat4(1), vec3(pos.x, pos.y+offset, 0));
-		S = scale(mat4(1), vec3(7, s, 7));
-		if (s > 7) wing->set_basculation_direction(gso::Direction::kDown);
-
+		S = scale(mat4(1), vec3(orig_scale, s, orig_scale));
+		if (s > orig_scale)
+			wing->set_basculation_direction(gso::Direction::kDown);
 		break;
 	}
 
-
-	m = M * T * S;
-
-	wing->set_model(m);
+	wing->set_model(M * T * S);
 	wing->update_position();
 }
 
