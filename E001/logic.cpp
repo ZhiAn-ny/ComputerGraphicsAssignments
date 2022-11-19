@@ -9,9 +9,20 @@ glog::GameLogic::~GameLogic()
 {
 }
 
-int glog::GameLogic::get_n_butterflies()
+void glog::GameLogic::add_score(double points)
+{
+	this->score_ += points;
+	std::cout << "+" << points << " points!" << std::endl;
+}
+
+int glog::GameLogic::get_min_butterflies()
 {
 	return this->n_butterflies_;
+}
+
+double glog::GameLogic::get_score()
+{
+	return this->score_;
 }
 
 bool glog::GameLogic::can_move(std::string name, gso::Direction dir)
@@ -48,6 +59,10 @@ bool glog::GameLogic::can_move(std::string name, gso::Direction dir)
 
 void glog::GameLogic::kill(std::string name)
 {
+	gso::SceneObject* target = this->scene_->get_object(name);
+
+	this->add_score(target->get_model().operator[](1).y);
+
 	this->scene_->remove_object(name);
 }
 

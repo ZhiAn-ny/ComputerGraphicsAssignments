@@ -27,9 +27,11 @@ void gctrl::GameController::check_collisions()
 		for (int j = 0; j < fireballs.size(); j++) {
 			if (fireballs[j]->is_colliding(*targets[i])) {
 				this->logic_.kill(targets[i]->get_name());
-				this->logic_.kill(fireballs[j]->get_name());
+				this->scene_->remove_object(fireballs[j]->get_name());
 
 				j = fireballs.size();
+				std::cout << "New score: " << this->logic_.get_score() << std::endl;
+				std::cout << "--------" << std::endl;
 			}
 		}
 	}
@@ -156,7 +158,7 @@ void gctrl::GameController::replenish_butterflies()
 {
 	int butterflies = this->scene_->get_starts_with("butterfly").size();
 
-	while (butterflies < logic_.get_n_butterflies()) {
+	while (butterflies < logic_.get_min_butterflies()) {
 		this->add_enemy(glm::vec2(window_.right, rand() % (window_.bottom - 50) + 25));
 		butterflies++;
 	}

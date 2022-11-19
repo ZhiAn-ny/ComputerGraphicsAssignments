@@ -1,6 +1,8 @@
 #ifndef GAME_CONTROLLER_H_
 #define GAME_CONTROLLER_H_
 
+#include <iostream>
+
 #include "Lib.h"
 #include "logic.h"
 #include "shape_factory.h"
