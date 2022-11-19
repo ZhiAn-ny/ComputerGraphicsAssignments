@@ -43,7 +43,7 @@ void gctrl::GameController::move_dragon(gso::Direction dir)
 
 	for (int i = 0; i < dragon.size(); i++) {
 		dragon[i]->change_direction(dir);
-		dragon[i]->move(0.5);
+		dragon[i]->move(this->logic_.get_dragon_speed());
 	}
 }
 
@@ -213,6 +213,12 @@ void gctrl::GameController::action(GameAction action, glm::vec2 pos)
 		break;
 	case GameAction::kAddEnemy:
 		this->add_enemy(pos);
+		break;
+	case GameAction::kIncreaseDragonSpeed:
+		this->logic_.increase_dragon_speed();
+		break;
+	case GameAction::kDecreaseDragonSpeed:
+		this->logic_.decrease_dragon_speed();
 		break;
 	}
 }

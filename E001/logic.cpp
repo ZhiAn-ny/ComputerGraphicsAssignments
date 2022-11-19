@@ -25,6 +25,21 @@ double glog::GameLogic::get_score()
 	return this->score_;
 }
 
+double glog::GameLogic::get_dragon_speed()
+{
+	return this->dragon_speed_;
+}
+
+void glog::GameLogic::increase_dragon_speed()
+{
+	this->dragon_speed_ += 0.1;
+}
+
+void glog::GameLogic::decrease_dragon_speed()
+{
+	this->dragon_speed_ -= 0.1;
+}
+
 bool glog::GameLogic::can_move(std::string name, gso::Direction dir)
 {
 	gso::SceneObject* fig = this->scene_->get_object(name);

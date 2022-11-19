@@ -11,10 +11,13 @@
 namespace gctrl {
 
 	enum class GameAction {
+		kDoNothing,
 		kFire,
 		kMoveDragonUp,
 		kMoveDragonDown,
-		kAddEnemy
+		kAddEnemy,
+		kIncreaseDragonSpeed,
+		kDecreaseDragonSpeed,
 	};
 
 	class GameController {

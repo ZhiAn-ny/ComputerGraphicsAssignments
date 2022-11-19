@@ -72,20 +72,28 @@ void gview::GameView::reshape(int width, int height)
 
 void gview::GameView::keyboard_handler(unsigned char key, int x, int y)
 {
-	glm::vec2 null_position = glm::vec2(0);
+	gctrl::GameAction action = gctrl::GameAction::kDoNothing;
 	switch (key) {
 	case ' ':
-		controller.action(gctrl::GameAction::kFire, null_position);
+		action = gctrl::GameAction::kFire;
 		break;
 	case 'w':
 	case 'W':
-		controller.action(gctrl::GameAction::kMoveDragonUp, null_position);
+		action = gctrl::GameAction::kMoveDragonUp;
 		break;
 	case 's':
 	case 'S':
-		controller.action(gctrl::GameAction::kMoveDragonDown, null_position);
+		action = gctrl::GameAction::kMoveDragonDown;
+		break;
+	case '+':
+		action = gctrl::GameAction::kIncreaseDragonSpeed;
+		break;
+	case '-':
+		action = gctrl::GameAction::kDecreaseDragonSpeed;
 		break;
 	}
+
+	controller.action(action, glm::vec2(0));
 	glutPostRedisplay();
 }
 
