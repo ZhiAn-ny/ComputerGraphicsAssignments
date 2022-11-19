@@ -43,7 +43,7 @@ void gview::GameView::time_refresh(int value)
 
 	controller.game_loop();
 
-	glutTimerFunc(50, time_refresh, 0);
+	glutTimerFunc(game_speed, time_refresh, 0);
 	glutPostRedisplay();
 }
 
@@ -197,7 +197,7 @@ void gview::GameView::init_view()
 	controller.set_window(window);
 
 	glutDisplayFunc(this->draw_scene);
-	glutTimerFunc(50, this->time_refresh, 0);
+	glutTimerFunc(game_speed, this->time_refresh, 0);
 	glutReshapeFunc(this->reshape);
 
 	glutMouseFunc(this->mouse_handler);

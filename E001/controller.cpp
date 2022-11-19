@@ -105,21 +105,16 @@ void gctrl::GameController::update_fireballs()
 	for (int i = 0; i < fireballs.size(); i++) {
 		fireballs[i]->move(2);
 	}
-
-	for (int i = 0; i < fireballs.size(); i++) {
-
-		if (this->is_outside_window(fireballs[i])) {
-			this->scene_->remove_object(fireballs[i]->get_name());
-		}
-	}
 }
 
 void gctrl::GameController::update_butterflies()
 {
 	std::vector<gso::SceneObject*> butterflies = this->scene_->get_starts_with("butterfly");
+	glm::vec3 pos = glm::vec3(0.0);
 	float scale_factor;
 
 	for (int i = 0; i < butterflies.size(); i++) {
+
 		if (butterflies[i]->get_ratio() > butterflies[i]->get_original_ratio() * 1.1) {
 			butterflies[i]->set_basculation_direction(gso::Direction::kLeft);
 		}
@@ -127,10 +122,34 @@ void gctrl::GameController::update_butterflies()
 			butterflies[i]->set_basculation_direction(gso::Direction::kRight);
 		}
 
+		pos.y = (((int)butterflies[i]->get_position().x % 200) - 100) / 1000.0;
+
+		pos.y = sin(pos.y);
 		scale_factor = (butterflies[i]->get_basculation_direction() 
 						== gso::Direction::kLeft) ? 0.8 : 1.2;
 
-		butterflies[i]->transform(glm::vec3(0), glm::vec3(scale_factor, 1, 1), 0);
+		butterflies[i]->transform(pos, glm::vec3(scale_factor, 1, 1), 0);
+
+		butterflies[i]->move(0.3);
+	}
+}
+
+void gctrl::GameController::remove_out_of_sight()
+{
+	std::vector<gso::SceneObject*> objs = this->scene_->get_starts_with("circle");
+	for (int i = 0; i < objs.size(); i++) {
+
+		if (this->is_outside_window(objs[i])) {
+			this->scene_->remove_object(objs[i]->get_name());
+		}
+	}
+
+	objs = this->scene_->get_starts_with("butterfly");
+	for (int i = 0; i < objs.size(); i++) {
+
+		if (this->is_outside_window(objs[i])) {
+			this->scene_->remove_object(objs[i]->get_name());
+		}
 	}
 }
 
@@ -142,7 +161,7 @@ void gctrl::GameController::add_enemy(glm::vec2 pos)
 		glm::vec3((rand() % 30) + 20), 0);
 	shape.set_color(color::crimson, color::transparent);
 	shape.set_basculation_direction(gso::Direction::kLeft);
-	shape.change_direction(gso::Direction::kRight);
+	shape.change_direction(gso::Direction::kLeft);
 
 	this->scene_->add_object(&shape);
 }
@@ -203,4 +222,6 @@ void gctrl::GameController::game_loop()
 	
 	this->check_collisions();
 
+
+	this->remove_out_of_sight();
 }

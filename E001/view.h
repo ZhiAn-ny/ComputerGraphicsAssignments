@@ -13,9 +13,7 @@ namespace gview {
 
 	static gctrl::GameController controller = {};
 
-	static float margin_bottom;
-	static float margin_top;
-	static float default_figure_ray;
+	static const int game_speed = 50;
 
 	class GameView {
 
