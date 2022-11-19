@@ -34,6 +34,8 @@ namespace gctrl {
 
 		void update_butterflies();
 
+		void replenish_butterflies();
+
 		void remove_out_of_sight();
 
 		void add_enemy(glm::vec2 pos);

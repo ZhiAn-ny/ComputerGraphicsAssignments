@@ -129,7 +129,6 @@ void gctrl::GameController::update_butterflies()
 						== gso::Direction::kLeft) ? 0.8 : 1.2;
 
 		butterflies[i]->transform(pos, glm::vec3(scale_factor, 1, 1), 0);
-
 		butterflies[i]->move(0.3);
 	}
 }
@@ -150,6 +149,16 @@ void gctrl::GameController::remove_out_of_sight()
 		if (this->is_outside_window(objs[i])) {
 			this->scene_->remove_object(objs[i]->get_name());
 		}
+	}
+}
+
+void gctrl::GameController::replenish_butterflies()
+{
+	int butterflies = this->scene_->get_starts_with("butterfly").size();
+
+	while (butterflies < logic_.get_n_butterflies()) {
+		this->add_enemy(glm::vec2(window_.right, rand() % (window_.bottom - 50) + 25));
+		butterflies++;
 	}
 }
 
@@ -219,6 +228,7 @@ void gctrl::GameController::game_loop()
 	this->update_fireballs();
 	
 	this->update_butterflies();
+	this->replenish_butterflies();
 	
 	this->check_collisions();
 

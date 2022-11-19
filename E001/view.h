@@ -11,7 +11,7 @@
 
 namespace gview {
 
-	static gctrl::GameController controller = {};
+	static gctrl::GameController controller = gctrl::GameController();
 
 	static const int game_speed = 50;
 

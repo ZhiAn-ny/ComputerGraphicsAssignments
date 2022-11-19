@@ -9,6 +9,11 @@ glog::GameLogic::~GameLogic()
 {
 }
 
+int glog::GameLogic::get_n_butterflies()
+{
+	return this->n_butterflies_;
+}
+
 bool glog::GameLogic::can_move(std::string name, gso::Direction dir)
 {
 	gso::SceneObject* fig = this->scene_->get_object(name);

@@ -192,7 +192,6 @@ void gview::GameView::init_view()
 
 	this->init_window("my_game_app");
 
-	controller = gctrl::GameController();
 	controller.init_game(&obj_layer);
 	controller.set_window(window);
 
