@@ -2,7 +2,7 @@
 
 uniform float time;
 uniform vec2 resolution;
-uniform unsigned int isBackground;
+uniform int isBackground;
 
 // Background color
 //vec3 color = vec3((243.0/255.0), (234.0/255.0), (191.0/255.0)); // sand

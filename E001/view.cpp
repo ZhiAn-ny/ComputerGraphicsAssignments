@@ -27,10 +27,10 @@ void gview::GameView::draw_scene(void)
 	glUniform1f(loctime, glutGet(GLUT_ELAPSED_TIME) / 1000.0);
 	glUniform2f(locres, window_update.right, window_update.bottom);
 
-	glUniform1ui(isBackground, 1);
+	glUniform1i(isBackground, 1);
 	bg.render(&MatMod);
 
-	glUniform1ui(isBackground, 0);
+	glUniform1i(isBackground, 0);
 	obj_layer.draw_scene(&MatMod, &MatProj, &Projection);
 
 	glutSwapBuffers();
