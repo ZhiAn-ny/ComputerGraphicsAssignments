@@ -2,6 +2,9 @@
 #define GAME_POLYGONAL_MESH_H_
 
 #include "lib.h"
+#include "res.h"
+
+using namespace res;
 
 namespace gobj
 {
@@ -12,8 +15,9 @@ namespace gobj
 		private:
 			vector<vec3> vertices_ = {};
 			vector<unsigned int> indices_ = {};
+			vector<vec4> colors_ = {};
 
-			unsigned int VAO, VBO, EBO;
+			unsigned int VAO, VBO_G, VBO_C, EBO;
 
 		public:
 			PolygonalMesh();
