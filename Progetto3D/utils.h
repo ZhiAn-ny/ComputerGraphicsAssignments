@@ -5,7 +5,7 @@
 
 namespace util
 {
-	static unsigned int check_error(string message);
+	unsigned int check_error(string message);
 
 } // !util
 

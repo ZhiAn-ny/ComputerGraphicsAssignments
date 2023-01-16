@@ -145,6 +145,7 @@
     <ClInclude Include="res.h" />
     <ClInclude Include="scene3d.h" />
     <ClInclude Include="shader.h" />
+    <ClInclude Include="stb_image.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="view3d.h" />
   </ItemGroup>

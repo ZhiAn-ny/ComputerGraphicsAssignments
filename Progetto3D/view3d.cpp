@@ -57,13 +57,20 @@ void gview::GameView3D::create_window(const char* title)
 void gview::GameView3D::set_scene()
 {
 	mesh::PolygonalMesh mesh;
-	mesh.add_vertex(vec3(0.5, 0.5, 0.0));
-	mesh.add_vertex(vec3(0.5, -0.5, 0.0));
-	mesh.add_vertex(vec3(-0.5, -0.5, 0.0));
-	mesh.add_vertex(vec3(-0.5, 0.5, 0.0));
+	mesh.add_vertex(vec3(0.5, 0.5, 0.0), vec2(1, 1));
+	mesh.add_vertex(vec3(0.5, -0.5, 0.0), vec2(1, 0));
+	mesh.add_vertex(vec3(-0.5, -0.5, 0.0), vec2(0, 0));
+	mesh.add_vertex(vec3(-0.5, 0.5, 0.0), vec2(0, 1));
 
-	mesh.set_indices({0, 1, 3, 
-					  1, 2, 3});
+	//mesh.set_indices({0, 1, 3, 1, 2, 3});
+	mesh.add_index(0, color::white);
+	mesh.add_index(1, color::white);
+	mesh.add_index(3, color::white);
+	mesh.add_index(1, color::white);
+	mesh.add_index(2, color::white);
+	mesh.add_index(3, color::white);
+
+	mesh.load_texture("res/textures/test01.jpg", 1);
 
 	scene.add_object(mesh);
 }
@@ -94,7 +101,7 @@ void gview::GameView3D::init()
 
 	//glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
-	//glEnable(GL_ALPHA_TEST);
+	glEnable(GL_ALPHA_TEST);
 	//glCullFace(GL_BACK);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }

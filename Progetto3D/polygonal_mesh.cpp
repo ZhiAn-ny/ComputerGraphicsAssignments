@@ -1,4 +1,8 @@
 #include "polygonal_mesh.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
+
 
 using namespace gobj::mesh;
 
@@ -6,23 +10,54 @@ PolygonalMesh::PolygonalMesh() { }
 
 PolygonalMesh::~PolygonalMesh() { }
 
-void PolygonalMesh::add_vertex(vec3 pos)
+void PolygonalMesh::add_vertex(vec3 pos, vec2 tex)
 {
 	this->vertices_.push_back(pos);
+    this->tex_coords_.push_back(tex);
 }
 
-void PolygonalMesh::add_index(unsigned int index)
+void PolygonalMesh::add_index(unsigned int index, vec4 color)
 {
     this->indices_.push_back(index);
-    this->colors_.push_back(color::white);
+    this->colors_.push_back(color);
 }
 
 void PolygonalMesh::set_indices(vector<unsigned int> indices)
 {
     for (int i = 0; i < indices.size(); i++)
     {
-        this->add_index(indices[i]);
+        this->add_index(indices[i], color::white);
     }
+}
+
+void gobj::mesh::PolygonalMesh::load_texture(char const* path, int vertical_flip)
+{
+    GLenum format;
+    int width, height, nrChannels;
+        stbi_set_flip_vertically_on_load(vertical_flip);
+    unsigned char* data = stbi_load(path, &width, &height, &nrChannels, 0);
+    if (data) {
+        glGenTextures(1, &texture);
+        glBindTexture(GL_TEXTURE_2D, texture);
+
+        if (nrChannels == 1) format = GL_RED;
+        else if (nrChannels == 3) format = GL_RGB;
+        else if (nrChannels == 4) format = GL_RGBA;
+
+
+        // GL_REPEAT | GL_MIRRORED_REPEAT | GL_CLAMP_TO_EDGE | GL_CLAMP_TO_BORDER
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+    } else {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
 }
 
 void PolygonalMesh::bind()
@@ -30,6 +65,7 @@ void PolygonalMesh::bind()
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO_G);
     glGenBuffers(1, &VBO_C);
+    glGenBuffers(1, &VBO_T);
     glGenBuffers(1, &EBO);
 
     glBindVertexArray(VAO);
@@ -44,6 +80,11 @@ void PolygonalMesh::bind()
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (void*)0);
     glEnableVertexAttribArray(1);
 
+    glBindBuffer(GL_ARRAY_BUFFER, VBO_T);
+    glBufferData(GL_ARRAY_BUFFER, tex_coords_.size() * sizeof(vec2), tex_coords_.data(), GL_STATIC_DRAW);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    glEnableVertexAttribArray(2);
+
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices_.size() * sizeof(unsigned int), indices_.data(), GL_STATIC_DRAW);
 
@@ -54,6 +95,8 @@ void PolygonalMesh::bind()
 
 void PolygonalMesh::render()
 {
+    glBindTexture(GL_TEXTURE_2D, texture);
+    util::check_error("ERROR::MESH_TEXTURE::LOADING_FAILED");
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, this->indices_.size(), GL_UNSIGNED_INT, 0);
 }
