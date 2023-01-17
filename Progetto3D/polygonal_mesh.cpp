@@ -16,25 +16,24 @@ void PolygonalMesh::add_vertex(vec3 pos, vec2 tex)
     this->tex_coords_.push_back(tex);
 }
 
-void PolygonalMesh::add_index(unsigned int index, vec4 color)
+void PolygonalMesh::add_index(unsigned int index)
 {
     this->indices_.push_back(index);
-    this->colors_.push_back(color);
 }
 
 void PolygonalMesh::set_indices(vector<unsigned int> indices)
 {
-    for (int i = 0; i < indices.size(); i++)
-    {
-        this->add_index(indices[i], color::white);
-    }
+    this->indices_ = indices;
 }
 
 void gobj::mesh::PolygonalMesh::load_texture(char const* path, int vertical_flip)
 {
     GLenum format;
     int width, height, nrChannels;
-        stbi_set_flip_vertically_on_load(vertical_flip);
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    stbi_set_flip_vertically_on_load(vertical_flip);
+
     unsigned char* data = stbi_load(path, &width, &height, &nrChannels, 0);
     if (data) {
         glGenTextures(1, &texture);
