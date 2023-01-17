@@ -10,19 +10,19 @@ PolygonalMesh::PolygonalMesh() { }
 
 PolygonalMesh::~PolygonalMesh() { }
 
-void PolygonalMesh::add_vertex(vec3 pos, vec2 tex)
+void PolygonalMesh::add_vertex(Vertex v)
 {
-	
+    this->verts.push_back(v);
 }
 
 void PolygonalMesh::add_index(unsigned int index)
 {
-    this->indices_.push_back(index);
+    this->indices.push_back(index);
 }
 
 void PolygonalMesh::set_indices(vector<unsigned int> indices)
 {
-    this->indices_ = indices;
+    this->indices = indices;
 }
 
 void gobj::mesh::PolygonalMesh::load_texture(char const* path, int vertical_flip)
@@ -79,7 +79,7 @@ void PolygonalMesh::bind()
     glEnableVertexAttribArray(2);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices_.size() * sizeof(unsigned int), indices_.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
 
     // Unbind buffers
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -91,5 +91,5 @@ void PolygonalMesh::render()
     glBindTexture(GL_TEXTURE_2D, texture);
     util::check_error("ERROR::MESH_TEXTURE::LOADING_FAILED");
     glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, this->indices_.size(), GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
 }

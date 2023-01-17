@@ -2,6 +2,7 @@
 #define GAME_POLYGONAL_MESH_H_
 
 #include "lib.h"
+#include "imesh.h"
 #include "res.h"
 #include "utils.h"
 
@@ -12,41 +13,27 @@ namespace gobj
 	namespace mesh
 	{
 
-		class Vertex {
-		public:
-			vec3 pos;
-			vec4 color;
-			vec2 tex;
-
-			Vertex() {};
-			Vertex(vec3 pos_, vec4 col_, vec2 tex_)
-			{
-				this->pos = pos_;
-				this->color = col_;
-				this->tex = tex_;
-			}
-		};
-
-		class PolygonalMesh {
+		class PolygonalMesh: public Mesh {
 		private:
-			vector<unsigned int> indices_ = {};
+			vector<Vertex> verts = {};
+			vector<unsigned int> indices = {};
 
 			unsigned int texture;
 
 			unsigned int VAO, VBO, EBO;
 
 		public:
-			vector<Vertex> verts = {};
 
 			PolygonalMesh();
 			~PolygonalMesh();
 
-			void add_vertex(vec3 pos, vec2 tex);
-			void add_index(unsigned int index);
 			void set_indices(vector<unsigned int> indices);
 			void load_texture(char const* path, int vertical_flip);
-			void bind();
-			void render();
+
+			void add_vertex(Vertex v) override;
+			void add_index(unsigned int i) override;
+			void bind() override;
+			void render() override;
 		};
 
 	} // !mesh
