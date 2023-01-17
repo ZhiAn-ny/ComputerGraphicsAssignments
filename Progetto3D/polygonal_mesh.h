@@ -17,6 +17,7 @@ namespace gobj
 		private:
 			vector<Vertex> verts = {};
 			vector<unsigned int> indices = {};
+			mat4 model = mat4(1);
 
 			unsigned int texture = 0;
 			map<string, unsigned int> textures_ = {};
@@ -37,7 +38,7 @@ namespace gobj
 			void add_vertex(Vertex v) override;
 			void add_index(unsigned int i) override;
 			void bind() override;
-			void render() override;
+			void render(Shader* sh) override;
 		};
 
 	} // !mesh

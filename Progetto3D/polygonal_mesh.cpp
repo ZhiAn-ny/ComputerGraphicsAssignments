@@ -105,8 +105,10 @@ void PolygonalMesh::bind()
     glBindVertexArray(0);
 }
 
-void PolygonalMesh::render()
+void PolygonalMesh::render(Shader* sh)
 {
+    sh->setMatrix4f("Model", this->model);
+
     glBindTexture(GL_TEXTURE_2D, texture);
     util::check_error("ERROR::MESH_TEXTURE::LOADING_FAILED");
     glBindVertexArray(VAO);

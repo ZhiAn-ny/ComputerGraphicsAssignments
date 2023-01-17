@@ -6,11 +6,17 @@ RECT window;
 Scene scene;
 Shader main_shader;
 
+mat4 Model, View, Projection;
+
 /******************************************************************************/
 // STATIC FUNCTIONS
 
 void gview::GameView3D::draw_scene(void)
 {
+	main_shader.use();
+	main_shader.setMatrix4f("Projection", Projection);
+	main_shader.setMatrix4f("View", View);
+
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
@@ -56,6 +62,10 @@ void gview::GameView3D::create_window(const char* title)
 
 void gview::GameView3D::set_scene()
 {
+	// TODO: where to initialize these
+	Projection = mat4(1);
+	View = mat4(1);
+
 	mesh::PolygonalMesh mesh;
 
 	mesh.add_vertex(mesh::Vertex(vec3(0.5, 0.5, 0.0), color::red, vec2(1, 1)));

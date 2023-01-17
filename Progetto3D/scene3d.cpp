@@ -19,6 +19,6 @@ void gobj::Scene::render(Shader* shader)
 	shader->use();
 	for (int i = 0; i < this->objs_.size(); i++)
 	{
-		this->objs_[i].render();
+		this->objs_[i].render(shader);
 	}
 }

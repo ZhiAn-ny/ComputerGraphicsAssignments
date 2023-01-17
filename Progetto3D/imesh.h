@@ -2,6 +2,7 @@
 #define GAME_OBJECT_MESH_INTERFACE_H_
 
 #include "lib.h"
+#include "shader.h"
 
 namespace gobj
 {
@@ -26,7 +27,7 @@ namespace gobj
 			virtual void add_vertex(Vertex v) = 0;
 			virtual void add_index(unsigned int v) = 0;
 			virtual void bind() = 0;
-			virtual void render() = 0;
+			virtual void render(Shader* sh) = 0;
 		};
 	}
 }
