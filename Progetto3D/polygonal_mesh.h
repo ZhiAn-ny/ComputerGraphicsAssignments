@@ -12,6 +12,21 @@ namespace gobj
 	namespace mesh
 	{
 
+		class Vertex {
+		public:
+			vec3 pos;
+			vec4 color;
+			vec2 tex;
+
+			Vertex() {};
+			Vertex(vec3 pos_, vec4 col_, vec2 tex_)
+			{
+				this->pos = pos_;
+				this->color = col_;
+				this->tex = tex_;
+			}
+		};
+
 		class PolygonalMesh {
 		private:
 			vector<vec3> vertices_ = {};
@@ -24,6 +39,8 @@ namespace gobj
 
 		public:
 			vector<vec4> colors_ = {};
+			vector<Vertex> verts = {};
+
 			PolygonalMesh();
 			~PolygonalMesh();
 

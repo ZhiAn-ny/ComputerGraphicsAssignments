@@ -70,19 +70,25 @@ void PolygonalMesh::bind()
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO_G);
-    glBufferData(GL_ARRAY_BUFFER, vertices_.size() * sizeof(vec3), vertices_.data(), GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    glBufferData(GL_ARRAY_BUFFER, verts.size() * sizeof(Vertex), verts.data(), GL_STATIC_DRAW);
+     
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, pos));
     glEnableVertexAttribArray(0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_C);
-    glBufferData(GL_ARRAY_BUFFER, colors_.size() * sizeof(vec3), colors_.data(), GL_STATIC_DRAW);
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    glEnableVertexAttribArray(1);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_T);
-    glBufferData(GL_ARRAY_BUFFER, tex_coords_.size() * sizeof(vec2), tex_coords_.data(), GL_STATIC_DRAW);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    glEnableVertexAttribArray(2);
+    
+    //glBindBuffer(GL_ARRAY_BUFFER, VBO_G);
+    //glBufferData(GL_ARRAY_BUFFER, vertices_.size() * sizeof(vec3), vertices_.data(), GL_STATIC_DRAW);
+    //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    //glEnableVertexAttribArray(0);
+    //
+    //glBindBuffer(GL_ARRAY_BUFFER, VBO_C);
+    //glBufferData(GL_ARRAY_BUFFER, colors_.size() * sizeof(vec3), colors_.data(), GL_STATIC_DRAW);
+    //glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    //glEnableVertexAttribArray(1);
+    //
+    //glBindBuffer(GL_ARRAY_BUFFER, VBO_T);
+    //glBufferData(GL_ARRAY_BUFFER, tex_coords_.size() * sizeof(vec2), tex_coords_.data(), GL_STATIC_DRAW);
+    //glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    //glEnableVertexAttribArray(2);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices_.size() * sizeof(unsigned int), indices_.data(), GL_STATIC_DRAW);

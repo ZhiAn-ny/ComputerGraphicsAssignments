@@ -57,10 +57,17 @@ void gview::GameView3D::create_window(const char* title)
 void gview::GameView3D::set_scene()
 {
 	mesh::PolygonalMesh mesh;
-	mesh.add_vertex(vec3(0.5, 0.5, 0.0), vec2(1, 1));
-	mesh.add_vertex(vec3(0.5, -0.5, 0.0), vec2(1, 0));
-	mesh.add_vertex(vec3(-0.5, -0.5, 0.0), vec2(0, 0));
-	mesh.add_vertex(vec3(-0.5, 0.5, 0.0), vec2(0, 1));
+	mesh.verts = {
+		mesh::Vertex(vec3(0.5, 0.5, 0.0), vec4(1), vec2(1, 1)),
+		mesh::Vertex(vec3(0.5, -0.5, 0.0), vec4(1), vec2(1, 0)),
+		mesh::Vertex(vec3(-0.5, -0.5, 0.0), vec4(1), vec2(0, 0)),
+		mesh::Vertex(vec3(-0.5, 0.5, 0.0), vec4(1), vec2(0, 1))
+	};
+
+	//mesh.add_vertex(vec3(0.5, 0.5, 0.0), vec2(1, 1));
+	//mesh.add_vertex(vec3(0.5, -0.5, 0.0), vec2(1, 0));
+	//mesh.add_vertex(vec3(-0.5, -0.5, 0.0), vec2(0, 0));
+	//mesh.add_vertex(vec3(-0.5, 0.5, 0.0), vec2(0, 1));
 
 	mesh.set_indices({0, 1, 3, 1, 2, 3});
 	//mesh.add_index(0);
@@ -71,7 +78,7 @@ void gview::GameView3D::set_scene()
 	//mesh.add_index(3);
 	
 	// magenta and cyan are not showed
-	mesh.colors_ = { color::red, color::green, color::blue, color::yellow, color::magenta, color::cyan };
+	//mesh.colors_ = { color::red, color::green, color::blue, color::yellow, color::magenta, color::cyan };
 
 	mesh.load_texture("res/textures/test01.jpg", 1);
 
