@@ -29,16 +29,13 @@ namespace gobj
 
 		class PolygonalMesh {
 		private:
-			vector<vec3> vertices_ = {};
 			vector<unsigned int> indices_ = {};
-			vector<vec2> tex_coords_ = {};
 
 			unsigned int texture;
 
-			unsigned int VAO, VBO_G, VBO_C, VBO_T, EBO;
+			unsigned int VAO, VBO, EBO;
 
 		public:
-			vector<vec4> colors_ = {};
 			vector<Vertex> verts = {};
 
 			PolygonalMesh();
