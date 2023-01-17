@@ -60,6 +60,15 @@ unsigned int gobj::mesh::PolygonalMesh::load_texture(char const* path, int verti
     return tex_ID;
 }
 
+void gobj::mesh::PolygonalMesh::transform(vec3 tvec, vec3 svec, vec3 rvec, float angle)
+{
+    mat4 T = translate(mat4(1), tvec);
+    mat4 S = scale(mat4(1), svec);
+    mat4 R = rotate(mat4(1), angle, normalize(rvec));
+
+    this->model = model * T * R * S;
+}
+
 void gobj::mesh::PolygonalMesh::add_texture(string name, char const* path, bool vflip)
 {
     auto search = this->textures_.find(name);

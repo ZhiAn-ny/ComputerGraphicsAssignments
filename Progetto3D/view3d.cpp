@@ -62,10 +62,6 @@ void gview::GameView3D::create_window(const char* title)
 
 void gview::GameView3D::set_scene()
 {
-	// TODO: where to initialize these
-	Projection = mat4(1);
-	View = mat4(1);
-
 	mesh::PolygonalMesh mesh;
 
 	mesh.add_vertex(mesh::Vertex(vec3(0.5, 0.5, 0.0), color::red, vec2(1, 1)));
@@ -77,7 +73,18 @@ void gview::GameView3D::set_scene()
 	mesh.add_texture("box", "res/textures/test01.jpg", 1);
 	mesh.set_texture("box");
 
+	mesh.transform(vec3(0), vec3(1), vec3(1, 0, 0), -15);
+
 	scene.add_object(mesh);
+}
+
+void gview::GameView3D::set_camera()
+{
+	// TODO: where to initialize these
+	Projection = mat4(1);
+	View = mat4(1);
+	View = translate(View, glm::vec3(0.0f, 0.0f, -3.0f));
+	Projection = perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 }
 
 void gview::GameView3D::init()
@@ -101,6 +108,7 @@ void gview::GameView3D::init()
 	main_shader = Shader("vertexShader.glsl", "fragmentShader.glsl");
 
 	//cam.init(vec4(0, 0.5, 70, 0), window);
+	this->set_camera();
 
 	this->set_scene();
 

@@ -34,6 +34,7 @@ namespace gobj
 			void set_indices(vector<unsigned int> indices);
 			void add_texture(string name, char const* path, bool vflip);
 			void set_texture(string name);
+			void transform(vec3 tvec, vec3 svec, vec3 rvec, float angle);
 
 			void add_vertex(Vertex v) override;
 			void add_index(unsigned int i) override;
