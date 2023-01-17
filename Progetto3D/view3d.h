@@ -3,6 +3,7 @@
 
 #include "shader.h"
 #include "scene3d.h"
+#include "mesh_factory.h"
 
 using namespace gobj;
 

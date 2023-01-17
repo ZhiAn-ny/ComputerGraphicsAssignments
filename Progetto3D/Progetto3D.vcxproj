@@ -133,6 +133,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mesh_factory.cpp" />
     <ClCompile Include="polygonal_mesh.cpp" />
     <ClCompile Include="scene3d.cpp" />
     <ClCompile Include="shader.cpp" />
@@ -142,6 +143,7 @@
   <ItemGroup>
     <ClInclude Include="imesh.h" />
     <ClInclude Include="lib.h" />
+    <ClInclude Include="mesh_factory.h" />
     <ClInclude Include="polygonal_mesh.h" />
     <ClInclude Include="res.h" />
     <ClInclude Include="scene3d.h" />
