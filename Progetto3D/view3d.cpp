@@ -64,7 +64,8 @@ void gview::GameView3D::set_scene()
 	mesh.add_vertex(mesh::Vertex(vec3(-0.5, 0.5, 0.0), color::yellow, vec2(0, 1)));
 
 	mesh.set_indices({0, 1, 3, 1, 2, 3});
-	mesh.load_texture("res/textures/test01.jpg", 1);
+	mesh.add_texture("box", "res/textures/test01.jpg", 1);
+	mesh.set_texture("box");
 
 	scene.add_object(mesh);
 }

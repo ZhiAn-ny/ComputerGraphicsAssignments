@@ -18,9 +18,12 @@ namespace gobj
 			vector<Vertex> verts = {};
 			vector<unsigned int> indices = {};
 
-			unsigned int texture;
+			unsigned int texture = 0;
+			map<string, unsigned int> textures_ = {};
 
 			unsigned int VAO, VBO, EBO;
+
+			unsigned int load_texture(char const* path, int vertical_flip);
 
 		public:
 
@@ -28,7 +31,8 @@ namespace gobj
 			~PolygonalMesh();
 
 			void set_indices(vector<unsigned int> indices);
-			void load_texture(char const* path, int vertical_flip);
+			void add_texture(string name, char const* path, bool vflip);
+			void set_texture(string name);
 
 			void add_vertex(Vertex v) override;
 			void add_index(unsigned int i) override;

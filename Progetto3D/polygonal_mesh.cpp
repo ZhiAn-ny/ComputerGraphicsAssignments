@@ -25,9 +25,10 @@ void PolygonalMesh::set_indices(vector<unsigned int> indices)
     this->indices = indices;
 }
 
-void gobj::mesh::PolygonalMesh::load_texture(char const* path, int vertical_flip)
+unsigned int gobj::mesh::PolygonalMesh::load_texture(char const* path, int vertical_flip)
 {
     GLenum format;
+    unsigned int tex_ID = 0;
     int width, height, nrChannels;
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -35,8 +36,8 @@ void gobj::mesh::PolygonalMesh::load_texture(char const* path, int vertical_flip
 
     unsigned char* data = stbi_load(path, &width, &height, &nrChannels, 0);
     if (data) {
-        glGenTextures(1, &texture);
-        glBindTexture(GL_TEXTURE_2D, texture);
+        glGenTextures(1, &tex_ID);
+        glBindTexture(GL_TEXTURE_2D, tex_ID);
 
         if (nrChannels == 1) format = GL_RED;
         else if (nrChannels == 3) format = GL_RGB;
@@ -56,6 +57,24 @@ void gobj::mesh::PolygonalMesh::load_texture(char const* path, int vertical_flip
         std::cout << "Failed to load texture" << std::endl;
     }
     stbi_image_free(data);
+    return tex_ID;
+}
+
+void gobj::mesh::PolygonalMesh::add_texture(string name, char const* path, bool vflip)
+{
+    auto search = this->textures_.find(name);
+    if (search == this->textures_.end()) {
+        unsigned int tex_ID = this->load_texture(path, vflip ? 1 : 0);
+        this->textures_.insert_or_assign(name, tex_ID);
+    }
+}
+
+void gobj::mesh::PolygonalMesh::set_texture(string name)
+{
+    auto search = this->textures_.find(name);
+    if (search != this->textures_.end()) {
+        this->texture = search->second;
+    }
 }
 
 void PolygonalMesh::bind()
