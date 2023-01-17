@@ -58,10 +58,10 @@ void gview::GameView3D::set_scene()
 {
 	mesh::PolygonalMesh mesh;
 	mesh.verts = {
-		mesh::Vertex(vec3(0.5, 0.5, 0.0), vec4(1), vec2(1, 1)),
-		mesh::Vertex(vec3(0.5, -0.5, 0.0), vec4(1), vec2(1, 0)),
-		mesh::Vertex(vec3(-0.5, -0.5, 0.0), vec4(1), vec2(0, 0)),
-		mesh::Vertex(vec3(-0.5, 0.5, 0.0), vec4(1), vec2(0, 1))
+		mesh::Vertex(vec3(0.5, 0.5, 0.0), color::red, vec2(1, 1)),
+		mesh::Vertex(vec3(0.5, -0.5, 0.0), color::green, vec2(1, 0)),
+		mesh::Vertex(vec3(-0.5, -0.5, 0.0), color::blue, vec2(0, 0)),
+		mesh::Vertex(vec3(-0.5, 0.5, 0.0), color::yellow, vec2(0, 1))
 	};
 
 	//mesh.add_vertex(vec3(0.5, 0.5, 0.0), vec2(1, 1));
