@@ -141,7 +141,7 @@
     <ClCompile Include="view3d.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="imesh.h" />
+    <ClInclude Include="amesh.h" />
     <ClInclude Include="lib.h" />
     <ClInclude Include="mesh_factory.h" />
     <ClInclude Include="polygonal_mesh.h" />

@@ -8,6 +8,8 @@ namespace gobj
 	namespace mesh {
 
 		class MeshFactory {
+		private:
+			unsigned int cube_number = 0;
 		public:
 			MeshFactory();
 			~MeshFactory();
