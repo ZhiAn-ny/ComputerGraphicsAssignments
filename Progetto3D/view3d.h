@@ -19,6 +19,8 @@ namespace gview
 		static void time_refresh(int a);
 		static void resize(int w, int h);
 		static void key_pressed(unsigned char key, int x, int y);
+		static void mouse_click(int button, int state, int x, int y);
+		static void mouse_motion(int x, int y);
 
 		void create_window(const char* title);
 		void set_scene();

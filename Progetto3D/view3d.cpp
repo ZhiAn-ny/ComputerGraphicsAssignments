@@ -58,6 +58,29 @@ void gview::GameView3D::key_pressed(unsigned char key, int x, int y)
 	}
 }
 
+void gview::GameView3D::mouse_click(int button, int state, int x, int y)
+{
+	switch (button)
+	{
+	case GLUT_LEFT_BUTTON:
+		if (state == GLUT_DOWN)
+			cam.activate_trackball(x, y);
+		if (state == GLUT_UP)
+			cam.deactivate_trackball();
+
+		break;
+	default:
+		break;
+	}
+}
+
+void gview::GameView3D::mouse_motion(int x, int y)
+{
+	cam.rotate(x, y);
+
+
+}
+
 /******************************************************************************/
 
 gview::GameView3D::GameView3D() { }
@@ -134,6 +157,8 @@ void gview::GameView3D::init()
 	glutReshapeFunc(this->resize);
 
 	glutKeyboardFunc(this->key_pressed);
+	glutMouseFunc(this->mouse_click);
+	glutMotionFunc(this->mouse_motion);
 
 	// Glew is initialized after having defined glut's recurrent functions
 	glewExperimental = GL_TRUE;
