@@ -1,4 +1,5 @@
 #ifndef GAME_RESOURCES_H_
+#define GAME_RESOURCES_H_
 
 #include "lib.h"
 
@@ -15,6 +16,9 @@ namespace res
 		const vec4 cyan = vec4(0.0, 1.0, 1.0, 1.0);
 		const vec4 yellow = vec4(1.0, 1.0, 0.0, 1.0);
 		const vec4 magenta = vec4(1.0, 0.0, 1.0, 1.0);
+
+		const vec4 coral = vec4(1.0, 0.5, 0.31, 1.0);
+
 	} // !color
 
 } // !res

@@ -6,7 +6,11 @@
 
 using namespace gobj::mesh;
 
-PolygonalMesh::PolygonalMesh() { }
+PolygonalMesh::PolygonalMesh() 
+{ 
+    this->add_texture("none", "res/textures/blank.jpg", false);
+    this->set_texture("none");
+}
 
 PolygonalMesh::~PolygonalMesh() { }
 
@@ -18,6 +22,14 @@ void PolygonalMesh::add_vertex(Vertex v)
 void PolygonalMesh::add_index(unsigned int index)
 {
     this->indices.push_back(index);
+}
+
+void gobj::mesh::PolygonalMesh::set_color(vec4 color)
+{
+    for (unsigned int i = 0; i < this->verts.size(); i++)
+    {
+        this->verts[i].color = color;
+    }
 }
 
 void PolygonalMesh::set_indices(vector<unsigned int> indices)

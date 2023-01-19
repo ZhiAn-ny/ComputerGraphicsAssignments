@@ -37,6 +37,7 @@ namespace gobj
 
 			void add_vertex(Vertex v) override;
 			void add_index(unsigned int i) override;
+			void set_color(vec4 color) override;
 			void bind() override;
 			void render(Shader* sh) override;
 			void transform(vec3 tvec, vec3 svec, vec3 rvec, float angle) override;

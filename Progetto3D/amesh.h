@@ -36,6 +36,7 @@ namespace gobj
 			virtual void bind() = 0;
 			virtual void render(Shader* sh) = 0;
 			virtual void transform(vec3 tvec, vec3 svec, vec3 rvec, float angle) = 0;
+			virtual void set_color(vec4 color) = 0;
 		};
 	}
 }
