@@ -7,6 +7,9 @@ namespace util
 {
 	unsigned int check_error(string message);
 
+	const int mouse_wheel_up = 4;
+	const int mouse_wheel_down = 3;
+
 	namespace dir {
 		enum class Directions {
 			front,
@@ -15,7 +18,8 @@ namespace util
 			down,
 			left,
 			right
-		};		
+		};
+
 	} // !dir
 
 } // !util

@@ -31,15 +31,23 @@ namespace gview
 			vec2 last_mouse_pos = {};
 			bool is_active_ = false;
 
+			// Field Of View
+			float fov_ = 22.0f;
+
 		public:
 			Camera();
 			~Camera();
 
 			mat4 get_view();
+			// Return the field of view of the camera
+			float get_fov();
+
 			void move(dir::Directions dir);
 			void activate_trackball(int x, int y);
 			void deactivate_trackball();
 			void rotate(int x, int y);
+			void zoom_in();
+			void zoom_out();
 		};
 
 	} // !cam

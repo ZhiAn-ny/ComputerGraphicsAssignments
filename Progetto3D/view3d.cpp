@@ -14,6 +14,8 @@ mat4 Projection;
 
 void gview::GameView3D::draw_scene(void)
 {
+	Projection = perspective(glm::radians(cam.get_fov()), 800.0f / 600.0f, 0.1f, 100.0f);
+
 	main_shader.use();
 	main_shader.setMatrix4f("Projection", Projection);
 	main_shader.setMatrix4f("View", cam.get_view());
@@ -67,7 +69,12 @@ void gview::GameView3D::mouse_click(int button, int state, int x, int y)
 			cam.activate_trackball(x, y);
 		if (state == GLUT_UP)
 			cam.deactivate_trackball();
-
+		break;
+	case util::mouse_wheel_up:
+		cam.zoom_in();
+		break;
+	case util::mouse_wheel_down:
+		cam.zoom_out();
 		break;
 	default:
 		break;
@@ -77,8 +84,6 @@ void gview::GameView3D::mouse_click(int button, int state, int x, int y)
 void gview::GameView3D::mouse_motion(int x, int y)
 {
 	cam.rotate(x, y);
-
-
 }
 
 /******************************************************************************/
@@ -137,13 +142,6 @@ void gview::GameView3D::set_scene()
 
 }
 
-void gview::GameView3D::set_perspective()
-{
-	// TODO: where to initialize these
-	Projection = mat4(1);
-	Projection = perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-}
-
 void gview::GameView3D::init()
 {
 	glutInitContextVersion(4, 0);
@@ -167,9 +165,6 @@ void gview::GameView3D::init()
 	GLenum error = glGetError();
 
 	main_shader = Shader("vertexShader.glsl", "fragmentShader.glsl");
-
-	//cam.init(vec4(0, 0.5, 70, 0), window);
-	this->set_perspective();
 
 	this->set_scene();
 

@@ -24,7 +24,6 @@ namespace gview
 
 		void create_window(const char* title);
 		void set_scene();
-		void set_perspective();
 
 	public:
 		GameView3D();

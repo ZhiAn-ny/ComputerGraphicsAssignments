@@ -20,6 +20,11 @@ mat4 gview::gcam::Camera::get_view()
 	return lookAt(this->pos_, this->target_, this->up_);
 }
 
+float gview::gcam::Camera::get_fov()
+{
+	return this->fov_;
+}
+
 void gview::gcam::Camera::move(dir::Directions dir)
 {
 	switch (dir)
@@ -78,4 +83,18 @@ void gview::gcam::Camera::rotate(int x, int y)
 	front.z = sin(radians(this->yaw)) * cos(radians(this->pitch));
 
 	this->front_ = normalize(front);
+}
+
+void gview::gcam::Camera::zoom_in()
+{
+	this->fov_ = this->fov_ + 1;
+	if (this->fov_ > 45.0f)
+		this->fov_ = 45.0f;
+}
+
+void gview::gcam::Camera::zoom_out()
+{
+	this->fov_ = this->fov_ - 1;
+	if (this->fov_ < 1.0f)
+		this->fov_ = 1.0f;
 }
