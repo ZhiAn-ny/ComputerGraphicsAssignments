@@ -8,7 +8,7 @@ MeshFactory::~MeshFactory() { }
 PolygonalMesh MeshFactory::create_cube()
 {
     PolygonalMesh mesh;
-    mesh.set_name("cube_" + this->cube_number);
+    mesh.set_name("cube_" + std::to_string(this->cube_number));
 
     // front
     mesh.add_vertex(Vertex(vec3(-0.5f, -0.5f, -0.5f), color::white, vec2(0.0f, 0.0f)));

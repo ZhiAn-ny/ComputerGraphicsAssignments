@@ -64,7 +64,7 @@ void gobj::mesh::PolygonalMesh::transform(vec3 tvec, vec3 svec, vec3 rvec, float
 {
     mat4 T = translate(mat4(1), tvec);
     mat4 S = scale(mat4(1), svec);
-    mat4 R = rotate(mat4(1), angle, normalize(rvec));
+    mat4 R = rotate(mat4(1), radians(angle), normalize(rvec));
 
     this->model = model * T * R * S;
 }

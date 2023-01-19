@@ -29,6 +29,7 @@ void gview::GameView3D::draw_scene(void)
 
 void gview::GameView3D::time_refresh(int a)
 {
+	scene.transform_object("cube_0", vec3(0), vec3(1), vec3(5, 1, 0), 1);
 	glutTimerFunc(10, GameView3D::time_refresh, 0);
 	glutPostRedisplay();
 }
