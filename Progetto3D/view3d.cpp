@@ -6,6 +6,7 @@ RECT window;
 Scene scene;
 Shader main_shader;
 Camera cam;
+lgh::LightingSettings light_setting;
 
 mat4 Projection;
 
@@ -24,6 +25,7 @@ void gview::GameView3D::draw_scene(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//main_shader.use();
+	light_setting.render(&main_shader);
 
 	scene.render(&main_shader);
 

@@ -148,6 +148,19 @@ void Shader::setVec3(const std::string& name, vec3 value) const
     }
 }
 
+void Shader::setVec4(const std::string& name, vec4 value) const
+{
+    glUniform4f(glGetUniformLocation(ID, name.c_str()),
+        value.x, value.y, value.z, value.a);
+
+    GLenum error = glGetError();
+    char infoLog[512];
+    if (error != GL_NO_ERROR) {
+        glGetProgramInfoLog(ID, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::SET_VECTOR_FAILED\n" << infoLog << std::endl;
+    }
+}
+
 void Shader::setMatrix4f(const std::string& name, mat4 value) const
 {
     glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()),

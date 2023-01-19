@@ -5,6 +5,7 @@
 #include "scene3d.h"
 #include "mesh_factory.h"
 #include "camera.h"
+#include "lighting_setting.h"
 
 using namespace gobj;
 using namespace gview::gcam;

@@ -22,6 +22,17 @@ namespace util
 
 	} // !dir
 
+	// Defines the names of the uniform variables passed to the shaders.
+	namespace uvar {
+		const string model = "Model";
+		const string view = "View";
+		const string projection = "Projection";
+
+		const string ambient_light = "ambientLight";
+		const string ambient_light_pwr = "ambientLight_pwr";
+
+	} // !uvar
+
 } // !util
 
 #endif // !GAME_UTILS_H_

@@ -9,6 +9,9 @@ out vec2 TexCoord;
 
 uniform mat4 Model, View, Projection;
 
+// phong calcolato pre-fragment shading
+// modelli di shading calcolati qui.
+
 void main()
 {
     gl_Position = Projection * View * Model * vec4(aPos, 1.0);
