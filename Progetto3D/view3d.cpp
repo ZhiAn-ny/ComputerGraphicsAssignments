@@ -39,6 +39,25 @@ void gview::GameView3D::resize(int w, int h)
 {
 }
 
+void gview::GameView3D::key_pressed(unsigned char key, int x, int y)
+{
+	switch (key)
+	{
+	case 'W': case 'w':
+		cam.move(dir::Directions::front);
+		break;
+	case 'A': case 'a':
+		cam.move(dir::Directions::left);
+		break;
+	case 'S': case 's':
+		cam.move(dir::Directions::back);
+		break;
+	case 'D': case 'd':
+		cam.move(dir::Directions::right);
+		break;
+	}
+}
+
 /******************************************************************************/
 
 gview::GameView3D::GameView3D() { }
@@ -113,6 +132,8 @@ void gview::GameView3D::init()
 	glutDisplayFunc(this->draw_scene);
 	glutTimerFunc(10, this->time_refresh, 0);
 	glutReshapeFunc(this->resize);
+
+	glutKeyboardFunc(this->key_pressed);
 
 	// Glew is initialized after having defined glut's recurrent functions
 	glewExperimental = GL_TRUE;
