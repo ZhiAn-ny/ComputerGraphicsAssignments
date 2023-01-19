@@ -4,8 +4,10 @@
 #include "shader.h"
 #include "scene3d.h"
 #include "mesh_factory.h"
+#include "camera.h"
 
 using namespace gobj;
+using namespace gview::gcam;
 
 namespace gview
 {
@@ -19,7 +21,7 @@ namespace gview
 
 		void create_window(const char* title);
 		void set_scene();
-		void set_camera();
+		void set_perspective();
 
 	public:
 		GameView3D();

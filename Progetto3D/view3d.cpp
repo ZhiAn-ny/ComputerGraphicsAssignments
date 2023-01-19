@@ -5,8 +5,9 @@
 RECT window;
 Scene scene;
 Shader main_shader;
+Camera cam;
 
-mat4 Model, View, Projection;
+mat4 Projection;
 
 /******************************************************************************/
 // STATIC FUNCTIONS
@@ -15,7 +16,7 @@ void gview::GameView3D::draw_scene(void)
 {
 	main_shader.use();
 	main_shader.setMatrix4f("Projection", Projection);
-	main_shader.setMatrix4f("View", View);
+	main_shader.setMatrix4f("View", cam.get_view());
 
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -94,12 +95,10 @@ void gview::GameView3D::set_scene()
 
 }
 
-void gview::GameView3D::set_camera()
+void gview::GameView3D::set_perspective()
 {
 	// TODO: where to initialize these
 	Projection = mat4(1);
-	View = mat4(1);
-	View = translate(View, glm::vec3(0.0f, 0.0f, -3.0f));
 	Projection = perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 }
 
@@ -124,7 +123,7 @@ void gview::GameView3D::init()
 	main_shader = Shader("vertexShader.glsl", "fragmentShader.glsl");
 
 	//cam.init(vec4(0, 0.5, 70, 0), window);
-	this->set_camera();
+	this->set_perspective();
 
 	this->set_scene();
 
