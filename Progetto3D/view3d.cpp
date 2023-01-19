@@ -18,7 +18,7 @@ void gview::GameView3D::draw_scene(void)
 	main_shader.setMatrix4f("View", View);
 
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//main_shader.use();
 
@@ -109,10 +109,10 @@ void gview::GameView3D::init()
 
 	this->set_scene();
 
-	//glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glEnable(GL_ALPHA_TEST);
-	//glCullFace(GL_BACK);
+	glCullFace(GL_BACK);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
