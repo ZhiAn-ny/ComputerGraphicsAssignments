@@ -29,7 +29,7 @@ void gview::GameView3D::draw_scene(void)
 
 void gview::GameView3D::time_refresh(int a)
 {
-	scene.transform_object("cube_0", vec3(0), vec3(1), vec3(5, 1, 0), 1);
+	//scene.transform_object("cube_0", vec3(0), vec3(1), vec3(5, 1, 0), 1);
 	glutTimerFunc(10, GameView3D::time_refresh, 0);
 	glutPostRedisplay();
 }
@@ -66,13 +66,32 @@ void gview::GameView3D::set_scene()
 	mesh::MeshFactory mf;
 
 	mesh::PolygonalMesh mesh = mf.create_cube();
-
 	mesh.add_texture("box", "res/textures/test01.jpg", 1);
 	mesh.set_texture("box");
-
 	mesh.transform(vec3(0), vec3(1), vec3(1, 0, 0), -10);
-
 	scene.add_object(mesh);
+
+	vector<vec3> cubePositions = {
+		vec3(2.0f,  5.0f, -15.0f),
+		vec3(-1.5f, -2.2f, -2.5f),
+		vec3(-3.8f, -2.0f, -12.3f),
+		vec3(2.4f, -0.4f, -3.5f),
+		vec3(-1.7f,  3.0f, -7.5f),
+		vec3(1.3f, -2.0f, -2.5f),
+		vec3(1.5f,  2.0f, -2.5f),
+		vec3(1.5f,  0.2f, -1.5f),
+		vec3(-1.3f,  1.0f, -1.5f)
+	};
+
+	for (int i = 0; i < cubePositions.size(); i++)
+	{
+		mesh = mf.create_cube();
+		mesh.add_texture("box", "res/textures/test01.jpg", 1);
+		mesh.set_texture("box");
+		mesh.transform(cubePositions[i], vec3(1), vec3(1, 1, 1), rand());
+		scene.add_object(mesh);
+	}
+
 }
 
 void gview::GameView3D::set_camera()
