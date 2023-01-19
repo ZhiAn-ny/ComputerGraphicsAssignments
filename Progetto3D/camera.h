@@ -32,7 +32,7 @@ namespace gview
 			bool is_active_ = false;
 
 			// Field Of View
-			float fov_ = 22.0f;
+			float fov_ = 45.0f;
 
 		public:
 			Camera();

@@ -88,8 +88,8 @@ void gview::gcam::Camera::rotate(int x, int y)
 void gview::gcam::Camera::zoom_in()
 {
 	this->fov_ = this->fov_ + 1;
-	if (this->fov_ > 45.0f)
-		this->fov_ = 45.0f;
+	if (this->fov_ > 90.0f)
+		this->fov_ = 90.0f;
 }
 
 void gview::gcam::Camera::zoom_out()
