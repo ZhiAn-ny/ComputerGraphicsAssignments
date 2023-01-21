@@ -21,6 +21,27 @@ namespace res
 
 	} // !color
 
+	namespace mat
+	{
+		typedef struct Material {
+			vec3 ambient;
+			vec3 diffuse;
+			vec3 specular;
+			float shininess;
+		};
+
+		const Material tutorial = { vec3(1.0f, 0.5f, 0.31f),
+			vec3(1.0f, 0.5f, 0.31f), vec3(0.5f, 0.5f, 0.5f), 32.0f };
+
+		const Material jade = { vec3(0.135, 0.2225, 0.1575),
+			vec3(0.54, 0.89, 0.63), vec3(0.316228, 0.316228, 0.316228), 0.1};
+
+		const Material gold = { vec3(0.24725, 0.1995, 0.0745),
+			vec3(0.75164, 0.60648, 0.22648), vec3(0.628281, 0.555802, 0.366065),
+			0.4};
+
+	} // !mat
+
 } // !res
 
 #endif // !GAME_RESOURCES_H_

@@ -2,8 +2,6 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-
-
 using namespace gobj::mesh;
 
 PolygonalMesh::PolygonalMesh() 
@@ -98,6 +96,11 @@ void gobj::mesh::PolygonalMesh::set_texture(string name)
     }
 }
 
+void gobj::mesh::PolygonalMesh::set_material(res::mat::Material mat)
+{
+    this->material = mat;
+}
+
 void PolygonalMesh::bind()
 {
     glGenVertexArrays(1, &VAO);
@@ -134,6 +137,10 @@ void PolygonalMesh::render(Shader* sh)
     sh->setMatrix4f("Model", this->model);
     sh->setMatrix3f("NormalMatrix", mat3(transpose(inverse(this->model))));
 
+    sh->setVec3("material.ambient", this->material.ambient);
+    sh->setVec3("material.diffuse", this->material.diffuse);
+    sh->setVec3("material.specular", this->material.specular);
+    sh->setFloat("material.shininess", this->material.shininess);
 
     glBindTexture(GL_TEXTURE_2D, texture);
     util::check_error("ERROR::MESH_TEXTURE::LOADING_FAILED");

@@ -121,8 +121,8 @@ void gview::GameView3D::set_scene()
 	//mesh.set_texture("box");
 	mesh.transform(vec3(0), vec3(1), vec3(1, 0, 0), -10);
 	mesh.set_color(color::coral);
+	mesh.set_material(res::mat::tutorial);
 	scene.add_object(mesh);
-
 
 }
 

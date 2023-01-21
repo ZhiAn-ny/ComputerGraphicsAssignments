@@ -21,6 +21,7 @@ namespace gobj
 
 			unsigned int texture = 0;
 			map<string, unsigned int> textures_ = {};
+			res::mat::Material material = res::mat::tutorial;
 
 			unsigned int VAO, VBO, EBO;
 
@@ -34,6 +35,7 @@ namespace gobj
 			void set_indices(vector<unsigned int> indices);
 			void add_texture(string name, char const* path, bool vflip);
 			void set_texture(string name);
+			void set_material(res::mat::Material mat);
 
 			void add_vertex(Vertex v) override;
 			void add_index(unsigned int i) override;
