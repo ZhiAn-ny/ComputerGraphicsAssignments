@@ -8,7 +8,7 @@ lgh::LightingSettings::LightingSettings()
 
 	this->diffuse_light_.set_position(vec3(3));
 	this->diffuse_light_.set_color(vec3(res::color::white));
-	this->diffuse_light_.set_intensity(1);
+	this->diffuse_light_.set_intensity(0.5);
 
 }
 

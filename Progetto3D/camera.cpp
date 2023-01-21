@@ -25,6 +25,11 @@ float gview::gcam::Camera::get_fov()
 	return this->fov_;
 }
 
+vec3 gview::gcam::Camera::get_position()
+{
+	return this->pos_;
+}
+
 void gview::gcam::Camera::move(dir::Directions dir)
 {
 	switch (dir)

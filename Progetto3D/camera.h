@@ -41,6 +41,7 @@ namespace gview
 			mat4 get_view();
 			// Return the field of view of the camera
 			float get_fov();
+			vec3 get_position();
 
 			void move(dir::Directions dir);
 			void activate_trackball(int x, int y);

@@ -22,22 +22,35 @@ uniform PointLight diffuse;
 
 // Texture
 uniform sampler2D ourTexture;
+uniform vec3 camPos;
+
+// tmp
+float specularStrength = 0.5;
 
 
 ///  UTILITY FUNCTIONS  ////////////////////////////////////////////////////////
 
-vec4 applyLighting(vec4 startColor)
+vec4 applyPhongLighting(vec4 startColor)
 {
-    vec3 norm = normalize(Normal);
-    vec3 lightDir = normalize(diffuse.pos - FragPos);
-
-    float diff = max(dot(norm, lightDir), 0.0);
-    vec3 d = diff * diffuse.color * diffuse.pwr;
+    // Calculate the ambient light contribution
     vec3 a = ambient.color * ambient.pwr;
 
-    vec4 result = vec4( startColor.r * (a.r + d.r), 
-                        startColor.g * (a.g + d.g),
-                        startColor.b * (a.b + d.b), 
+    // Calculate the diffuse light contribution
+    vec3 norm = normalize(Normal);
+    vec3 lightDir = normalize(diffuse.pos - FragPos);
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 d = diff * diffuse.color * diffuse.pwr;
+
+    // Calculate reflection from specular light
+    vec3 viewDir = normalize(camPos - FragPos);
+    vec3 reflectDir = reflect(-lightDir, norm);
+    //32 is the shininess
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+    vec3 s = specularStrength * spec * diffuse.color;
+
+    vec4 result = vec4( startColor.r * (a.r + d.r + s.r), 
+                        startColor.g * (a.g + d.g + s.g),
+                        startColor.b * (a.b + d.b + s.b), 
                         startColor.a );
     return result;
 }
@@ -46,7 +59,7 @@ vec4 applyLighting(vec4 startColor)
 
 void main()
 {
-    vec4 resColor = applyLighting(ourColor);
+    vec4 resColor = applyPhongLighting(ourColor);
     
     FragColor = texture(ourTexture, TexCoord) * resColor;
 } 

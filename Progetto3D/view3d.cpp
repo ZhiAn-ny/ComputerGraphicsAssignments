@@ -24,7 +24,8 @@ void gview::GameView3D::draw_scene(void)
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	//main_shader.use();
+	main_shader.setVec3(util::uvar::cam_pos, cam.get_position());
+
 	light_setting.render(&main_shader);
 
 	scene.render(&main_shader);
