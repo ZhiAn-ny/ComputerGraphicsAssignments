@@ -132,6 +132,8 @@ void PolygonalMesh::bind()
 void PolygonalMesh::render(Shader* sh)
 {
     sh->setMatrix4f("Model", this->model);
+    sh->setMatrix3f("NormalMatrix", mat3(transpose(inverse(this->model))));
+
 
     glBindTexture(GL_TEXTURE_2D, texture);
     util::check_error("ERROR::MESH_TEXTURE::LOADING_FAILED");

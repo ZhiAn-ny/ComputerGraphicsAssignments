@@ -11,6 +11,7 @@ out vec3 Normal;
 out vec3 FragPos;
 
 uniform mat4 Model, View, Projection;
+uniform mat3 NormalMatrix;
 
 // phong calcolato pre-fragment shading
 // modelli di shading calcolati qui.
@@ -22,5 +23,7 @@ void main()
     TexCoord = aTexCoord;
 
     FragPos = vec3(Model * vec4(aPos, 1.0));
-    Normal = aNormal;
+
+    // Transform normals in world's space
+    Normal = NormalMatrix * aNormal;
 }

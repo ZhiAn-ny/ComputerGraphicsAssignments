@@ -174,3 +174,17 @@ void Shader::setMatrix4f(const std::string& name, mat4 value) const
         std::cout << "ERROR::SHADER::SET_MATRIX_FAILED\n" << infoLog << std::endl;
     }
 }
+
+void Shader::setMatrix3f(const std::string& name, mat3 value) const
+{
+    glUniformMatrix3fv(glGetUniformLocation(ID, name.c_str()),
+        1, GL_FALSE,
+        value_ptr(value));
+
+    GLenum error = glGetError();
+    char infoLog[512];
+    if (error != GL_NO_ERROR) {
+        glGetProgramInfoLog(ID, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::SET_MATRIX_FAILED\n" << infoLog << std::endl;
+    }
+}
