@@ -11,40 +11,40 @@ PolygonalMesh MeshFactory::create_cube()
     mesh.set_name("cube_" + std::to_string(this->cube_number));
 
     // front
-    mesh.add_vertex(Vertex(vec3(-0.5f, -0.5f, -0.5f), color::white, vec2(0.0f, 0.0f)));
-    mesh.add_vertex(Vertex(vec3(0.5f, -0.5f, -0.5f), color::white , vec2(1.0f, 0.0f)));
-    mesh.add_vertex(Vertex(vec3(0.5f, 0.5f, -0.5f), color::white , vec2(1.0f, 1.0f)));
-    mesh.add_vertex(Vertex(vec3(-0.5f, 0.5f, -0.5f), color::white , vec2(0.0f, 1.0f)));
+    mesh.add_vertex(Vertex(vec3(-0.5f, -0.5f, -0.5f), color::white, vec2(0.0f, 0.0f), vec3(0,0,-1)));
+    mesh.add_vertex(Vertex(vec3(0.5f, -0.5f, -0.5f), color::white , vec2(1.0f, 0.0f), vec3(0,0,-1)));
+    mesh.add_vertex(Vertex(vec3(0.5f, 0.5f, -0.5f), color::white , vec2(1.0f, 1.0f), vec3(0,0,-1)));
+    mesh.add_vertex(Vertex(vec3(-0.5f, 0.5f, -0.5f), color::white , vec2(0.0f, 1.0f), vec3(0,0,-1)));
 
     // back
-    mesh.add_vertex(Vertex(vec3(-0.5f, -0.5f, 0.5f), color::white , vec2(0.0f, 0.0f)));
-    mesh.add_vertex(Vertex(vec3(0.5f, -0.5f, 0.5f), color::white , vec2(1.0f, 0.0f)));
-    mesh.add_vertex(Vertex(vec3(0.5f, 0.5f, 0.5f), color::white , vec2(1.0f, 1.0f)));
-    mesh.add_vertex(Vertex(vec3(-0.5f, 0.5f, 0.5f), color::white , vec2(0.0f, 1.0f)));
+    mesh.add_vertex(Vertex(vec3(-0.5f, -0.5f, 0.5f), color::white , vec2(0.0f, 0.0f), vec3(0,0,1)));
+    mesh.add_vertex(Vertex(vec3(0.5f, -0.5f, 0.5f), color::white , vec2(1.0f, 0.0f), vec3(0,0,1)));
+    mesh.add_vertex(Vertex(vec3(0.5f, 0.5f, 0.5f), color::white , vec2(1.0f, 1.0f), vec3(0,0,1)));
+    mesh.add_vertex(Vertex(vec3(-0.5f, 0.5f, 0.5f), color::white , vec2(0.0f, 1.0f), vec3(0,0,1)));
     
     // left
-    mesh.add_vertex(Vertex(vec3(-0.5f, -0.5f, 0.5f), color::white , vec2(0.0f, 0.0f)));
-    mesh.add_vertex(Vertex(vec3(-0.5f, 0.5f, 0.5f), color::white , vec2(1.0f, 0.0f)));
-    mesh.add_vertex(Vertex(vec3(-0.5f, 0.5f, -0.5f), color::white , vec2(1.0f, 1.0f)));
-    mesh.add_vertex(Vertex(vec3(-0.5f, -0.5f, -0.5f), color::white , vec2(0.0f, 1.0f)));
+    mesh.add_vertex(Vertex(vec3(-0.5f, -0.5f, 0.5f), color::white , vec2(0.0f, 0.0f), vec3(-1,0,0)));
+    mesh.add_vertex(Vertex(vec3(-0.5f, 0.5f, 0.5f), color::white , vec2(1.0f, 0.0f), vec3(-1,0,0)));
+    mesh.add_vertex(Vertex(vec3(-0.5f, 0.5f, -0.5f), color::white , vec2(1.0f, 1.0f), vec3(-1,0,0)));
+    mesh.add_vertex(Vertex(vec3(-0.5f, -0.5f, -0.5f), color::white , vec2(0.0f, 1.0f), vec3(-1,0,0)));
     
     // right
-    mesh.add_vertex(Vertex(vec3(0.5f, -0.5f, 0.5f), color::white , vec2(0.0f, 0.0f)));
-    mesh.add_vertex(Vertex(vec3(0.5f, 0.5f, 0.5f), color::white , vec2(1.0f, 0.0f)));
-    mesh.add_vertex(Vertex(vec3(0.5f, 0.5f, -0.5f), color::white , vec2(1.0f, 1.0f)));
-    mesh.add_vertex(Vertex(vec3(0.5f, -0.5f, -0.5f), color::white , vec2(0.0f, 1.0f)));
+    mesh.add_vertex(Vertex(vec3(0.5f, -0.5f, 0.5f), color::white , vec2(0.0f, 0.0f), vec3(1,0,0)));
+    mesh.add_vertex(Vertex(vec3(0.5f, 0.5f, 0.5f), color::white , vec2(1.0f, 0.0f), vec3(1,0,0)));
+    mesh.add_vertex(Vertex(vec3(0.5f, 0.5f, -0.5f), color::white , vec2(1.0f, 1.0f), vec3(1,0,0)));
+    mesh.add_vertex(Vertex(vec3(0.5f, -0.5f, -0.5f), color::white , vec2(0.0f, 1.0f), vec3(1,0,0)));
     
     // bottom
-    mesh.add_vertex(Vertex(vec3(-0.5f, -0.5f, 0.5f), color::white , vec2(0.0f, 0.0f)));
-    mesh.add_vertex(Vertex(vec3(0.5f, -0.5f, 0.5f), color::white , vec2(1.0f, 0.0f)));
-    mesh.add_vertex(Vertex(vec3(0.5f, -0.5f, -0.5f), color::white , vec2(1.0f, 1.0f)));
-    mesh.add_vertex(Vertex(vec3(-0.5f, -0.5f, -0.5f), color::white , vec2(0.0f, 1.0f)));
+    mesh.add_vertex(Vertex(vec3(-0.5f, -0.5f, 0.5f), color::white , vec2(0.0f, 0.0f), vec3(0,-1,0)));
+    mesh.add_vertex(Vertex(vec3(0.5f, -0.5f, 0.5f), color::white , vec2(1.0f, 0.0f), vec3(0,-1,0)));
+    mesh.add_vertex(Vertex(vec3(0.5f, -0.5f, -0.5f), color::white , vec2(1.0f, 1.0f), vec3(0,-1,0)));
+    mesh.add_vertex(Vertex(vec3(-0.5f, -0.5f, -0.5f), color::white , vec2(0.0f, 1.0f), vec3(0,-1,0)));
     
     // top
-    mesh.add_vertex(Vertex(vec3(-0.5f, 0.5f, 0.5f), color::white , vec2(0.0f, 0.0f)));
-    mesh.add_vertex(Vertex(vec3(0.5f, 0.5f, 0.5f), color::white , vec2(1.0f, 0.0f)));
-    mesh.add_vertex(Vertex(vec3(0.5f, 0.5f, -0.5f), color::white , vec2(1.0f, 1.0f)));
-    mesh.add_vertex(Vertex(vec3(-0.5f, 0.5f, -0.5f), color::white , vec2(0.0f, 1.0f)));
+    mesh.add_vertex(Vertex(vec3(-0.5f, 0.5f, 0.5f), color::white , vec2(0.0f, 0.0f), vec3(0,1,0)));
+    mesh.add_vertex(Vertex(vec3(0.5f, 0.5f, 0.5f), color::white , vec2(1.0f, 0.0f), vec3(0,1,0)));
+    mesh.add_vertex(Vertex(vec3(0.5f, 0.5f, -0.5f), color::white , vec2(1.0f, 1.0f), vec3(0,1,0)));
+    mesh.add_vertex(Vertex(vec3(-0.5f, 0.5f, -0.5f), color::white , vec2(0.0f, 1.0f), vec3(0,1,0)));
 
     mesh.set_indices({
         0,1,3,

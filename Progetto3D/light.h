@@ -16,10 +16,22 @@ namespace lgh
 		Light();
 		~Light();
 
-		vec3 get_color();
-		void set_color(vec3 color);
-		float get_intensity();
-		void set_intensity(float i);
+		vec3 get_color() { return this->color_; }
+		void set_color(vec3 color) { this->color_ = color; }
+		float get_intensity() { return this->pwr_; }
+		void set_intensity(float i) { this->pwr_ = i; }
+	};
+
+	class PointLight : public Light {
+	private:
+		vec3 pos_ = vec3(0);
+
+	public:
+		PointLight();
+		~PointLight();
+
+		vec3 get_position() { return this->pos_; }
+		void set_position(vec3 pos) { this->pos_ = pos; }
 	};
 
 } // !lgh

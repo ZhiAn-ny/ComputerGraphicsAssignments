@@ -13,13 +13,15 @@ namespace gobj
 			vec3 pos = vec3(0);
 			vec4 color = vec4(1);
 			vec2 tex = vec2(0);
+			vec3 normal = vec3(0);
 
 			Vertex() {};
-			Vertex(vec3 pos_, vec4 col_, vec2 tex_)
+			Vertex(vec3 pos_, vec4 col_, vec2 tex_, vec3 normal_)
 			{
 				this->pos = pos_;
 				this->color = col_;
 				this->tex = tex_;
+				this->normal = normal_;
 			}
 		};
 

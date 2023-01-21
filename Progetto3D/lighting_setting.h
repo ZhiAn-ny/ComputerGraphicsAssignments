@@ -13,6 +13,7 @@ namespace lgh {
 	class LightingSettings {
 	private:
 		Light ambient_light_;
+		PointLight diffuse_light_;
 
 	public:
 		LightingSettings();

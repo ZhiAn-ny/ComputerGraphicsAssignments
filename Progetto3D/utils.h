@@ -28,8 +28,11 @@ namespace util
 		const string view = "View";
 		const string projection = "Projection";
 
-		const string ambient_light = "ambientLight";
-		const string ambient_light_pwr = "ambientLight_pwr";
+		const string am_light = "ambient.color";
+		const string am_light_pwr = "ambient.pwr";
+		const string diff_light = "diffuse.color";
+		const string diff_light_pwr = "diffuse.pwr";
+		const string diff_light_pos = "diffuse.pos";
 
 	} // !uvar
 
