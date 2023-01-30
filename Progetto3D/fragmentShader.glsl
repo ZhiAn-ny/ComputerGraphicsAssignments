@@ -18,7 +18,7 @@ struct Light {
 
 struct Material {
     sampler2D diffuse;
-    vec3      specular;
+    sampler2D specular;
     float     shininess;
 }; 
   
@@ -48,7 +48,7 @@ vec4 applyPhongLighting()
     vec3 reflectDir = reflect(-lightDir, norm);
     //32 is the shininess
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-    vec3 s = light.specular * spec * material.specular;
+    vec3 s = light.specular * spec * vec3(texture(material.specular, TexCoord));
 
     vec4 result = vec4( (a.r + d.r + s.r), 
                         (a.g + d.g + s.g),

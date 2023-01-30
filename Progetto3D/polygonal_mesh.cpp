@@ -60,7 +60,7 @@ unsigned int gobj::mesh::PolygonalMesh::load_texture(char const* path, int verti
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
 
     } else {
@@ -93,6 +93,14 @@ void gobj::mesh::PolygonalMesh::set_diffuse_map(string name)
     auto search = this->textures_.find(name);
     if (search != this->textures_.end()) {
         this->diffuse_map = search->second;
+    }
+}
+
+void gobj::mesh::PolygonalMesh::set_specular_map(string name)
+{
+    auto search = this->textures_.find(name);
+    if (search != this->textures_.end()) {
+        this->specular_map = search->second;
     }
 }
 
@@ -134,13 +142,17 @@ void PolygonalMesh::render(Shader* sh)
     sh->setMatrix4f("Model", this->model);
     sh->setMatrix3f("NormalMatrix", mat3(transpose(inverse(this->model))));
 
-    sh->setVec3("material.specular", this->material.specular);
     sh->setFloat("material.shininess", this->material.shininess);
     sh->setInt("material.diffuse", 0);
+    sh->setInt("material.specular", 1);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, diffuse_map);
     util::check_error("ERROR::MESH::DIFFUSE_MAP::LOADING_FAILED");
+
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, specular_map);
+    util::check_error("ERROR::MESH::SPECULAR_MAP::LOADING_FAILED");
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);

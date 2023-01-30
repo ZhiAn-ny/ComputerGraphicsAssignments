@@ -20,6 +20,7 @@ namespace gobj
 			mat4 model = mat4(1);
 
 			unsigned int diffuse_map = 0;
+			unsigned int specular_map = 0;
 			map<string, unsigned int> textures_ = {};
 			res::mat::Material material = res::mat::tutorial;
 
@@ -35,6 +36,7 @@ namespace gobj
 			void set_indices(vector<unsigned int> indices);
 			void add_texture(string name, char const* path, bool vflip);
 			void set_diffuse_map(string name);
+			void set_specular_map(string name);
 			void set_material(res::mat::Material mat);
 
 			void add_vertex(Vertex v) override;
