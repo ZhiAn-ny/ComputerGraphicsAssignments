@@ -136,6 +136,7 @@
     <ClCompile Include="lighting_setting.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mesh_factory.cpp" />
+    <ClCompile Include="point_light.cpp" />
     <ClCompile Include="polygonal_mesh.cpp" />
     <ClCompile Include="scene3d.cpp" />
     <ClCompile Include="shader.cpp" />
@@ -143,11 +144,13 @@
     <ClCompile Include="view3d.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="alight.h" />
     <ClInclude Include="amesh.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="lib.h" />
     <ClInclude Include="lighting_setting.h" />
     <ClInclude Include="mesh_factory.h" />
+    <ClInclude Include="point_light.h" />
     <ClInclude Include="polygonal_mesh.h" />
     <ClInclude Include="res.h" />
     <ClInclude Include="scene3d.h" />

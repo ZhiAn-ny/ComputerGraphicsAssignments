@@ -115,9 +115,9 @@ void gview::GameView3D::create_window(const char* title)
 void gview::GameView3D::set_scene()
 {
 	vec3 light_pos = vec3(1.2, 1, 2);
-	light_setting.set_position(light_pos);
+	light_setting.set_point_light_position(light_pos);
 	// light_setting.set_lights(color::blue, color::red, color::green);
-	light_setting.set_lights(vec3(0.2), vec3(0.5), vec3(1));
+	light_setting.set_point_light_params(vec3(0.2), vec3(0.5), vec3(1));
 
 	mesh::MeshFactory mf;
 
