@@ -114,18 +114,19 @@ void gview::GameView3D::create_window(const char* title)
 
 void gview::GameView3D::set_scene()
 {
-	vec3 light_pos = vec3(1);
+	vec3 light_pos = vec3(1.2, 1, 2);
 	light_setting.set_position(light_pos);
-	light_setting.set_lights(color::blue, color::red, color::green);
+	// light_setting.set_lights(color::blue, color::red, color::green);
+	light_setting.set_lights(vec3(0.2), vec3(0.5), vec3(1));
 
 	mesh::MeshFactory mf;
 
 	mesh::PolygonalMesh mesh = mf.create_cube();
-	//mesh.add_texture("box", "res/textures/test01.jpg", 1);
-	//mesh.set_texture("box");
-	mesh.transform(vec3(0), vec3(1), vec3(1, 0, 0), -10);
+	mesh.add_texture("box", "res/textures/container2.jpg", 1);
+	mesh.set_diffuse_map("box");
+	mesh.transform(vec3(0), vec3(1), vec3(1, 0, 0), 0);
 	//mesh.set_color(color::coral);
-	mesh.set_material(res::mat::tutorial);
+	mesh.set_material({vec3(1),vec3(1),vec3(0.5),64});
 	scene.add_object(mesh);
 
 	mesh = mf.create_cube();

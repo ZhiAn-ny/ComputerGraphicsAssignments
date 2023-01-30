@@ -7,7 +7,7 @@ using namespace gobj::mesh;
 PolygonalMesh::PolygonalMesh() 
 { 
     this->add_texture("none", "res/textures/blank.jpg", false);
-    this->set_texture("none");
+    this->set_diffuse_map("none");
 }
 
 PolygonalMesh::~PolygonalMesh() { }
@@ -88,11 +88,11 @@ void gobj::mesh::PolygonalMesh::add_texture(string name, char const* path, bool 
     }
 }
 
-void gobj::mesh::PolygonalMesh::set_texture(string name)
+void gobj::mesh::PolygonalMesh::set_diffuse_map(string name)
 {
     auto search = this->textures_.find(name);
     if (search != this->textures_.end()) {
-        this->texture = search->second;
+        this->diffuse_map = search->second;
     }
 }
 
@@ -115,9 +115,6 @@ void PolygonalMesh::bind()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, pos));
     glEnableVertexAttribArray(0);
     
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
-    glEnableVertexAttribArray(1);
-
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, tex));
     glEnableVertexAttribArray(2);
 
@@ -137,13 +134,14 @@ void PolygonalMesh::render(Shader* sh)
     sh->setMatrix4f("Model", this->model);
     sh->setMatrix3f("NormalMatrix", mat3(transpose(inverse(this->model))));
 
-    sh->setVec3("material.ambient", this->material.ambient);
-    sh->setVec3("material.diffuse", this->material.diffuse);
     sh->setVec3("material.specular", this->material.specular);
     sh->setFloat("material.shininess", this->material.shininess);
+    sh->setInt("material.diffuse", 0);
 
-    glBindTexture(GL_TEXTURE_2D, texture);
-    util::check_error("ERROR::MESH_TEXTURE::LOADING_FAILED");
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, diffuse_map);
+    util::check_error("ERROR::MESH::DIFFUSE_MAP::LOADING_FAILED");
+
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
 }

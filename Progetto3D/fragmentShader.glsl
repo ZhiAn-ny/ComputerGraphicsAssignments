@@ -1,6 +1,5 @@
 #version 330 core
 
-in vec4 ourColor;
 in vec2 TexCoord;
 in vec3 Normal;
 in vec3 FragPos;
@@ -18,36 +17,31 @@ struct Light {
 };
 
 struct Material {
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
-    float shininess;
+    sampler2D diffuse;
+    vec3      specular;
+    float     shininess;
 }; 
   
 
 //  UNIFORM VARIABLES  /////////////////////////////////////////////////////////
 
-uniform Light light;
-
-// Texture
-uniform sampler2D ourTexture;
 uniform vec3 camPos;
-
+uniform Light light;
 uniform Material material;
 
 
 ///  UTILITY FUNCTIONS  ////////////////////////////////////////////////////////
 
-vec4 applyPhongLighting(vec4 startColor)
+vec4 applyPhongLighting()
 {
     // Calculate the ambient light contribution
-    vec3 a = light.ambient * material.ambient;
+    vec3 a = light.ambient * vec3(texture(material.diffuse, TexCoord));
 
     // Calculate the diffuse light contribution
     vec3 norm = normalize(Normal);
     vec3 lightDir = normalize(light.pos - FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 d = light.diffuse * diff * material.diffuse;;
+    vec3 d = light.diffuse * diff * vec3(texture(material.diffuse, TexCoord));
 
     // Calculate reflection from specular light
     vec3 viewDir = normalize(camPos - FragPos);
@@ -59,7 +53,7 @@ vec4 applyPhongLighting(vec4 startColor)
     vec4 result = vec4( (a.r + d.r + s.r), 
                         (a.g + d.g + s.g),
                         (a.b + d.b + s.b), 
-                        1.0 );
+                        1.0 ); // We always set the opacity to its maximum
     return result;
 }
 
@@ -67,7 +61,7 @@ vec4 applyPhongLighting(vec4 startColor)
 
 void main()
 {
-    vec4 resColor = applyPhongLighting(ourColor);
+    vec4 resColor = applyPhongLighting();
     
-    FragColor = texture(ourTexture, TexCoord) * resColor;
+    FragColor = resColor;
 } 
