@@ -1,4 +1,5 @@
 #ifndef GAME_LIGHT_DIRECTIONAL_H_
+#define GAME_LIGHT_DIRECTIONAL_H_
 
 #include "alight.h"
 
@@ -10,10 +11,11 @@ namespace lgh {
 	
 	public:
 		DirectionalLight();
+		DirectionalLight(string name);
 		~DirectionalLight();
 
 		void set_direction(vec3 dir);
-		void render(Shader* sh);
+		void render(Shader* sh, string uvar) override;
 	
 	};
 

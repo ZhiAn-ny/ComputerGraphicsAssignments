@@ -6,64 +6,44 @@ lgh::LightingSettings::LightingSettings() { }
 
 lgh::LightingSettings::~LightingSettings() { }
 
-void lgh::LightingSettings::set_point_light_position(vec3 pos)
+void lgh::LightingSettings::add_point_light(PointLight light)
 {
-	this->point.set_position(pos);
+	this->point.push_back(light);
 }
 
-void lgh::LightingSettings::set_point_light_params(vec3 ambient, vec3 diffuse, vec3 specular)
+void lgh::LightingSettings::add_spotlight(Spotlight light)
 {
-	this->point.set_lights(ambient, diffuse, specular);
+	this->spot.push_back(light);
 }
 
-void lgh::LightingSettings::set_point_light_params(float linear, float quadratic)
+void lgh::LightingSettings::add_directional_light(DirectionalLight light)
 {
-	this->point.set_params(linear, quadratic);
-}
-
-void lgh::LightingSettings::set_direct_light_direction(vec3 pos)
-{
-	this->direct.set_direction(pos);
-}
-
-void lgh::LightingSettings::set_direct_light_params(vec3 ambient, vec3 diffuse, vec3 specular)
-{
-	this->direct.set_lights(ambient, diffuse, specular);
-}
-
-void lgh::LightingSettings::set_spot_light_position(vec3 pos)
-{
-	this->spot.set_position(pos);
-}
-
-void lgh::LightingSettings::set_spot_light_direction(vec3 dir)
-{
-	this->spot.set_direction(dir);
-}
-
-void lgh::LightingSettings::set_spot_light_params(vec3 ambient, vec3 diffuse, vec3 specular)
-{
-	this->spot.set_lights(ambient, diffuse, specular);
-}
-
-void lgh::LightingSettings::set_spot_light_params(float linear, float quadratic)
-{
-	this->spot.set_params(linear, quadratic);
-}
-
-void lgh::LightingSettings::set_spot_light_inner_cut_off(float cutOff)
-{
-	this->spot.set_inner_cutOff(cutOff);
-}
-
-void lgh::LightingSettings::set_spot_light_outer_cut_off(float cutOff)
-{
-	this->spot.set_outer_cutOff(cutOff);
+	this->direct.push_back(light);
 }
 
 void lgh::LightingSettings::render(Shader* sh)
 {
-	//this->point.render(sh);
-	//this->direct.render(sh);
-	this->spot.render(sh);
+	string var_name;
+
+	sh->setInt("n_dirLights", this->direct.size());
+	for (int i = 0; i < this->direct.size(); i++)
+	{
+		var_name = "dirLights[" + std::to_string(i) + "]";
+		this->direct[i].render(sh, var_name);
+	}
+
+	sh->setInt("n_pointLights", this->point.size());
+	for (int i = 0; i < this->point.size(); i++)
+	{
+		var_name = "pointLights[" + std::to_string(i) + "]";
+		this->point[i].render(sh, var_name);
+	}
+
+	sh->setInt("n_spotlights", this->spot.size());
+	for (int i = 0; i < this->spot.size(); i++)
+	{
+		var_name = "spotlights[" + std::to_string(i) + "]";
+		this->spot[i].render(sh, var_name);
+	}
+
 }

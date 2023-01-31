@@ -4,6 +4,11 @@ lgh::Spotlight::Spotlight()
 {
 }
 
+lgh::Spotlight::Spotlight(string name)
+{
+	this->set_name(name);
+}
+
 lgh::Spotlight::~Spotlight()
 {
 }
@@ -23,11 +28,11 @@ void lgh::Spotlight::set_outer_cutOff(float cutOff)
 	this->outer_cutOff_ = cutOff;
 }
 
-void lgh::Spotlight::render(Shader* sh)
+void lgh::Spotlight::render(Shader* sh, string uvar)
 {
-	sh->setVec3("light.dir", this->direction_);
-	sh->setFloat("light.innerCutOff", cos(radians(this->inner_cutOff_)));
-	sh->setFloat("light.outerCutOff", cos(radians(this->outer_cutOff_)));
+	sh->setVec3(uvar + ".dir", this->direction_);
+	sh->setFloat(uvar + ".innerCutOff", cos(radians(this->inner_cutOff_)));
+	sh->setFloat(uvar + ".outerCutOff", cos(radians(this->outer_cutOff_)));
 
-	PointLight::render(sh);
+	PointLight::render(sh, uvar);
 }

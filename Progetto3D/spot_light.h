@@ -13,12 +13,13 @@ namespace lgh {
 
 	public:
 		Spotlight();
+		Spotlight(string name);
 		~Spotlight();
 
 		void set_direction(vec3 dir);
 		void set_inner_cutOff(float cutOff);
 		void set_outer_cutOff(float cutOff);
-		void render(Shader* sh) override;
+		void render(Shader* sh, string uvar) override;
 	};
 
 }

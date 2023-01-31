@@ -114,16 +114,16 @@ void gview::GameView3D::create_window(const char* title)
 
 void gview::GameView3D::set_scene()
 {
-	//vec3 light_pos = vec3(1.2, 1, 2);
-	light_setting.set_spot_light_position(cam.get_position());
-	light_setting.set_spot_light_direction(cam.get_front_direction());
-	light_setting.set_spot_light_inner_cut_off(12.5);
-	light_setting.set_spot_light_outer_cut_off(17.5);
-	light_setting.set_spot_light_params(vec3(0.2), vec3(0.5), vec3(1));
-	light_setting.set_spot_light_params(0.09, 0.032); // dist = 50
+	lgh::LightFactory lf;
 
-	//light_setting.set_direct_light_direction(vec3(-0.2, -1, -0.3));
-	//light_setting.set_direct_light_params(vec3(0.2), vec3(0.5), vec3(1));
+	lgh::Spotlight light = lf.new_spotlight(cam.get_position(), cam.get_front_direction());
+	vec3 col = color::cyan;
+	col *= 0.5;
+	light.set_diffuse(col);
+	light_setting.add_spotlight(light);
+	
+	light_setting.add_point_light(lf.new_point_light(vec3(3)));
+	light_setting.add_point_light(lf.new_point_light(vec3(-2)));
 
 	mesh::MeshFactory mf;
 

@@ -40,7 +40,7 @@ namespace lgh {
 			 3250: linear_ = 0.0014; quadratic_ = 0.000007;
 		 */
 		void set_params(float linear, float quadratic);
-		void render(Shader* sh) override;
+		void render(Shader* sh, string uvar) override;
 	};
 
 }

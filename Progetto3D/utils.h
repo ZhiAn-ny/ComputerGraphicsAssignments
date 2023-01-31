@@ -7,6 +7,8 @@ namespace util
 {
 	unsigned int check_error(string message);
 
+	const int max_n_lights = 10;
+
 	const int mouse_wheel_up = 4;
 	const int mouse_wheel_down = 3;
 

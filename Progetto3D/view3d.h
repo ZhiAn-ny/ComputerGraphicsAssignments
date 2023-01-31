@@ -4,6 +4,7 @@
 #include "shader.h"
 #include "scene3d.h"
 #include "mesh_factory.h"
+#include "light_factory.h"
 #include "camera.h"
 #include "lighting_setting.h"
 

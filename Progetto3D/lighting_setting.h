@@ -11,27 +11,17 @@ namespace lgh {
 
 	class LightingSettings {
 	private:
-		PointLight point = {};
-		DirectionalLight direct = {};
-		Spotlight spot = {};
+		vector<PointLight> point = {};
+		vector<DirectionalLight> direct = {};
+		vector<Spotlight> spot = {};
 
 	public:
 		LightingSettings();
 		~LightingSettings();
 
-		void set_point_light_position(vec3 pos);
-		void set_point_light_params(vec3 ambient, vec3 diffuse, vec3 specular);
-		void set_point_light_params(float linear, float quadratic);
-
-		void set_direct_light_direction(vec3 dir);
-		void set_direct_light_params(vec3 ambient, vec3 diffuse, vec3 specular);
-
-		void set_spot_light_position(vec3 pos);
-		void set_spot_light_direction(vec3 dir);
-		void set_spot_light_params(vec3 ambient, vec3 diffuse, vec3 specular);
-		void set_spot_light_params(float linear, float quadratic);
-		void set_spot_light_inner_cut_off(float cutOff);
-		void set_spot_light_outer_cut_off(float cutOff);
+		void add_point_light(PointLight light);
+		void add_spotlight(Spotlight light);
+		void add_directional_light(DirectionalLight light);
 
 		void render(Shader* sh);
 	};
