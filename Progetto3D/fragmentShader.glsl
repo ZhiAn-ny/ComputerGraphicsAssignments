@@ -26,6 +26,19 @@ struct DirectionalLight {
     vec3 diffuse;
     vec3 specular;
 };
+struct Spotlight {
+    vec3 pos;
+    vec3 dir;
+    float cutOff;
+
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+
+    float constant;
+	float linear;
+	float quadratic;
+};
 
 struct Material {
     sampler2D diffuse;
@@ -37,7 +50,7 @@ struct Material {
 //  UNIFORM VARIABLES  /////////////////////////////////////////////////////////
 
 uniform vec3 camPos;
-uniform PointLight light;
+uniform Spotlight light;
 uniform Material material;
 
 
@@ -45,9 +58,11 @@ uniform Material material;
 
 vec4 applyPhongLighting()
 {
+    // Calculate light's attenuation from distance
     float dist = length(light.pos - FragPos);
     float attenuation = 1.0 / (light.constant + light.linear * dist + 
     		        light.quadratic * (dist * dist));  
+
     //// Calculate the light's direction
     vec3 lightDir = normalize(light.pos - FragPos); // for point light (frag->light)
     // vec3 lightDir = normalize(-light.dir); // for dir light (light->target)
@@ -82,8 +97,17 @@ vec4 applyPhongLighting()
 
 void main()
 {
-    
-    vec4 resColor = applyPhongLighting();
+    vec3 lightDir = normalize(light.pos - FragPos);
+    float theta = dot(lightDir, normalize(-light.dir));
+
+
+    vec4 resColor = vec4(light.ambient * texture(material.diffuse, TexCoord).rgb, 1.0);
+
+    if (theta > light.cutOff)
+    {
+        resColor = applyPhongLighting();
+    }
+
     
     FragColor = resColor;
 } 

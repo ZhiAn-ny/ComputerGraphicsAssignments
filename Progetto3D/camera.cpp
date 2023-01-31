@@ -30,6 +30,11 @@ vec3 gview::gcam::Camera::get_position()
 	return this->pos_;
 }
 
+vec3 gview::gcam::Camera::get_front_direction()
+{
+	return this->front_;
+}
+
 void gview::gcam::Camera::move(dir::Directions dir)
 {
 	switch (dir)

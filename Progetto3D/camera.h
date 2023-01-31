@@ -42,6 +42,7 @@ namespace gview
 			// Return the field of view of the camera
 			float get_fov();
 			vec3 get_position();
+			vec3 get_front_direction();
 
 			void move(dir::Directions dir);
 			void activate_trackball(int x, int y);

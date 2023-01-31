@@ -141,6 +141,7 @@
     <ClCompile Include="polygonal_mesh.cpp" />
     <ClCompile Include="scene3d.cpp" />
     <ClCompile Include="shader.cpp" />
+    <ClCompile Include="spot_light.cpp" />
     <ClCompile Include="utils.cpp" />
     <ClCompile Include="view3d.cpp" />
   </ItemGroup>
@@ -157,6 +158,7 @@
     <ClInclude Include="res.h" />
     <ClInclude Include="scene3d.h" />
     <ClInclude Include="shader.h" />
+    <ClInclude Include="spot_light.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="view3d.h" />
