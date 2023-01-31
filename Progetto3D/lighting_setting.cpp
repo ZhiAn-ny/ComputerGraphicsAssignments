@@ -16,6 +16,11 @@ void lgh::LightingSettings::set_point_light_params(vec3 ambient, vec3 diffuse, v
 	this->point.set_lights(ambient, diffuse, specular);
 }
 
+void lgh::LightingSettings::set_point_light_params(float linear, float quadratic)
+{
+	this->point.set_params(linear, quadratic);
+}
+
 void lgh::LightingSettings::set_direct_light_direction(vec3 pos)
 {
 	this->direct.set_direction(pos);
@@ -28,7 +33,7 @@ void lgh::LightingSettings::set_direct_light_params(vec3 ambient, vec3 diffuse, 
 
 void lgh::LightingSettings::render(Shader* sh)
 {
-	//this->point.render(sh);
-	this->direct.render(sh);
+	this->point.render(sh);
+	//this->direct.render(sh);
 	
 }

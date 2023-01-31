@@ -20,6 +20,7 @@ namespace lgh {
 
 		void set_point_light_position(vec3 pos);
 		void set_point_light_params(vec3 ambient, vec3 diffuse, vec3 specular);
+		void set_point_light_params(float linear, float quadratic);
 
 		void set_direct_light_direction(vec3 dir);
 		void set_direct_light_params(vec3 ambient, vec3 diffuse, vec3 specular);

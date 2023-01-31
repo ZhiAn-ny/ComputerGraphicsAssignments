@@ -14,6 +14,10 @@ struct PointLight {
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
+
+    float constant;
+	float linear;
+	float quadratic;
 };
 struct DirectionalLight {
     vec3 dir;
@@ -33,7 +37,7 @@ struct Material {
 //  UNIFORM VARIABLES  /////////////////////////////////////////////////////////
 
 uniform vec3 camPos;
-uniform DirectionalLight light;
+uniform PointLight light;
 uniform Material material;
 
 
@@ -41,28 +45,35 @@ uniform Material material;
 
 vec4 applyPhongLighting()
 {
-    // Calculate the ambient light contribution
-    vec3 a = light.ambient * vec3(texture(material.diffuse, TexCoord));
-
+    float dist = length(light.pos - FragPos);
+    float attenuation = 1.0 / (light.constant + light.linear * dist + 
+    		        light.quadratic * (dist * dist));  
     //// Calculate the light's direction
-    // vec3 lightDir = normalize(light.pos - FragPos); // for point light (frag->light)
-    vec3 lightDir = normalize(-light.dir); // for dir light (light->target)
+    vec3 lightDir = normalize(light.pos - FragPos); // for point light (frag->light)
+    // vec3 lightDir = normalize(-light.dir); // for dir light (light->target)
+
+
+    // Calculate the ambient light contribution
+    vec3 ambient = light.ambient 
+                    * vec3(texture(material.diffuse, TexCoord)) * attenuation;
+
 
     // Calculate the diffuse light contribution
     vec3 norm = normalize(Normal);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 d = light.diffuse * diff * vec3(texture(material.diffuse, TexCoord));
+    vec3 diffuse = light.diffuse * diff 
+                    * vec3(texture(material.diffuse, TexCoord)) * attenuation;
 
     // Calculate reflection from specular light
     vec3 viewDir = normalize(camPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
-    //32 is the shininess
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-    vec3 s = light.specular * spec * vec3(texture(material.specular, TexCoord));
+    vec3 specular = light.specular * spec 
+                    * vec3(texture(material.specular, TexCoord)) * attenuation;
 
-    vec4 result = vec4( (a.r + d.r + s.r), 
-                        (a.g + d.g + s.g),
-                        (a.b + d.b + s.b), 
+    vec4 result = vec4( (ambient.r + diffuse.r + specular.r), 
+                        (ambient.g + diffuse.g + specular.g),
+                        (ambient.b + diffuse.b + specular.b), 
                         1.0 ); // We always set the opacity to its maximum
     return result;
 }

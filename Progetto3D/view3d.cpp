@@ -115,11 +115,13 @@ void gview::GameView3D::create_window(const char* title)
 void gview::GameView3D::set_scene()
 {
 	vec3 light_pos = vec3(1.2, 1, 2);
-	//light_setting.set_point_light_position(vec3(1.2, 1, 2));
-	//light_setting.set_point_light_params(vec3(0.2), vec3(0.5), vec3(1));
+	light_setting.set_point_light_position(vec3(1.2, 1, 2));
+	light_setting.set_point_light_params(vec3(0.2), vec3(0.5), vec3(1));
 
-	light_setting.set_direct_light_direction(vec3(-0.2, -1, -0.3));
-	light_setting.set_direct_light_params(vec3(0.2), vec3(0.5), vec3(1));
+	light_setting.set_point_light_params(0.09, 0.032); // dist = 50
+
+	//light_setting.set_direct_light_direction(vec3(-0.2, -1, -0.3));
+	//light_setting.set_direct_light_params(vec3(0.2), vec3(0.5), vec3(1));
 
 	mesh::MeshFactory mf;
 
@@ -148,10 +150,10 @@ void gview::GameView3D::set_scene()
 		scene.add_object(mesh);
 	}
 
-	//mesh = mf.create_cube();
-	//mesh.transform(light_pos, vec3(0.3), vec3(1, 0, 0), 0);
-	//mesh.set_color(color::white);
-	//scene.add_object(mesh);
+	mesh = mf.create_cube();
+	mesh.transform(light_pos, vec3(0.3), vec3(1, 0, 0), 0);
+	mesh.set_color(color::white);
+	scene.add_object(mesh);
 
 }
 
