@@ -1,14 +1,14 @@
 #ifndef GAME_SCENE_H_
 #define GAME_SCENE_H_
 
-#include "polygonal_mesh.h"
+#include "mesh.h"
 #include "shader.h"
 
 namespace gobj
 {
 	class Scene {
 	private:
-		vector<mesh::PolygonalMesh> objs_ = {};
+		vector<mesh::Mesh> objs_ = {};
 
 		mesh::AMesh* get_object(string name);
 
@@ -16,7 +16,7 @@ namespace gobj
 		Scene();
 		~Scene();
 
-		void add_object(mesh::PolygonalMesh mesh);
+		void add_object(mesh::Mesh mesh);
 		void transform_object(string name, vec3 tvec, vec3 svec, vec3 rvec, float angle);
 		void render(Shader* shader);
 

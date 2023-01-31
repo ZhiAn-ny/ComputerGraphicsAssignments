@@ -13,7 +13,7 @@ namespace gobj
 	namespace mesh
 	{
 
-		class PolygonalMesh: public AMesh {
+		class Mesh: public AMesh {
 		private:
 			vector<Vertex> verts = {};
 			vector<unsigned int> indices = {};
@@ -30,8 +30,8 @@ namespace gobj
 
 		public:
 
-			PolygonalMesh();
-			~PolygonalMesh();
+			Mesh();
+			~Mesh();
 
 			void set_indices(vector<unsigned int> indices);
 			void add_texture(string name, char const* path, bool vflip);

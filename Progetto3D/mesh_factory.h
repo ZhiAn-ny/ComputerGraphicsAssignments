@@ -1,7 +1,7 @@
 #ifndef GAME_OBJECT_MESH_FACTORY_H_
 #define GAME_OBJECT_MESH_FACTORY_H_
 
-#include "polygonal_mesh.h"
+#include "mesh.h"
 
 namespace gobj
 {
@@ -10,11 +10,14 @@ namespace gobj
 		class MeshFactory {
 		private:
 			unsigned int cube_number = 0;
+
+
+
 		public:
 			MeshFactory();
 			~MeshFactory();
 
-			PolygonalMesh create_cube();
+			Mesh create_cube();
 		};
 
 	};

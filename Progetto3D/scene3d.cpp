@@ -25,7 +25,7 @@ void gobj::Scene::transform_object(string name, vec3 tvec, vec3 svec, vec3 rvec,
 	mesh->transform(tvec, svec, rvec, angle);
 }
 
-void gobj::Scene::add_object(mesh::PolygonalMesh mesh)
+void gobj::Scene::add_object(mesh::Mesh mesh)
 {
 	mesh.bind();
 	this->objs_.push_back(mesh);

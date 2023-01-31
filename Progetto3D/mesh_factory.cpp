@@ -5,9 +5,9 @@ using namespace gobj::mesh;
 MeshFactory::MeshFactory() { }
 MeshFactory::~MeshFactory() { }
 
-PolygonalMesh MeshFactory::create_cube()
+Mesh MeshFactory::create_cube()
 {
-    PolygonalMesh mesh;
+    Mesh mesh;
     mesh.set_name("cube_" + std::to_string(this->cube_number));
 
     // front

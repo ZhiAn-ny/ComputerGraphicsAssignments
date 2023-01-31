@@ -1,28 +1,28 @@
-#include "polygonal_mesh.h"
+#include "mesh.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
 using namespace gobj::mesh;
 
-PolygonalMesh::PolygonalMesh() 
+Mesh::Mesh() 
 { 
     this->add_texture("none", "res/textures/blank.jpg", false);
     this->set_diffuse_map("none");
 }
 
-PolygonalMesh::~PolygonalMesh() { }
+Mesh::~Mesh() { }
 
-void PolygonalMesh::add_vertex(Vertex v)
+void Mesh::add_vertex(Vertex v)
 {
     this->verts.push_back(v);
 }
 
-void PolygonalMesh::add_index(unsigned int index)
+void Mesh::add_index(unsigned int index)
 {
     this->indices.push_back(index);
 }
 
-void gobj::mesh::PolygonalMesh::set_color(vec4 color)
+void gobj::mesh::Mesh::set_color(vec4 color)
 {
     for (unsigned int i = 0; i < this->verts.size(); i++)
     {
@@ -30,12 +30,12 @@ void gobj::mesh::PolygonalMesh::set_color(vec4 color)
     }
 }
 
-void PolygonalMesh::set_indices(vector<unsigned int> indices)
+void Mesh::set_indices(vector<unsigned int> indices)
 {
     this->indices = indices;
 }
 
-unsigned int gobj::mesh::PolygonalMesh::load_texture(char const* path, int vertical_flip)
+unsigned int gobj::mesh::Mesh::load_texture(char const* path, int vertical_flip)
 {
     GLenum format;
     unsigned int tex_ID = 0;
@@ -70,7 +70,7 @@ unsigned int gobj::mesh::PolygonalMesh::load_texture(char const* path, int verti
     return tex_ID;
 }
 
-void gobj::mesh::PolygonalMesh::transform(vec3 tvec, vec3 svec, vec3 rvec, float angle)
+void gobj::mesh::Mesh::transform(vec3 tvec, vec3 svec, vec3 rvec, float angle)
 {
     mat4 T = translate(mat4(1), tvec);
     mat4 S = scale(mat4(1), svec);
@@ -79,7 +79,7 @@ void gobj::mesh::PolygonalMesh::transform(vec3 tvec, vec3 svec, vec3 rvec, float
     this->model = model * T * R * S;
 }
 
-void gobj::mesh::PolygonalMesh::add_texture(string name, char const* path, bool vflip)
+void gobj::mesh::Mesh::add_texture(string name, char const* path, bool vflip)
 {
     auto search = this->textures_.find(name);
     if (search == this->textures_.end()) {
@@ -88,7 +88,7 @@ void gobj::mesh::PolygonalMesh::add_texture(string name, char const* path, bool 
     }
 }
 
-void gobj::mesh::PolygonalMesh::set_diffuse_map(string name)
+void gobj::mesh::Mesh::set_diffuse_map(string name)
 {
     auto search = this->textures_.find(name);
     if (search != this->textures_.end()) {
@@ -96,7 +96,7 @@ void gobj::mesh::PolygonalMesh::set_diffuse_map(string name)
     }
 }
 
-void gobj::mesh::PolygonalMesh::set_specular_map(string name)
+void gobj::mesh::Mesh::set_specular_map(string name)
 {
     auto search = this->textures_.find(name);
     if (search != this->textures_.end()) {
@@ -104,12 +104,12 @@ void gobj::mesh::PolygonalMesh::set_specular_map(string name)
     }
 }
 
-void gobj::mesh::PolygonalMesh::set_material(res::mat::Material mat)
+void gobj::mesh::Mesh::set_material(res::mat::Material mat)
 {
     this->material = mat;
 }
 
-void PolygonalMesh::bind()
+void Mesh::bind()
 {
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -137,7 +137,7 @@ void PolygonalMesh::bind()
     glBindVertexArray(0);
 }
 
-void PolygonalMesh::render(Shader* sh)
+void Mesh::render(Shader* sh)
 {
     sh->setMatrix4f("Model", this->model);
     sh->setMatrix3f("NormalMatrix", mat3(transpose(inverse(this->model))));
