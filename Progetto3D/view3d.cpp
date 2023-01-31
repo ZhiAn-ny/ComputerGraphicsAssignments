@@ -117,7 +117,8 @@ void gview::GameView3D::set_scene()
 	//vec3 light_pos = vec3(1.2, 1, 2);
 	light_setting.set_spot_light_position(cam.get_position());
 	light_setting.set_spot_light_direction(cam.get_front_direction());
-	light_setting.set_spot_light_cut_off(12.5);
+	light_setting.set_spot_light_inner_cut_off(12.5);
+	light_setting.set_spot_light_outer_cut_off(17.5);
 	light_setting.set_spot_light_params(vec3(0.2), vec3(0.5), vec3(1));
 	light_setting.set_spot_light_params(0.09, 0.032); // dist = 50
 

@@ -30,7 +30,8 @@ namespace lgh {
 		void set_spot_light_direction(vec3 dir);
 		void set_spot_light_params(vec3 ambient, vec3 diffuse, vec3 specular);
 		void set_spot_light_params(float linear, float quadratic);
-		void set_spot_light_cut_off(float cutOff);
+		void set_spot_light_inner_cut_off(float cutOff);
+		void set_spot_light_outer_cut_off(float cutOff);
 
 		void render(Shader* sh);
 	};

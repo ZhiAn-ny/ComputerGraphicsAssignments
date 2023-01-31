@@ -51,9 +51,14 @@ void lgh::LightingSettings::set_spot_light_params(float linear, float quadratic)
 	this->spot.set_params(linear, quadratic);
 }
 
-void lgh::LightingSettings::set_spot_light_cut_off(float cutOff)
+void lgh::LightingSettings::set_spot_light_inner_cut_off(float cutOff)
 {
-	this->spot.set_cut_off(cutOff);
+	this->spot.set_inner_cutOff(cutOff);
+}
+
+void lgh::LightingSettings::set_spot_light_outer_cut_off(float cutOff)
+{
+	this->spot.set_outer_cutOff(cutOff);
 }
 
 void lgh::LightingSettings::render(Shader* sh)

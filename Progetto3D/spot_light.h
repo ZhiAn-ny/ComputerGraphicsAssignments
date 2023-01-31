@@ -8,14 +8,16 @@ namespace lgh {
 	class Spotlight: public PointLight {
 	private:
 		vec3 direction_ = vec3(0);
-		float cutOff_ = 0;
+		float inner_cutOff_ = 0;
+		float outer_cutOff_ = 0;
 
 	public:
 		Spotlight();
 		~Spotlight();
 
 		void set_direction(vec3 dir);
-		void set_cut_off(float cutOff);
+		void set_inner_cutOff(float cutOff);
+		void set_outer_cutOff(float cutOff);
 		void render(Shader* sh) override;
 	};
 

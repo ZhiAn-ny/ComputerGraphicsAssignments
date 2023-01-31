@@ -29,7 +29,8 @@ struct DirectionalLight {
 struct Spotlight {
     vec3 pos;
     vec3 dir;
-    float cutOff;
+    float innerCutOff;
+    float outerCutOff;
 
     vec3 ambient;
     vec3 diffuse;
@@ -67,6 +68,10 @@ vec4 applyPhongLighting()
     vec3 lightDir = normalize(light.pos - FragPos); // for point light (frag->light)
     // vec3 lightDir = normalize(-light.dir); // for dir light (light->target)
 
+    // spotlight (soft edges)
+    float theta = dot(lightDir, normalize(-light.dir)); 
+    float epsilon = (light.innerCutOff - light.outerCutOff);
+    float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
 
     // Calculate the ambient light contribution
     vec3 ambient = light.ambient 
@@ -77,14 +82,16 @@ vec4 applyPhongLighting()
     vec3 norm = normalize(Normal);
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = light.diffuse * diff 
-                    * vec3(texture(material.diffuse, TexCoord)) * attenuation;
+                    * vec3(texture(material.diffuse, TexCoord)) 
+                    * attenuation * intensity;
 
     // Calculate reflection from specular light
     vec3 viewDir = normalize(camPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     vec3 specular = light.specular * spec 
-                    * vec3(texture(material.specular, TexCoord)) * attenuation;
+                    * vec3(texture(material.specular, TexCoord))
+                    * attenuation * intensity;
 
     vec4 result = vec4( (ambient.r + diffuse.r + specular.r), 
                         (ambient.g + diffuse.g + specular.g),
@@ -97,17 +104,7 @@ vec4 applyPhongLighting()
 
 void main()
 {
-    vec3 lightDir = normalize(light.pos - FragPos);
-    float theta = dot(lightDir, normalize(-light.dir));
-
-
-    vec4 resColor = vec4(light.ambient * texture(material.diffuse, TexCoord).rgb, 1.0);
-
-    if (theta > light.cutOff)
-    {
-        resColor = applyPhongLighting();
-    }
-
+    vec4 resColor = applyPhongLighting();
     
     FragColor = resColor;
 } 
