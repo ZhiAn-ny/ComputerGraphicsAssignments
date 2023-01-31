@@ -115,9 +115,11 @@ void gview::GameView3D::create_window(const char* title)
 void gview::GameView3D::set_scene()
 {
 	vec3 light_pos = vec3(1.2, 1, 2);
-	light_setting.set_point_light_position(light_pos);
-	// light_setting.set_lights(color::blue, color::red, color::green);
-	light_setting.set_point_light_params(vec3(0.2), vec3(0.5), vec3(1));
+	//light_setting.set_point_light_position(vec3(1.2, 1, 2));
+	//light_setting.set_point_light_params(vec3(0.2), vec3(0.5), vec3(1));
+
+	light_setting.set_direct_light_direction(vec3(-0.2, -1, -0.3));
+	light_setting.set_direct_light_params(vec3(0.2), vec3(0.5), vec3(1));
 
 	mesh::MeshFactory mf;
 
@@ -130,10 +132,26 @@ void gview::GameView3D::set_scene()
 	mesh.set_material({vec3(1),vec3(1),vec3(0.5),64});
 	scene.add_object(mesh);
 
-	mesh = mf.create_cube();
-	mesh.transform(light_pos, vec3(0.3), vec3(1, 0, 0), 0);
-	mesh.set_color(color::white);
-	scene.add_object(mesh);
+	for (unsigned int i = 0; i < 10; i++)
+	{
+		mesh = mf.create_cube();
+		mesh.add_texture("box", "res/textures/container2.jpg", 1);
+		mesh.add_texture("metal", "res/textures/container2_specular.png", 1);
+		mesh.set_diffuse_map("box");
+		mesh.set_specular_map("metal");
+		mesh.transform(
+			vec3(rand() % 6 - 3, rand() % 6 - 3, rand() % 6 - 3),
+			vec3(1),
+			vec3(rand() % 20 - 10), rand()
+		);
+		mesh.set_material({ vec3(1),vec3(1),vec3(0.5),64 });
+		scene.add_object(mesh);
+	}
+
+	//mesh = mf.create_cube();
+	//mesh.transform(light_pos, vec3(0.3), vec3(1, 0, 0), 0);
+	//mesh.set_color(color::white);
+	//scene.add_object(mesh);
 
 }
 

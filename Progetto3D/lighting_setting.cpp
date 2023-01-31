@@ -16,12 +16,19 @@ void lgh::LightingSettings::set_point_light_params(vec3 ambient, vec3 diffuse, v
 	this->point.set_lights(ambient, diffuse, specular);
 }
 
+void lgh::LightingSettings::set_direct_light_direction(vec3 pos)
+{
+	this->direct.set_direction(pos);
+}
+
+void lgh::LightingSettings::set_direct_light_params(vec3 ambient, vec3 diffuse, vec3 specular)
+{
+	this->direct.set_lights(ambient, diffuse, specular);
+}
+
 void lgh::LightingSettings::render(Shader* sh)
 {
-	sh->setVec3("light.pos", this->point.get_position());
-
-	sh->setVec3("light.ambient", this->point.get_ambient());
-	sh->setVec3("light.diffuse", this->point.get_diffuse());
-	sh->setVec3("light.specular", this->point.get_specular());
+	//this->point.render(sh);
+	this->direct.render(sh);
 	
 }

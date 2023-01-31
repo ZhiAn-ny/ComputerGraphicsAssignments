@@ -8,8 +8,15 @@ out vec4 FragColor;
 
 //  DATA STRUCTURES  ///////////////////////////////////////////////////////////
 
-struct Light {
+struct PointLight {
     vec3 pos;
+
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};
+struct DirectionalLight {
+    vec3 dir;
 
     vec3 ambient;
     vec3 diffuse;
@@ -26,7 +33,7 @@ struct Material {
 //  UNIFORM VARIABLES  /////////////////////////////////////////////////////////
 
 uniform vec3 camPos;
-uniform Light light;
+uniform DirectionalLight light;
 uniform Material material;
 
 
@@ -37,9 +44,12 @@ vec4 applyPhongLighting()
     // Calculate the ambient light contribution
     vec3 a = light.ambient * vec3(texture(material.diffuse, TexCoord));
 
+    //// Calculate the light's direction
+    // vec3 lightDir = normalize(light.pos - FragPos); // for point light (frag->light)
+    vec3 lightDir = normalize(-light.dir); // for dir light (light->target)
+
     // Calculate the diffuse light contribution
     vec3 norm = normalize(Normal);
-    vec3 lightDir = normalize(light.pos - FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 d = light.diffuse * diff * vec3(texture(material.diffuse, TexCoord));
 
@@ -61,6 +71,7 @@ vec4 applyPhongLighting()
 
 void main()
 {
+    
     vec4 resColor = applyPhongLighting();
     
     FragColor = resColor;
