@@ -1,4 +1,6 @@
 #include "mesh.h"
+
+#define STB_IMAGE_STATIC
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
@@ -8,6 +10,13 @@ Mesh::Mesh()
 { 
     this->add_texture("none", "res/textures/blank.jpg", false);
     this->set_diffuse_map("none");
+}
+
+gobj::mesh::Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<tex::Texture> textures)
+{
+    this->verts = vertices;
+    this->indices = indices;
+    this->textures_ = textures;
 }
 
 Mesh::~Mesh() { }
@@ -81,27 +90,54 @@ void gobj::mesh::Mesh::transform(vec3 tvec, vec3 svec, vec3 rvec, float angle)
 
 void gobj::mesh::Mesh::add_texture(string name, char const* path, bool vflip)
 {
-    auto search = this->textures_.find(name);
-    if (search == this->textures_.end()) {
-        unsigned int tex_ID = this->load_texture(path, vflip ? 1 : 0);
-        this->textures_.insert_or_assign(name, tex_ID);
+    for (int i = 0; i < this->textures_.size(); i++)
+    {
+        if (this->textures_[i].path._Equal(path)) {
+            std::cout << "ADD_TEXTURE::PATH_ALREADY_LOADED" << std::endl;
+            return;
+        }
+        if (this->textures_[i].name._Equal(name)) {
+            std::cout << "ADD_TEXTURE::NAME_UNAVAIABLE" << std::endl;
+            return;
+        }
     }
+
+    tex::Texture texture = tex::Texture();
+    texture.id = this->load_texture(path, vflip ? 1 : 0);
+    texture.path = path;
+    texture.type = "";
+    texture.name = name;
+
+    this->textures_.push_back(texture);
+    
 }
 
 void gobj::mesh::Mesh::set_diffuse_map(string name)
 {
-    auto search = this->textures_.find(name);
-    if (search != this->textures_.end()) {
-        this->diffuse_map = search->second;
+    int index = -1;
+    for (int i = 0; i < this->textures_.size(); i++)
+    {
+        if (this->textures_[i].name._Equal(name)) 
+        {
+            index = i; break;
+        }
     }
+    if (index < 0) return;
+    this->diffuse_map = this->textures_[index].id;
 }
 
 void gobj::mesh::Mesh::set_specular_map(string name)
 {
-    auto search = this->textures_.find(name);
-    if (search != this->textures_.end()) {
-        this->specular_map = search->second;
+    int index = -1;
+    for (int i = 0; i < this->textures_.size(); i++)
+    {
+        if (this->textures_[i].name._Equal(name))
+        {
+            index = i; break;
+        }
     }
+    if (index < 0) return;
+    this->specular_map = this->textures_[index].id;
 }
 
 void gobj::mesh::Mesh::set_material(res::mat::Material mat)

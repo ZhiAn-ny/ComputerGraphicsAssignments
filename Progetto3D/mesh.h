@@ -21,16 +21,17 @@ namespace gobj
 
 			unsigned int diffuse_map = 0;
 			unsigned int specular_map = 0;
-			map<string, unsigned int> textures_ = {};
+			vector<tex::Texture> textures_ = {};
 			res::mat::Material material = res::mat::tutorial;
 
 			unsigned int VAO, VBO, EBO;
 
-			unsigned int load_texture(char const* path, int vertical_flip);
+			static unsigned int load_texture(char const* path, int vertical_flip);
 
 		public:
 
 			Mesh();
+			Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<tex::Texture> textures);
 			~Mesh();
 
 			void set_indices(vector<unsigned int> indices);
