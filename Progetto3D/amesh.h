@@ -44,14 +44,27 @@ namespace gobj
 
 	namespace tex {
 
+		enum class TexType {
+			diffuse,
+			specular,
+			undefined
+		};
+
 		class Texture {
 		public:
 			unsigned int id;
-			string type;
+			TexType type;
 			string path;  // we store the path of the texture to compare with other textures
 			string name = "";
 
 			Texture() {}
+
+			static Texture* find_first(TexType type, vector<Texture>& list)
+			{
+				for (int i = 0; i < list.size(); i++) 
+					if (list[i].type == type) return &list[i];
+				return nullptr;
+			}
 		
 		};
 

@@ -35,6 +35,7 @@ namespace gobj
 			~Mesh();
 
 			void set_indices(vector<unsigned int> indices);
+			void add_texture(tex::Texture texture);
 			void add_texture(string name, char const* path, bool vflip);
 			void set_diffuse_map(string name);
 			void set_specular_map(string name);

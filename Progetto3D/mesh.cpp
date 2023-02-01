@@ -44,6 +44,15 @@ void Mesh::set_indices(vector<unsigned int> indices)
     this->indices = indices;
 }
 
+void gobj::mesh::Mesh::add_texture(tex::Texture texture)
+{
+    for (int i = 0; i < this->textures_.size(); i++)
+    {
+        if (this->textures_[i].path._Equal(texture.path)) return;
+    }
+    this->textures_.push_back(texture);
+}
+
 unsigned int gobj::mesh::Mesh::load_texture(char const* path, int vertical_flip)
 {
     GLenum format;
@@ -105,7 +114,7 @@ void gobj::mesh::Mesh::add_texture(string name, char const* path, bool vflip)
     tex::Texture texture = tex::Texture();
     texture.id = this->load_texture(path, vflip ? 1 : 0);
     texture.path = path;
-    texture.type = "";
+    texture.type = tex::TexType::undefined;
     texture.name = name;
 
     this->textures_.push_back(texture);

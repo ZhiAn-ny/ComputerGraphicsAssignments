@@ -22,7 +22,7 @@ namespace gobj {
 			Mesh process_mesh(aiMesh* mesh, const aiScene* scene);
 
 			vector<tex::Texture> load_material(
-				aiMaterial* mat, aiTextureType type, string typeName);
+				aiMaterial* mat, aiTextureType type, tex::TexType typeName);
 
 			unsigned int load_texture(const char* path, const string& dir, bool gamma);
 

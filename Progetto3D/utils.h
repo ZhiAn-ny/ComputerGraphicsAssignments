@@ -2,6 +2,7 @@
 #define GAME_UTILS_H_
 
 #include "lib.h"
+#include "amesh.h"
 
 namespace util
 {

@@ -130,8 +130,8 @@ void gview::GameView3D::set_scene()
 	mesh::Model model = mf.create_dolphin();
 	scene.add_object(model);
 
-	/*mesh::Mesh mesh = mf.create_cube();
-	mesh.add_texture("box", "res/textures/container2.jpg", 1);
+	mesh::Mesh mesh = mf.create_cube();
+	/*mesh.add_texture("box", "res/textures/container2.jpg", 1);
 	mesh.add_texture("metal", "res/textures/container2_specular.png", 1);
 	mesh.set_diffuse_map("box");
 	mesh.set_specular_map("metal");
@@ -139,7 +139,7 @@ void gview::GameView3D::set_scene()
 	mesh.set_material({vec3(1),vec3(1),vec3(0.5),64});
 	scene.add_object(mesh);*/
 
-	/*for (unsigned int i = 0; i < 10; i++)
+	for (unsigned int i = 0; i < 10; i++)
 	{
 		mesh = mf.create_cube();
 		mesh.add_texture("box", "res/textures/container2.jpg", 1);
@@ -153,7 +153,7 @@ void gview::GameView3D::set_scene()
 		);
 		mesh.set_material({ vec3(1),vec3(1),vec3(0.5),64 });
 		scene.add_object(mesh);
-	}*/
+	}
 
 	//mesh = mf.create_cube();
 	//mesh.transform(light_pos, vec3(0.3), vec3(1, 0, 0), 0);
