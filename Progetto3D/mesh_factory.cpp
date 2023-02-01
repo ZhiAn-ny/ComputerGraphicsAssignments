@@ -69,3 +69,12 @@ Mesh MeshFactory::create_cube()
     this->cube_number = this->cube_number + 1;
     return mesh;
 }
+
+Model gobj::mesh::MeshFactory::create_dolphin()
+{
+    Model dolphin = Model("res/meshes/dolphin/dolphin.obj");
+    dolphin.set_name("dolphin_" + std::to_string(this->dolphin_number));
+
+    this->dolphin_number++;
+    return dolphin;
+}
