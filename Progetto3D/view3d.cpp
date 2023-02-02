@@ -7,6 +7,7 @@ Scene scene;
 Shader main_shader;
 Camera cam;
 lgh::LightingSettings light_setting;
+gctrl::GameController controller;
 
 mat4 Projection;
 
@@ -15,7 +16,7 @@ mat4 Projection;
 
 void gview::GameView3D::draw_scene(void)
 {
-	Projection = perspective(glm::radians(cam.get_fov()), 800.0f / 600.0f, 0.1f, 100.0f);
+	Projection = perspective(glm::radians(cam.get_fov()), 800.0f / 600.0f, near_plane, far_plane);
 
 	main_shader.use();
 	main_shader.setMatrix4f("Projection", Projection);
@@ -24,7 +25,7 @@ void gview::GameView3D::draw_scene(void)
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	main_shader.setVec3(util::uvar::cam_pos, cam.get_position());
+	main_shader.setVec3("camPos", cam.get_position());
 
 	light_setting.render(&main_shader);
 
@@ -78,6 +79,16 @@ void gview::GameView3D::mouse_click(int button, int state, int x, int y)
 		break;
 	case util::mouse_wheel_down:
 		cam.zoom_out();
+		break;
+	case GLUT_RIGHT_BUTTON:
+		// TODO: select object
+		if (state == GLUT_DOWN)
+		{
+			std::cout << "(" << x << ", " << y << ")" << std::endl;
+			controller.select_object(x, y);
+		}
+
+
 		break;
 	default:
 		break;
@@ -184,6 +195,7 @@ void gview::GameView3D::init()
 		throw std::runtime_error("glewInit failed");
 	GLenum error = glGetError();
 
+	controller.init(&scene, &window, &Projection, &cam);
 	main_shader = Shader("vertexShader.glsl", "fragmentShader.glsl");
 
 	this->set_scene();

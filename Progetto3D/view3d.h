@@ -7,6 +7,7 @@
 #include "light_factory.h"
 #include "camera.h"
 #include "lighting_setting.h"
+#include "controller.h"
 
 using namespace gobj;
 using namespace gview::gcam;
