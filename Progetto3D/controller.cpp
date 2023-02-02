@@ -36,10 +36,17 @@ vec3 gctrl::GameController::get_ray(int x, int y)
 
 void gctrl::GameController::select_object(int x, int y)
 {
+	std::cout << "SELECTION::START" << std::endl;
 	vec3 mouse_ray = this->get_ray(x, y);
-	std:cout << "(" << mouse_ray.x << "," 
+	std:cout << "SELECTION::RAY: (" << mouse_ray.x << "," 
 			 << mouse_ray.y << "," 
 			 << mouse_ray.z << ")" << std::endl;
+
 	vec3 origin = this->cam_->get_position();
-	//this->scene_->select_nearest(origin, mouse_ray);
+	std::cout << "SELECTION::ORIGIN: (" << origin.x << ","
+			<< origin.y << ","
+			<< origin.z << ")" << std::endl;
+
+	this->scene_->select_nearest(origin, mouse_ray);
+	std::cout << "SELECTION::DONE" << std::endl;
 }

@@ -135,23 +135,37 @@ vec3 gobj::mesh::Mesh::get_anchor()
     return this->model * vec4(anchor, 1.0);
 }
 
-bool gobj::mesh::Mesh::is_colliding_vector(vec3 origin, vec3 direction)
+float gobj::mesh::Mesh::ray_intersection(vec3 origin, vec3 direction)
 {
-    vec3 dist_form_obj = origin - this->get_anchor();
-    vec3 dimensions = abs(this->bb_bottom_left_ - this->bb_top_right_);
+    std::cout << "SELECTION::SCENE::MESHES::" << this->get_name() << std::endl;
+    vec3 dist_sph = origin - this->get_anchor();
 
-    mat4 ellipse2sphere = mat4(0);
-    ellipse2sphere[0][0] = 1 / (dimensions.x / 2);
-    ellipse2sphere[1][1] = 1 / (dimensions.y / 2);
-    ellipse2sphere[2][2] = 1 / (dimensions.z / 2);
-    ellipse2sphere[3][3] = 1 ;
+    float b = dot(dist_sph, direction);
 
-    // General sphere equation: (x - a)² + (y - b)² + (z - c)² = r²
-    // General ellipsoid equation: x²/a² + y²/b² + z²/c² = 1
+    vec3 dims = abs(this->get_anchor() - this->bb_top_right());
+    float shpere_ray = sqrt(pow(sqrt(pow(dims.x, 2) + pow(dims.y, 2)), 2) + pow(dims.z, 2));
+    std::cout << "SELECTION::SCENE::MESHES::" << this->get_name() << "::SPHERE_RAY: " << shpere_ray << std::endl;
+    
+    float cc = dot(dist_sph, dist_sph) - shpere_ray * shpere_ray;
+	float delta = b * b - cc;
+    std::cout << "SELECTION::SCENE::MESHES::" << this->get_name() << "::DELTA: " << delta << std::endl;
+ 
+    if (delta < 0) return -1;
+    if (delta > 0)
+    {
+        // calcola le due intersezioni
+        float t_a = -b + sqrt(delta);
+        float t_b = -b - sqrt(delta);
 
-    float b = dot(dist_form_obj, direction);
+        if (t_a < 0 && t_b < 0) return -1;
+        std::cout << "SELECTION::SCENE::MESHES::" << this->get_name() << "::INTERSECTION_FOUND " << std::endl;
+        return t_b;
+    }
 
-    return false;
+    float t = -b + sqrt(delta);
+    if (t < 0) return -1;
+    std::cout << "SELECTION::SCENE::MESHES::" << this->get_name() << "::INTERSECTION_FOUND " << std::endl;
+    return t;
 }
 
 void gobj::mesh::Mesh::transform(vec3 tvec, vec3 svec, vec3 rvec, float angle)
@@ -220,17 +234,14 @@ void gobj::mesh::Mesh::set_material(res::mat::Material mat)
     this->material = mat;
 }
 
-bool gobj::mesh::Mesh::is_colliding(vec4 pos)
-{
-    if (pos.a == 1)
-    {
-        bool xCollision = util::is_in_range(bb_bottom_left().x, bb_top_right().x, pos.x);
-        bool yCollision = util::is_in_range(bb_bottom_left().y, bb_top_right().y, pos.y);
-        bool zCollision = util::is_in_range(bb_bottom_left().z, bb_top_right().z, pos.z);
-
-        return xCollision && yCollision && zCollision;
-    }
-}
+//bool gobj::mesh::Mesh::is_colliding(vec4 pos)
+//{
+//    bool xCollision = util::is_in_range(bb_bottom_left().x, bb_top_right().x, pos.x);
+//    bool yCollision = util::is_in_range(bb_bottom_left().y, bb_top_right().y, pos.y);
+//    bool zCollision = util::is_in_range(bb_bottom_left().z, bb_top_right().z, pos.z);
+//
+//    return xCollision && yCollision && zCollision;
+//}
 
 void Mesh::bind()
 {

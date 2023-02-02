@@ -37,7 +37,6 @@ namespace gobj
 			vec3 bb_bottom_left();
 			vec3 get_anchor();
 
-			bool is_colliding_vector(vec3 origin, vec3 direction);
 
 		public:
 
@@ -51,7 +50,8 @@ namespace gobj
 			void set_diffuse_map(string name);
 			void set_specular_map(string name);
 			void set_material(res::mat::Material mat);
-			bool is_colliding(vec4 pos);
+			//bool is_colliding(vec4 pos);
+			float ray_intersection(vec3 origin, vec3 direction);
 
 			void add_vertex(Vertex v) override;
 			void add_index(unsigned int i) override;

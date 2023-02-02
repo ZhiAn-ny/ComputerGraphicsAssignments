@@ -84,7 +84,7 @@ void gview::GameView3D::mouse_click(int button, int state, int x, int y)
 		// TODO: select object
 		if (state == GLUT_DOWN)
 		{
-			std::cout << "(" << x << ", " << y << ")" << std::endl;
+			std::cout << "Clicked point: (" << x << ", " << y << ")" << std::endl;
 			controller.select_object(x, y);
 		}
 

@@ -38,11 +38,18 @@ void gobj::mesh::Model::deselect()
 		this->meshes_[i].deselect();
 }
 
-bool gobj::mesh::Model::is_colliding(vec3 pos)
+//bool gobj::mesh::Model::is_colliding(vec4 pos)
+//{
+//	for (int i = 0; i < this->meshes_.size(); i++)
+//		if (this->meshes_[i].is_colliding(pos )) return true;
+//	return false;
+//}
+
+float gobj::mesh::Model::ray_intersection(vec3 origin, vec3 direction)
 {
-	for (int i = 0; i < this->meshes_.size(); i++)
-		if (this->meshes_[i].is_colliding(pos)) return true;
-	return false;
+	float d = this->meshes_[0].ray_intersection(origin, direction);
+
+	return d;
 }
 
 void Model::load_model(string path)

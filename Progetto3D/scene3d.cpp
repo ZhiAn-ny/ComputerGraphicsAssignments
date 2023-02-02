@@ -32,20 +32,23 @@ void gobj::Scene::transform_object(string name, vec3 tvec, vec3 svec, vec3 rvec,
 
 void gobj::Scene::select_nearest(vec3 origin, vec3 direction)
 {
-	double distance = INFINITE;
+	float distance = INFINITE;
 	mesh::IMesh* selected;
-	/*for (int i = 0; i < this->meshes_.size(); i++)
+	std::cout << "SELECTION::SCENE::MESHES::START" << std::endl;
+	for (int i = 0; i < this->meshes_.size(); i++)
 	{
-		double d = this->meshes_.ray_intersection(origin, direction);
+		double d = this->meshes_[i].ray_intersection(origin, direction);
+		std::cout << "SELECTION::SCENE::MESHES::DISTANCE: " << d << std::endl;
 		if (d > -1 && d < distance)
 		{
 			distance = d;
 			selected = &this->meshes_[i];
 		}
 	}
-	for (int i = 0; i < this->models_.size(); i++)
+	std::cout << "SELECTION::SCENE::MESHES::END" << std::endl;
+	/*for (int i = 0; i < this->models_.size(); i++)
 	{
-		double d = this->models_.ray_intersection(origin, direction);
+		float d = this->models_[i].ray_intersection(origin, direction);
 		if (d > -1 && d < distance) 
 		{
 			distance = d;

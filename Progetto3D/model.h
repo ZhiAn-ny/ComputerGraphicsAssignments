@@ -31,7 +31,8 @@ namespace gobj {
 			Model(string const& path);
 			~Model();
 
-			bool is_colliding(vec3 pos);
+			//bool is_colliding(vec4 pos);
+			float ray_intersection(vec3 origin, vec3 direction);
 
 			void set_name(string name) override;
 			string get_name() override;
