@@ -37,6 +37,7 @@ vec3 gview::gcam::Camera::get_front_direction()
 
 void gview::gcam::Camera::move(dir::Directions dir)
 {
+	// TODO: check for collisions and prevent movement
 	switch (dir)
 	{
 	case util::dir::Directions::front:

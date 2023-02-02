@@ -11,6 +11,9 @@ namespace gview
 	namespace gcam
 	{
 
+		const float near_plane = 0.1f;
+		const float far_plane = 100.0f;
+
 		class Camera {
 		private:
 			vec3 pos_ = {};

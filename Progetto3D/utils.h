@@ -7,8 +7,8 @@
 namespace util
 {
 	unsigned int check_error(string message);
-
-	const int max_n_lights = 10;
+	bool is_in_range(double a, double b, double x);
+	vec3 distance(vec3 a, vec3 b);
 
 	const int mouse_wheel_up = 4;
 	const int mouse_wheel_down = 3;
@@ -24,18 +24,6 @@ namespace util
 		};
 
 	} // !dir
-
-	// Defines the names of the uniform variables passed to the shaders.
-	namespace uvar {
-		const string model = "Model";
-		const string view = "View";
-		const string projection = "Projection";
-		const string normalMatrix = "NormalMatrix";
-
-		const string cam_pos = "camPos";
-
-
-	} // !uvar
 
 } // !util
 

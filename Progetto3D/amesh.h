@@ -25,7 +25,18 @@ namespace gobj
 			}
 		};
 
-		class AMesh {
+		class IMesh {
+		public:
+			virtual string get_name() = 0;
+			virtual void set_name(string name) = 0;
+			virtual void select() = 0;
+			virtual void deselect() = 0;
+			virtual void bind() = 0;
+			virtual void transform(vec3 tvec, vec3 svec, vec3 rvec, float angle) = 0;
+			virtual void render(Shader* sh) = 0;
+		};
+
+		class AMesh : public IMesh {
 		private:
 			string name_ = "";
 
@@ -35,11 +46,15 @@ namespace gobj
 
 			virtual void add_vertex(Vertex v) = 0;
 			virtual void add_index(unsigned int v) = 0;
-			virtual void bind() = 0;
-			virtual void render(Shader* sh) = 0;
-			virtual void transform(vec3 tvec, vec3 svec, vec3 rvec, float angle) = 0;
 			virtual void set_color(vec4 color) = 0;
+
+			virtual void select() override = 0;
+			virtual void deselect() override = 0;
+			virtual void bind() override = 0;
+			virtual void transform(vec3 tvec, vec3 svec, vec3 rvec, float angle) override = 0;
+			virtual void render(Shader* sh) override = 0;
 		};
+
 	} // !mesh
 
 	namespace tex {
@@ -52,9 +67,9 @@ namespace gobj
 
 		class Texture {
 		public:
-			unsigned int id;
-			TexType type;
-			string path;  // we store the path of the texture to compare with other textures
+			unsigned int id = 0;
+			TexType type = TexType::undefined;
+			string path = "";  // we store the path of the texture to compare with other textures
 			string name = "";
 
 			Texture() {}

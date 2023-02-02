@@ -12,7 +12,7 @@ namespace gobj
 		vector<mesh::Mesh> meshes_ = {};
 		vector<mesh::Model> models_ = {};
 
-		mesh::AMesh* get_object(string name);
+		mesh::IMesh* get_object(string name);
 
 	public:
 		Scene();
@@ -20,8 +20,8 @@ namespace gobj
 
 		void add_object(mesh::Mesh mesh);
 		void add_object(mesh::Model model);
-		void transform_mesh(string name, vec3 tvec, vec3 svec, vec3 rvec, float angle);
-		void transform_model(string name, vec3 tvec, vec3 svec, vec3 rvec, float angle);
+		void transform_object(string name, vec3 tvec, vec3 svec, vec3 rvec, float angle);
+		void select_nearest(vec3 origin, vec3 direction);
 		void render(Shader* shader);
 
 	};

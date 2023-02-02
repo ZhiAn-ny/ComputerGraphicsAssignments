@@ -39,6 +39,16 @@ void gobj::mesh::Mesh::set_color(vec4 color)
     }
 }
 
+void gobj::mesh::Mesh::select()
+{
+    this->selected_ = true;
+}
+
+void gobj::mesh::Mesh::deselect()
+{
+    this->selected_ = false;
+}
+
 void Mesh::set_indices(vector<unsigned int> indices)
 {
     this->indices = indices;
@@ -86,6 +96,62 @@ unsigned int gobj::mesh::Mesh::load_texture(char const* path, int vertical_flip)
     }
     stbi_image_free(data);
     return tex_ID;
+}
+
+void gobj::mesh::Mesh::set_bounding_box()
+{
+    for (int i = 0; i < this->verts.size(); i++)
+    {
+        if (this->verts[i].pos.x > this->bb_top_right_.x) this->bb_top_right_.x = this->verts[i].pos.x;
+        else if (this->verts[i].pos.x < this->bb_bottom_left_.x) this->bb_bottom_left_.x = this->verts[i].pos.x;
+        
+        if (this->verts[i].pos.y > this->bb_top_right_.y) this->bb_top_right_.y = this->verts[i].pos.y;
+        else if (this->verts[i].pos.y < this->bb_bottom_left_.y) this->bb_bottom_left_.y = this->verts[i].pos.y;
+
+        if (this->verts[i].pos.z > this->bb_top_right_.z) this->bb_top_right_.z = this->verts[i].pos.z;
+        else if (this->verts[i].pos.z < this->bb_bottom_left_.z) this->bb_bottom_left_.z = this->verts[i].pos.z;
+    }
+}
+
+vec3 gobj::mesh::Mesh::bb_top_right()
+{
+    return this->model * vec4(this->bb_top_right_, 1.0);
+}
+
+vec3 gobj::mesh::Mesh::bb_bottom_left()
+{
+    return this->model * vec4(this->bb_bottom_left_, 1.0);
+}
+
+vec3 gobj::mesh::Mesh::get_anchor()
+{
+    vec3 distance = abs(this->bb_bottom_left_ - this->bb_top_right_);
+
+    vec3 anchor = vec3(0);
+    anchor.x = this->bb_bottom_left_.x + distance.x / 2;
+    anchor.y = this->bb_bottom_left_.y + distance.y / 2;
+    anchor.z = this->bb_bottom_left_.z + distance.z / 2;
+
+    return this->model * vec4(anchor, 1.0);
+}
+
+bool gobj::mesh::Mesh::is_colliding_vector(vec3 origin, vec3 direction)
+{
+    vec3 dist_form_obj = origin - this->get_anchor();
+    vec3 dimensions = abs(this->bb_bottom_left_ - this->bb_top_right_);
+
+    mat4 ellipse2sphere = mat4(0);
+    ellipse2sphere[0][0] = 1 / (dimensions.x / 2);
+    ellipse2sphere[1][1] = 1 / (dimensions.y / 2);
+    ellipse2sphere[2][2] = 1 / (dimensions.z / 2);
+    ellipse2sphere[3][3] = 1 ;
+
+    // General sphere equation: (x - a)² + (y - b)² + (z - c)² = r²
+    // General ellipsoid equation: x²/a² + y²/b² + z²/c² = 1
+
+    float b = dot(dist_form_obj, direction);
+
+    return false;
 }
 
 void gobj::mesh::Mesh::transform(vec3 tvec, vec3 svec, vec3 rvec, float angle)
@@ -154,6 +220,18 @@ void gobj::mesh::Mesh::set_material(res::mat::Material mat)
     this->material = mat;
 }
 
+bool gobj::mesh::Mesh::is_colliding(vec4 pos)
+{
+    if (pos.a == 1)
+    {
+        bool xCollision = util::is_in_range(bb_bottom_left().x, bb_top_right().x, pos.x);
+        bool yCollision = util::is_in_range(bb_bottom_left().y, bb_top_right().y, pos.y);
+        bool zCollision = util::is_in_range(bb_bottom_left().z, bb_top_right().z, pos.z);
+
+        return xCollision && yCollision && zCollision;
+    }
+}
+
 void Mesh::bind()
 {
     glGenVertexArrays(1, &VAO);
@@ -180,6 +258,8 @@ void Mesh::bind()
     // Unbind buffers
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+
+    this->set_bounding_box();
 }
 
 void Mesh::render(Shader* sh)

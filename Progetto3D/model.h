@@ -8,7 +8,7 @@ namespace gobj {
 
 	namespace mesh {
 
-		class Model {
+		class Model: public IMesh {
 		private:
 			string name_ = "";
 			vector<Mesh> meshes_ = {};
@@ -31,11 +31,15 @@ namespace gobj {
 			Model(string const& path);
 			~Model();
 
-			void set_name(string name);
-			string get_name();
+			bool is_colliding(vec3 pos);
 
-			void bind();
-			void render(Shader* sh);
+			void set_name(string name) override;
+			string get_name() override;
+			void select() override;
+			void deselect() override;
+			void bind() override;
+			void transform(vec3 tvec, vec3 svec, vec3 rvec, float angle) override;
+			void render(Shader* sh) override;
 
 		};
 

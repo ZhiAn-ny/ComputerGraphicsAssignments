@@ -26,6 +26,25 @@ string gobj::mesh::Model::get_name()
 	return this->name_;
 }
 
+void gobj::mesh::Model::select()
+{
+	for (int i = 0; i < this->meshes_.size(); i++)
+		this->meshes_[i].select();
+}
+
+void gobj::mesh::Model::deselect()
+{
+	for (int i = 0; i < this->meshes_.size(); i++)
+		this->meshes_[i].deselect();
+}
+
+bool gobj::mesh::Model::is_colliding(vec3 pos)
+{
+	for (int i = 0; i < this->meshes_.size(); i++)
+		if (this->meshes_[i].is_colliding(pos)) return true;
+	return false;
+}
+
 void Model::load_model(string path)
 {
 	Assimp::Importer importer;
@@ -193,6 +212,14 @@ void gobj::mesh::Model::bind()
 	for (int i = 0; i < this->meshes_.size(); i++)
 	{
 		this->meshes_[i].bind();
+	}
+}
+
+void gobj::mesh::Model::transform(vec3 tvec, vec3 svec, vec3 rvec, float angle)
+{
+	for (int i = 0; i < this->meshes_.size(); i++)
+	{
+		this->meshes_[i].transform(tvec, svec, rvec, angle);
 	}
 }
 

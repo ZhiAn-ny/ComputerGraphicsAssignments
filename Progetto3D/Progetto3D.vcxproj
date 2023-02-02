@@ -135,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="controller.cpp" />
     <ClCompile Include="directional_light.cpp" />
     <ClCompile Include="lighting_setting.cpp" />
     <ClCompile Include="light_factory.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="alight.h" />
     <ClInclude Include="amesh.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="controller.h" />
     <ClInclude Include="directional_light.h" />
     <ClInclude Include="lib.h" />
     <ClInclude Include="lighting_setting.h" />

@@ -1,6 +1,5 @@
 #include "lighting_setting.h"
 
-using namespace util::uvar;
 
 lgh::LightingSettings::LightingSettings() { }
 
