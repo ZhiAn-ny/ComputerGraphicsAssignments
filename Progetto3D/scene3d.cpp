@@ -45,16 +45,19 @@ void gobj::Scene::select_nearest(vec3 origin, vec3 direction)
 			selected = &this->meshes_[i];
 		}
 	}
-	std::cout << "SELECTION::SCENE::MESHES::END" << std::endl;
-	/*for (int i = 0; i < this->models_.size(); i++)
+	std::cout << "SELECTION::SCENE::MODELS::END" << std::endl;
+	std::cout << "SELECTION::SCENE::MODELS::START" << std::endl;
+	for (int i = 0; i < this->models_.size(); i++)
 	{
 		float d = this->models_[i].ray_intersection(origin, direction);
-		if (d > -1 && d < distance) 
+		std::cout << "SELECTION::SCENE::MODELS::DISTANCE: " << d << std::endl;
+		if (d > -1 && d < distance)
 		{
 			distance = d;
 			selected = &this->models_[i];
 		}
-	}*/
+	}
+	std::cout << "SELECTION::SCENE::MODELS::END" << std::endl;
 }
 
 void gobj::Scene::add_object(mesh::Mesh mesh)

@@ -46,9 +46,14 @@ void gobj::mesh::Model::deselect()
 
 float gobj::mesh::Model::ray_intersection(vec3 origin, vec3 direction)
 {
-	float d = this->meshes_[0].ray_intersection(origin, direction);
-
-	return d;
+	float distance = INFINITE;
+	float d;
+	for (int i = 0; i < this->meshes_.size(); i++)
+	{
+		d = this->meshes_[i].ray_intersection(origin, direction);
+		if (d > -1 && d < distance) distance = d;
+	}
+	return distance == INFINITE ? -1 : distance;
 }
 
 void Model::load_model(string path)

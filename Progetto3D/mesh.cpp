@@ -147,66 +147,29 @@ vec3 Mesh::get_anchor()
 
 float Mesh::ray_intersection(vec3 origin, vec3 direction)
 {
-    /*std::cout << "SELECTION::SCENE::MESHES::" << this->get_name() << std::endl;
-    vec3 dist_sph = origin - this->get_anchor();
+    vec3 dirfrac = vec3(0);
 
-    float b = dot(dist_sph, direction);
+    dirfrac.x = 1.0f / direction.x;
+    dirfrac.y = 1.0f / direction.y;
+    dirfrac.z = 1.0f / direction.z;
 
-    vec3 dims = abs(this->get_anchor() - this->bb_top_right());
-    float shpere_ray = sqrt(pow(sqrt(pow(dims.x, 2) + pow(dims.y, 2)), 2) + pow(dims.z, 2));
-    std::cout << "SELECTION::SCENE::MESHES::" << this->get_name() << "::SPHERE_RAY: " << shpere_ray << std::endl;
-    
-    float cc = dot(dist_sph, dist_sph) - shpere_ray * shpere_ray;
-	float delta = b * b - cc;
-    std::cout << "SELECTION::SCENE::MESHES::" << this->get_name() << "::DELTA: " << delta << std::endl;
- 
-    if (delta < 0) return -1;
-    if (delta > 0)
-    {
-        // calcola le due intersezioni
-        float t_a = -b + sqrt(delta);
-        float t_b = -b - sqrt(delta);
+    float t1 = (this->bb_bottom_left().x - origin.x) * dirfrac.x;
+    float t2 = (this->bb_top_right().x - origin.x) * dirfrac.x;
+    float t3 = (this->bb_bottom_left().y - origin.y) * dirfrac.y;
+    float t4 = (this->bb_top_right().y - origin.y) * dirfrac.y;
+    float t5 = (this->bb_bottom_left().z - origin.z) * dirfrac.z;
+    float t6 = (this->bb_top_right().z - origin.z) * dirfrac.z;
 
-        if (t_a < 0 && t_b < 0) return -1;
-        std::cout << "SELECTION::SCENE::MESHES::" << this->get_name() << "::INTERSECTION_FOUND " << std::endl;
-        return t_b;
-    }
+    float tmin = max({ max({ min({ t1, t2 }), min({ t3, t4 }) }), min({ t5, t6 }) });
+    float tmax = min({ min({ max({ t1, t2 }), max({ t3, t4 }) }), max({ t5, t6 }) });
 
-    float t = -b + sqrt(delta);
-    if (t < 0) return -1;
-    std::cout << "SELECTION::SCENE::MESHES::" << this->get_name() << "::INTERSECTION_FOUND " << std::endl;
-    return t;*/
+    // if tmax < 0, ray (line) is intersecting AABB, but the whole AABB is behind us
+    if (tmax < 0) return -1;
 
-    /*std::cout << "SELECTION::SCENE::MESHES::" << this->get_name() << std::endl;
+    // if tmin > tmax, ray doesn't intersect AABB
+    if (tmin > tmax) return -1;
 
-    float tmin, tmax, tymin, tymax, tzmin, tzmax;
-    // bounds 0 = min
-    // bounds 1 = max
-    tmin = (bounds[r.sign[0]].x - r.orig.x) * r.invdir.x;
-    tmax = (bounds[1 - r.sign[0]].x - r.orig.x) * r.invdir.x;
-    tymin = (bounds[r.sign[1]].y - r.orig.y) * r.invdir.y;
-    tymax = (bounds[1 - r.sign[1]].y - r.orig.y) * r.invdir.y;
-
-    if ((tmin > tymax) || (tymin > tmax))
-        return false;
-
-    if (tymin > tmin)
-        tmin = tymin;
-    if (tymax < tmax)
-        tmax = tymax;
-
-    tzmin = (bounds[r.sign[2]].z - r.orig.z) * r.invdir.z;
-    tzmax = (bounds[1 - r.sign[2]].z - r.orig.z) * r.invdir.z;
-
-    if ((tmin > tzmax) || (tzmin > tmax))
-        return false;
-
-    if (tzmin > tmin)
-        tmin = tzmin;
-    if (tzmax < tmax)
-        tmax = tzmax;
-
-    return true;*/ return -1;
+    return tmin;
 }
 
 void Mesh::transform(vec3 tvec, vec3 svec, vec3 rvec, float angle)
