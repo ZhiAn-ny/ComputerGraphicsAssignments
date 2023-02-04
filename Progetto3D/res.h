@@ -42,6 +42,23 @@ namespace res
 
 	} // !mat
 
+	namespace sky {
+
+		enum class SkyBoxThemes {
+			space
+		};
+
+		const vector<string> night_sky = {
+			"res/cubemaps/right_night_sky.jpg",
+			"res/cubemaps/left_night_sky.jpg",
+			"res/cubemaps/top_night_sky.jpg",
+			"res/cubemaps/bottom_night_sky.jpg",
+			"res/cubemaps/front_night_sky.jpg",
+			"res/cubemaps/back_night_sky.jpg"
+		};
+
+	} // !sky
+
 } // !res
 
 #endif // !GAME_RESOURCES_H_

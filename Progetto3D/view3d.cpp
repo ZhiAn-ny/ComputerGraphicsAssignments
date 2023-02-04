@@ -5,7 +5,10 @@
 RECT window;
 Scene scene;
 Shader main_shader;
+Shader cm_shader;
 Camera cam;
+gview::sky::Cubemap skybox;
+
 lgh::LightingSettings light_setting;
 gctrl::GameController controller;
 
@@ -16,14 +19,20 @@ mat4 Projection;
 
 void gview::GameView3D::draw_scene(void)
 {
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	Projection = perspective(glm::radians(cam.get_fov()), 800.0f / 600.0f, near_plane, far_plane);
+
+	cm_shader.use();
+	cm_shader.setMatrix4f("Projection", Projection);
+	cm_shader.setMatrix4f("View", cam.get_view());
+	
+	skybox.render(&cm_shader, &cam);
 
 	main_shader.use();
 	main_shader.setMatrix4f("Projection", Projection);
 	main_shader.setMatrix4f("View", cam.get_view());
-
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	main_shader.setVec3("camPos", cam.get_position());
 
@@ -125,6 +134,9 @@ void gview::GameView3D::create_window(const char* title)
 
 void gview::GameView3D::set_scene()
 {
+	skybox.init();
+
+	mesh::MeshFactory mf;
 	lgh::LightFactory lf;
 
 	lgh::Spotlight light = lf.new_spotlight(cam.get_position(), cam.get_front_direction());
@@ -135,8 +147,6 @@ void gview::GameView3D::set_scene()
 	
 	light_setting.add_point_light(lf.new_point_light(vec3(3)));
 	light_setting.add_point_light(lf.new_point_light(vec3(-2)));
-
-	mesh::MeshFactory mf;
 
 	mesh::Model model = mf.create_dolphin();
 	scene.add_object(model);
@@ -197,6 +207,7 @@ void gview::GameView3D::init()
 
 	controller.init(&scene, &window, &Projection, &cam);
 	main_shader = Shader("vertexShader.glsl", "fragmentShader.glsl");
+	cm_shader = Shader("cubemap_vs.glsl", "cubemap_fs.glsl");
 
 	this->set_scene();
 

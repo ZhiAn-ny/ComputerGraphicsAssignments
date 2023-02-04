@@ -129,13 +129,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="cubemap_fs.glsl" />
+    <None Include="cubemap_vs.glsl" />
     <None Include="fragmentShader.glsl" />
     <None Include="packages.config" />
     <None Include="vertexShader.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="alight.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="controller.cpp" />
+    <ClCompile Include="cubemap.cpp" />
     <ClCompile Include="directional_light.cpp" />
     <ClCompile Include="lighting_setting.cpp" />
     <ClCompile Include="light_factory.cpp" />
@@ -154,6 +158,7 @@
     <ClInclude Include="alight.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="controller.h" />
+    <ClInclude Include="cubemap.h" />
     <ClInclude Include="directional_light.h" />
     <ClInclude Include="imesh.h" />
     <ClInclude Include="lib.h" />

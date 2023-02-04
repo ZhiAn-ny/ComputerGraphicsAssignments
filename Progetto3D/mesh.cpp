@@ -31,6 +31,16 @@ void Mesh::set_name(string name)
     this->name_ = name;
 }
 
+unsigned int gobj::mesh::Mesh::get_vao()
+{
+    return this->VAO;
+}
+
+unsigned int gobj::mesh::Mesh::get_indices_size()
+{
+    return this->indices.size();
+}
+
 void Mesh::add_vertex(Vertex v)
 {
     this->verts.push_back(v);
@@ -238,14 +248,14 @@ void Mesh::set_material(res::mat::Material mat)
     this->material = mat;
 }
 
-//bool Mesh::is_colliding(vec4 pos)
-//{
-//    bool xCollision = util::is_in_range(bb_bottom_left().x, bb_top_right().x, pos.x);
-//    bool yCollision = util::is_in_range(bb_bottom_left().y, bb_top_right().y, pos.y);
-//    bool zCollision = util::is_in_range(bb_bottom_left().z, bb_top_right().z, pos.z);
-//
-//    return xCollision && yCollision && zCollision;
-//}
+bool Mesh::is_colliding(vec4 pos)
+{
+    bool xCollision = util::is_in_range(bb_bottom_left().x, bb_top_right().x, pos.x);
+    bool yCollision = util::is_in_range(bb_bottom_left().y, bb_top_right().y, pos.y);
+    bool zCollision = util::is_in_range(bb_bottom_left().z, bb_top_right().z, pos.z);
+
+    return xCollision && yCollision && zCollision;
+}
 
 void Mesh::bind()
 {

@@ -44,6 +44,8 @@ namespace gobj
 
 			string get_name();
 			void set_name(string name);
+			unsigned int get_vao();
+			unsigned int get_indices_size();
 			void set_indices(vector<unsigned int> indices);
 			void add_texture(Texture texture);
 			void add_texture(string name, char const* path, bool vflip);
