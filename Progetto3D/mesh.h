@@ -2,9 +2,8 @@
 #define GAME_POLYGONAL_MESH_H_
 
 #include "lib.h"
-#include "amesh.h"
+#include "imesh.h"
 #include "res.h"
-#include "utils.h"
 
 using namespace res;
 
@@ -13,8 +12,9 @@ namespace gobj
 	namespace mesh
 	{
 
-		class Mesh: public AMesh {
+		class Mesh: public IMesh {
 		private:
+			string name_ = "";
 			vector<Vertex> verts = {};
 			vector<unsigned int> indices = {};
 			mat4 model = mat4(1);
@@ -25,7 +25,7 @@ namespace gobj
 
 			unsigned int diffuse_map = 0;
 			unsigned int specular_map = 0;
-			vector<tex::Texture> textures_ = {};
+			vector<Texture> textures_ = {};
 			res::mat::Material material = res::mat::tutorial;
 
 			unsigned int VAO, VBO, EBO;
@@ -37,15 +37,15 @@ namespace gobj
 			vec3 bb_bottom_left();
 			vec3 get_anchor();
 
-
 		public:
-
 			Mesh();
-			Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<tex::Texture> textures);
+			Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures);
 			~Mesh();
 
+			string get_name();
+			void set_name(string name);
 			void set_indices(vector<unsigned int> indices);
-			void add_texture(tex::Texture texture);
+			void add_texture(Texture texture);
 			void add_texture(string name, char const* path, bool vflip);
 			void set_diffuse_map(string name);
 			void set_specular_map(string name);
@@ -53,9 +53,9 @@ namespace gobj
 			//bool is_colliding(vec4 pos);
 			float ray_intersection(vec3 origin, vec3 direction);
 
-			void add_vertex(Vertex v) override;
-			void add_index(unsigned int i) override;
-			void set_color(vec4 color) override;
+			void add_vertex(Vertex v);
+			void add_index(unsigned int i);
+			void set_color(vec4 color);
 			void select() override;
 			void deselect() override;
 			void bind() override;

@@ -12,7 +12,7 @@ Mesh::Mesh()
     this->set_diffuse_map("none");
 }
 
-gobj::mesh::Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<tex::Texture> textures)
+Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures)
 {
     this->verts = vertices;
     this->indices = indices;
@@ -20,6 +20,16 @@ gobj::mesh::Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, ve
 }
 
 Mesh::~Mesh() { }
+
+string Mesh::get_name()
+{
+    return this->name_;
+}
+
+void Mesh::set_name(string name)
+{
+    this->name_ = name;
+}
 
 void Mesh::add_vertex(Vertex v)
 {
@@ -31,7 +41,7 @@ void Mesh::add_index(unsigned int index)
     this->indices.push_back(index);
 }
 
-void gobj::mesh::Mesh::set_color(vec4 color)
+void Mesh::set_color(vec4 color)
 {
     for (unsigned int i = 0; i < this->verts.size(); i++)
     {
@@ -39,12 +49,12 @@ void gobj::mesh::Mesh::set_color(vec4 color)
     }
 }
 
-void gobj::mesh::Mesh::select()
+void Mesh::select()
 {
     this->selected_ = true;
 }
 
-void gobj::mesh::Mesh::deselect()
+void Mesh::deselect()
 {
     this->selected_ = false;
 }
@@ -54,7 +64,7 @@ void Mesh::set_indices(vector<unsigned int> indices)
     this->indices = indices;
 }
 
-void gobj::mesh::Mesh::add_texture(tex::Texture texture)
+void Mesh::add_texture(Texture texture)
 {
     for (int i = 0; i < this->textures_.size(); i++)
     {
@@ -63,7 +73,7 @@ void gobj::mesh::Mesh::add_texture(tex::Texture texture)
     this->textures_.push_back(texture);
 }
 
-unsigned int gobj::mesh::Mesh::load_texture(char const* path, int vertical_flip)
+unsigned int Mesh::load_texture(char const* path, int vertical_flip)
 {
     GLenum format;
     unsigned int tex_ID = 0;
@@ -98,7 +108,7 @@ unsigned int gobj::mesh::Mesh::load_texture(char const* path, int vertical_flip)
     return tex_ID;
 }
 
-void gobj::mesh::Mesh::set_bounding_box()
+void Mesh::set_bounding_box()
 {
     for (int i = 0; i < this->verts.size(); i++)
     {
@@ -113,17 +123,17 @@ void gobj::mesh::Mesh::set_bounding_box()
     }
 }
 
-vec3 gobj::mesh::Mesh::bb_top_right()
+vec3 Mesh::bb_top_right()
 {
     return this->model * vec4(this->bb_top_right_, 1.0);
 }
 
-vec3 gobj::mesh::Mesh::bb_bottom_left()
+vec3 Mesh::bb_bottom_left()
 {
     return this->model * vec4(this->bb_bottom_left_, 1.0);
 }
 
-vec3 gobj::mesh::Mesh::get_anchor()
+vec3 Mesh::get_anchor()
 {
     vec3 distance = abs(this->bb_bottom_left_ - this->bb_top_right_);
 
@@ -135,9 +145,9 @@ vec3 gobj::mesh::Mesh::get_anchor()
     return this->model * vec4(anchor, 1.0);
 }
 
-float gobj::mesh::Mesh::ray_intersection(vec3 origin, vec3 direction)
+float Mesh::ray_intersection(vec3 origin, vec3 direction)
 {
-    std::cout << "SELECTION::SCENE::MESHES::" << this->get_name() << std::endl;
+    /*std::cout << "SELECTION::SCENE::MESHES::" << this->get_name() << std::endl;
     vec3 dist_sph = origin - this->get_anchor();
 
     float b = dot(dist_sph, direction);
@@ -165,10 +175,41 @@ float gobj::mesh::Mesh::ray_intersection(vec3 origin, vec3 direction)
     float t = -b + sqrt(delta);
     if (t < 0) return -1;
     std::cout << "SELECTION::SCENE::MESHES::" << this->get_name() << "::INTERSECTION_FOUND " << std::endl;
-    return t;
+    return t;*/
+
+    /*std::cout << "SELECTION::SCENE::MESHES::" << this->get_name() << std::endl;
+
+    float tmin, tmax, tymin, tymax, tzmin, tzmax;
+    // bounds 0 = min
+    // bounds 1 = max
+    tmin = (bounds[r.sign[0]].x - r.orig.x) * r.invdir.x;
+    tmax = (bounds[1 - r.sign[0]].x - r.orig.x) * r.invdir.x;
+    tymin = (bounds[r.sign[1]].y - r.orig.y) * r.invdir.y;
+    tymax = (bounds[1 - r.sign[1]].y - r.orig.y) * r.invdir.y;
+
+    if ((tmin > tymax) || (tymin > tmax))
+        return false;
+
+    if (tymin > tmin)
+        tmin = tymin;
+    if (tymax < tmax)
+        tmax = tymax;
+
+    tzmin = (bounds[r.sign[2]].z - r.orig.z) * r.invdir.z;
+    tzmax = (bounds[1 - r.sign[2]].z - r.orig.z) * r.invdir.z;
+
+    if ((tmin > tzmax) || (tzmin > tmax))
+        return false;
+
+    if (tzmin > tmin)
+        tmin = tzmin;
+    if (tzmax < tmax)
+        tmax = tzmax;
+
+    return true;*/ return -1;
 }
 
-void gobj::mesh::Mesh::transform(vec3 tvec, vec3 svec, vec3 rvec, float angle)
+void Mesh::transform(vec3 tvec, vec3 svec, vec3 rvec, float angle)
 {
     mat4 T = translate(mat4(1), tvec);
     mat4 S = scale(mat4(1), svec);
@@ -177,7 +218,7 @@ void gobj::mesh::Mesh::transform(vec3 tvec, vec3 svec, vec3 rvec, float angle)
     this->model = model * T * R * S;
 }
 
-void gobj::mesh::Mesh::add_texture(string name, char const* path, bool vflip)
+void Mesh::add_texture(string name, char const* path, bool vflip)
 {
     for (int i = 0; i < this->textures_.size(); i++)
     {
@@ -191,17 +232,17 @@ void gobj::mesh::Mesh::add_texture(string name, char const* path, bool vflip)
         }
     }
 
-    tex::Texture texture = tex::Texture();
+    Texture texture = Texture();
     texture.id = this->load_texture(path, vflip ? 1 : 0);
     texture.path = path;
-    texture.type = tex::TexType::undefined;
+    texture.type = TexType::undefined;
     texture.name = name;
 
     this->textures_.push_back(texture);
     
 }
 
-void gobj::mesh::Mesh::set_diffuse_map(string name)
+void Mesh::set_diffuse_map(string name)
 {
     int index = -1;
     for (int i = 0; i < this->textures_.size(); i++)
@@ -215,7 +256,7 @@ void gobj::mesh::Mesh::set_diffuse_map(string name)
     this->diffuse_map = this->textures_[index].id;
 }
 
-void gobj::mesh::Mesh::set_specular_map(string name)
+void Mesh::set_specular_map(string name)
 {
     int index = -1;
     for (int i = 0; i < this->textures_.size(); i++)
@@ -229,12 +270,12 @@ void gobj::mesh::Mesh::set_specular_map(string name)
     this->specular_map = this->textures_[index].id;
 }
 
-void gobj::mesh::Mesh::set_material(res::mat::Material mat)
+void Mesh::set_material(res::mat::Material mat)
 {
     this->material = mat;
 }
 
-//bool gobj::mesh::Mesh::is_colliding(vec4 pos)
+//bool Mesh::is_colliding(vec4 pos)
 //{
 //    bool xCollision = util::is_in_range(bb_bottom_left().x, bb_top_right().x, pos.x);
 //    bool yCollision = util::is_in_range(bb_bottom_left().y, bb_top_right().y, pos.y);

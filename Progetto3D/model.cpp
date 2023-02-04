@@ -5,7 +5,6 @@
 #include "stb_image.h"
 
 using namespace gobj::mesh;
-using namespace gobj::tex;
 
 Model::Model() { }
 

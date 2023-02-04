@@ -16,5 +16,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
+#include "utils.h"
+
 using namespace glm;
 using namespace std;

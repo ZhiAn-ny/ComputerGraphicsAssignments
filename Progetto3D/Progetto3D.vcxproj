@@ -152,10 +152,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="alight.h" />
-    <ClInclude Include="amesh.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="controller.h" />
     <ClInclude Include="directional_light.h" />
+    <ClInclude Include="imesh.h" />
     <ClInclude Include="lib.h" />
     <ClInclude Include="lighting_setting.h" />
     <ClInclude Include="light_factory.h" />

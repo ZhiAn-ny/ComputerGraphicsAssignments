@@ -12,7 +12,7 @@ namespace gobj {
 		private:
 			string name_ = "";
 			vector<Mesh> meshes_ = {};
-			vector<tex::Texture> textures_loaded = {};
+			vector<Texture> textures_loaded = {};
 			string file_directory_ = "";
 
 			bool gammaCorrection;
@@ -21,8 +21,8 @@ namespace gobj {
 			void process_node(aiNode* node, const aiScene* scene);
 			Mesh process_mesh(aiMesh* mesh, const aiScene* scene);
 
-			vector<tex::Texture> load_material(
-				aiMaterial* mat, aiTextureType type, tex::TexType typeName);
+			vector<Texture> load_material(
+				aiMaterial* mat, aiTextureType type, TexType typeName);
 
 			unsigned int load_texture(const char* path, const string& dir, bool gamma);
 
