@@ -17,6 +17,7 @@
 #include <assimp/postprocess.h>
 
 #include "utils.h"
+#include "res.h"
 
 using namespace glm;
 using namespace std;
