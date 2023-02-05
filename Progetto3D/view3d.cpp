@@ -134,7 +134,6 @@ void gview::GameView3D::create_window(const char* title)
 
 void gview::GameView3D::set_scene()
 {
-	skybox.init();
 
 	mesh::MeshFactory mf;
 	lgh::LightFactory lf;
@@ -152,13 +151,6 @@ void gview::GameView3D::set_scene()
 	scene.add_object(model);
 
 	mesh::Mesh mesh = mf.create_cube();
-	/*mesh.add_texture("box", "res/textures/container2.jpg", 1);
-	mesh.add_texture("metal", "res/textures/container2_specular.png", 1);
-	mesh.set_diffuse_map("box");
-	mesh.set_specular_map("metal");
-	mesh.transform(vec3(0), vec3(1), vec3(1, 0, 0), 0);
-	mesh.set_material({vec3(1),vec3(1),vec3(0.5),64});
-	scene.add_object(mesh);*/
 
 	for (unsigned int i = 0; i < 10; i++)
 	{
@@ -209,6 +201,8 @@ void gview::GameView3D::init()
 	main_shader = Shader("vertexShader.glsl", "fragmentShader.glsl");
 	cm_shader = Shader("cubemap_vs.glsl", "cubemap_fs.glsl");
 
+	skybox.init();
+	skybox.bind();
 	this->set_scene();
 
 	glEnable(GL_DEPTH_TEST);

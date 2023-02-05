@@ -16,7 +16,7 @@ namespace gview
 		private:
 			gobj::mesh::Mesh* cube_ = {};
 			map<res::sky::SkyBoxThemes, int> themes_ = {};
-			unsigned int skybox_ = 0;
+			unsigned int texture_ID_ = 0;
 
 			unsigned int load_skybox(vector<string> faces_path);
 
@@ -25,6 +25,7 @@ namespace gview
 			~Cubemap();
 
 			void init();
+			void bind();
 			void set_theme(res::sky::SkyBoxThemes theme);
 			void render(Shader* sh, Camera* cam);
 		};
