@@ -200,9 +200,9 @@ void gview::GameView3D::init()
 	controller.init(&scene, &window, &Projection, &cam);
 	main_shader = Shader("vertexShader.glsl", "fragmentShader.glsl");
 	cm_shader = Shader("cubemap_vs.glsl", "cubemap_fs.glsl");
-
+	
 	skybox.init();
-	skybox.bind();
+	skybox.set_theme(res::sky::SkyBoxThemes::space);
 	this->set_scene();
 
 	glEnable(GL_DEPTH_TEST);

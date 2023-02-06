@@ -12,9 +12,8 @@ namespace gview
 {
 	namespace sky
 	{
-		class Cubemap {
+		class Cubemap : public gobj::Scene {
 		private:
-			gobj::mesh::Mesh* cube_ = {};
 			map<res::sky::SkyBoxThemes, int> themes_ = {};
 			unsigned int texture_ID_ = 0;
 
@@ -25,7 +24,6 @@ namespace gview
 			~Cubemap();
 
 			void init();
-			void bind();
 			void set_theme(res::sky::SkyBoxThemes theme);
 			void render(Shader* sh, Camera* cam);
 		};

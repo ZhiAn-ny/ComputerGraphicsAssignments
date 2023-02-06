@@ -41,17 +41,11 @@ unsigned int gview::sky::Cubemap::load_skybox(vector<string> faces)
 void gview::sky::Cubemap::init()
 {
 	gobj::mesh::MeshFactory mf;
-	gobj::mesh::Mesh mesh = mf.create_cube();
-	this->cube_ = &mesh;
-	std::cout << this->cube_->get_name() << std::endl;
+	gobj::mesh::Mesh cube = mf.create_cube();
+	this->add_object(cube);
 
 	this->texture_ID_ = this->load_skybox(res::sky::night_sky);
 	this->themes_.insert_or_assign(res::sky::SkyBoxThemes::space, this->texture_ID_);
-}
-
-void gview::sky::Cubemap::bind()
-{
-	this->cube_->bind();
 }
 
 void gview::sky::Cubemap::set_theme(res::sky::SkyBoxThemes theme)
@@ -66,22 +60,12 @@ void gview::sky::Cubemap::set_theme(res::sky::SkyBoxThemes theme)
 
 void gview::sky::Cubemap::render(Shader* sh, Camera* cam)
 {
-	//sh->use();
 	glDepthMask(GL_FALSE);
-
-	//glUniform1i(glGetUniformLocation(sh->get_ID(), "skybox"), 0);
-
-	glBindVertexArray(this->cube_->get_vao());
-	util::check_error("CUBEMAP::ERROR::BIND_VAO");
-
+	
 	glBindTexture(GL_TEXTURE_CUBE_MAP, this->texture_ID_);
 	util::check_error("CUBEMAP::ERROR::BIND_TEXTURE");
 
-	glDrawArrays(GL_TRIANGLES, 0, 36);
-	//glDrawElements(GL_TRIANGLES, this->cube_->get_indices_size() * sizeof(GLuint), GL_UNSIGNED_INT, 0);
-	util::check_error("CUBEMAP::ERROR::DRAW_ELEMENTS");
-
-	glBindVertexArray(0);
+	Scene::render(sh);
 
 	glDepthMask(GL_TRUE);
 }
