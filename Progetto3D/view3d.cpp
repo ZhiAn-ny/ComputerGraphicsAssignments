@@ -24,12 +24,14 @@ void gview::GameView3D::draw_scene(void)
 
 	Projection = perspective(glm::radians(cam.get_fov()), 800.0f / 600.0f, near_plane, far_plane);
 
+	// Render the cubemap
 	cm_shader.use();
 	cm_shader.setMatrix4f("Projection", Projection);
 	cm_shader.setMatrix4f("View", cam.get_view());
 	
 	skybox.render(&cm_shader, &cam);
 
+	// Render everything else
 	main_shader.use();
 	main_shader.setMatrix4f("Projection", Projection);
 	main_shader.setMatrix4f("View", cam.get_view());
@@ -134,19 +136,21 @@ void gview::GameView3D::create_window(const char* title)
 
 void gview::GameView3D::set_scene()
 {
-
-	mesh::MeshFactory mf;
+	// Set scene's lights
 	lgh::LightFactory lf;
+	light_setting.add_directional_light(lf.new_directional_light(vec3(0,0,-1)));
 
-	lgh::Spotlight light = lf.new_spotlight(cam.get_position(), cam.get_front_direction());
+	/*lgh::Spotlight light = lf.new_spotlight(cam.get_position(), cam.get_front_direction());
 	vec3 col = color::cyan;
 	col *= 0.5;
 	light.set_diffuse(col);
 	light_setting.add_spotlight(light);
 	
 	light_setting.add_point_light(lf.new_point_light(vec3(3)));
-	light_setting.add_point_light(lf.new_point_light(vec3(-2)));
+	light_setting.add_point_light(lf.new_point_light(vec3(-2)));*/
 
+	// Set scene's objects
+	mesh::MeshFactory mf;
 	mesh::Model model = mf.create_dolphin();
 	scene.add_object(model);
 

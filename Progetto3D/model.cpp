@@ -93,6 +93,7 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene)
 	vector<Vertex> vertices;
 	vector<unsigned int> indices;
 	vector<Texture> textures;
+	res::mat::Material mat = res::mat::tutorial;
 
 	// Add vertices
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
@@ -140,9 +141,21 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene)
 		//std::vector<Texture> normalMaps = this->load_material(material, aiTextureType_HEIGHT, "texture_normal");
 		//textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
 
+		// 4. material parameters
+		aiColor3D color;
+		float value;
+		if (aiReturn_SUCCESS == material->Get(AI_MATKEY_COLOR_AMBIENT, color))
+			mat.ambient = vec3(color.r, color.g, color.b);
+		if (aiReturn_SUCCESS == material->Get(AI_MATKEY_COLOR_DIFFUSE, color))
+			mat.diffuse = glm::vec3(color.r, color.g, color.b);
+		if (aiReturn_SUCCESS == material->Get(AI_MATKEY_COLOR_SPECULAR, color))
+			mat.specular = glm::vec3(color.r, color.g, color.b);
+		if (aiReturn_SUCCESS == material->Get(AI_MATKEY_SHININESS, value))
+			mat.shininess = value;
 	}
 
 	Mesh m = Mesh(vertices, indices, textures);
+	m.set_material(mat);
 	m.set_diffuse_map(Texture::find_first(TexType::diffuse, textures)->name);
 
 	return m;
