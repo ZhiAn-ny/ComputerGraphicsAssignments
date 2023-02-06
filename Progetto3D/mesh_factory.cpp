@@ -78,3 +78,40 @@ Model gobj::mesh::MeshFactory::create_dolphin()
     this->dolphin_number++;
     return dolphin;
 }
+
+Model gobj::mesh::MeshFactory::create_manta()
+{
+    Model manta = Model("res/meshes/manta_ray/manta_ray.obj");
+    manta.set_name("manta_" + std::to_string(this->manta_number));
+
+    this->manta_number++;
+    return manta;
+}
+
+
+Model gobj::mesh::MeshFactory::create_whale()
+{
+    Model whale = Model("res/meshes/whale/whale.obj");
+    whale.set_name("whale_" + std::to_string(this->whale_number));
+
+    this->whale_number++;
+    return whale;
+}
+
+Model gobj::mesh::MeshFactory::create_fish()
+{
+    Model fish = Model("res/meshes/fish/goldfish.obj");
+    fish.set_name("fish_" + std::to_string(this->fish_number));
+
+    this->whale_number++;
+    return fish;
+}
+
+Model gobj::mesh::MeshFactory::create_jellyfish()
+{
+    Model jelly = Model("res/meshes/jellifish/jellifish.obj");
+    jelly.set_name("jellyfish_" + std::to_string(this->jelly_number));
+
+    this->whale_number++;
+    return jelly;
+}

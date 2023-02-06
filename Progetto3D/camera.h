@@ -12,7 +12,7 @@ namespace gview
 	{
 
 		const float near_plane = 0.1f;
-		const float far_plane = 100.0f;
+		const float far_plane = 1000.0f;
 
 		class Camera {
 		private:

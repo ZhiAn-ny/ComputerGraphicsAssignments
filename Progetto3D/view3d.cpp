@@ -152,11 +152,25 @@ void gview::GameView3D::set_scene()
 	// Set scene's objects
 	mesh::MeshFactory mf;
 	mesh::Model model = mf.create_dolphin();
+	model.transform(vec3(2, 5, 9), vec3(1), vec3(0, 1, 0), 0.5);
 	scene.add_object(model);
 
-	mesh::Mesh mesh = mf.create_cube();
+	model = mf.create_manta();
+	model.transform(vec3(5,-5,-3), vec3(0.5), vec3(1, 0, 0), 0);
+	scene.add_object(model);
 
-	for (unsigned int i = 0; i < 10; i++)
+	model = mf.create_manta();
+	model.transform(vec3(15,-10,-5), vec3(0.5), vec3(1, 0, 0), 0);
+	scene.add_object(model);
+
+	model = mf.create_whale();
+	model.transform(vec3(-100, 0, 0), vec3(1), vec3(1, 0, 0), 0);
+	scene.add_object(model);
+
+
+	//mesh::Mesh mesh = mf.create_cube();
+
+	/*for (unsigned int i = 0; i < 10; i++)
 	{
 		mesh = mf.create_cube();
 		mesh.add_texture("box", "res/textures/container2.jpg", 1);
@@ -170,12 +184,7 @@ void gview::GameView3D::set_scene()
 		);
 		mesh.set_material({ vec3(1),vec3(1),vec3(0.5),64 });
 		scene.add_object(mesh);
-	}
-
-	//mesh = mf.create_cube();
-	//mesh.transform(light_pos, vec3(0.3), vec3(1, 0, 0), 0);
-	//mesh.set_color(color::white);
-	//scene.add_object(mesh);
+	}*/
 
 }
 

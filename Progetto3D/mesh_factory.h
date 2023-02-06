@@ -12,6 +12,10 @@ namespace gobj
 		private:
 			unsigned int cube_number = 0;
 			unsigned int dolphin_number = 0;
+			unsigned int manta_number = 0;
+			unsigned int whale_number = 0;
+			unsigned int fish_number = 0;
+			unsigned int jelly_number = 0;
 
 		public:
 			MeshFactory();
@@ -20,6 +24,10 @@ namespace gobj
 			Mesh create_cube();
 
 			Model create_dolphin();
+			Model create_manta();
+			Model create_whale();
+			Model create_fish();
+			Model create_jellyfish();
 		};
 
 	};
