@@ -23,12 +23,6 @@ vec3 util::distance(vec3 a, vec3 b)
 	return abs(b - a);
 }
 
-bool util::is_same_material(res::mat::Material a, res::mat::Material b)
-{
-	return a.ambient == b.ambient && a.diffuse == b.diffuse
-		&& a.specular == b.specular && a.shininess == b.shininess;
-}
-
 Texture* Texture::find_first(TexType type, vector<Texture>& list)
 {
 	for (int i = 0; i < list.size(); i++)

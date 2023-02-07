@@ -69,6 +69,11 @@ void Mesh::deselect()
     this->selected_ = false;
 }
 
+bool gobj::mesh::Mesh::is_selected()
+{
+    return this->selected_;
+}
+
 void Mesh::set_indices(vector<unsigned int> indices)
 {
     this->indices = indices;
@@ -243,9 +248,10 @@ void Mesh::set_specular_map(string name)
     this->specular_map = this->textures_[index].id;
 }
 
-void Mesh::set_material(res::mat::Material mat)
+void Mesh::set_material(res::mat::Material mat, bool orig)
 {
     this->material = mat;
+    if (orig) this->orig_material_ = mat;
 }
 
 bool Mesh::is_colliding(vec4 pos)
@@ -255,6 +261,11 @@ bool Mesh::is_colliding(vec4 pos)
     bool zCollision = util::is_in_range(bb_bottom_left().z, bb_top_right().z, pos.z);
 
     return xCollision && yCollision && zCollision;
+}
+
+void gobj::mesh::Mesh::reset_material()
+{
+    this->material = this->orig_material_;
 }
 
 void Mesh::bind()
@@ -291,6 +302,13 @@ void Mesh::render(Shader* sh)
 {
     sh->setMatrix4f("Model", this->model);
     sh->setMatrix3f("NormalMatrix", mat3(transpose(inverse(this->model))));
+
+    sh->setBool("useTexture", res::mat::is_equal(material, orig_material_));
+
+    sh->setVec3("base.ambient", this->material.ambient);
+    sh->setVec3("base.diffuse", this->material.diffuse);
+    sh->setVec3("base.specular", this->material.specular);
+    sh->setFloat("base.shininess", this->material.shininess);
 
     sh->setFloat("material.shininess", this->material.shininess);
     sh->setInt("material.diffuse", 0);

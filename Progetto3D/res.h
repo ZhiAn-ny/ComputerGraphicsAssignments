@@ -30,6 +30,11 @@ namespace res
 			float shininess;
 		};
 
+		static bool is_equal(Material a, Material b) {
+			return a.ambient == b.ambient && a.diffuse == b.diffuse
+				&& a.specular == b.specular && a.shininess == b.shininess;
+		}
+
 		const Material tutorial = { vec3(1.0f, 0.5f, 0.31f),
 			vec3(1.0f, 0.5f, 0.31f), vec3(0.5f, 0.5f, 0.5f), 32.0f };
 

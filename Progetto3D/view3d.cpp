@@ -203,7 +203,7 @@ void gview::GameView3D::set_scene()
 void gview::GameView3D::setup_menu()
 {
 	int material_options = glutCreateMenu(this->menu_event_handler);
-	glutAddMenuEntry("Use basic white material", gctrl::MenuActions::mat_tutorial);
+	glutAddMenuEntry("Use tutorial material", gctrl::MenuActions::mat_tutorial);
 	glutAddMenuEntry("Use jade material", gctrl::MenuActions::mat_jade);
 	glutAddMenuEntry("Use gold material", gctrl::MenuActions::mat_gold);
 	glutAddMenuEntry("Use .mtl file", gctrl::MenuActions::mat_mtl);

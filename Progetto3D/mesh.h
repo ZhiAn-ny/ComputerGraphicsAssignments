@@ -26,6 +26,7 @@ namespace gobj
 			unsigned int diffuse_map = 0;
 			unsigned int specular_map = 0;
 			vector<Texture> textures_ = {};
+			res::mat::Material orig_material_ = res::mat::tutorial;
 			res::mat::Material material = res::mat::tutorial;
 
 			unsigned int VAO, VBO, EBO;
@@ -46,20 +47,22 @@ namespace gobj
 			void set_name(string name);
 			unsigned int get_vao();
 			unsigned int get_indices_size();
+			void add_vertex(Vertex v);
+			void add_index(unsigned int i);
+			void set_color(vec4 color);
 			void set_indices(vector<unsigned int> indices);
 			void add_texture(Texture texture);
 			void add_texture(string name, char const* path, bool vflip);
 			void set_diffuse_map(string name);
 			void set_specular_map(string name);
-			void set_material(res::mat::Material mat);
 			bool is_colliding(vec4 pos);
+			void reset_material();
 			float ray_intersection(vec3 origin, vec3 direction);
 
-			void add_vertex(Vertex v);
-			void add_index(unsigned int i);
-			void set_color(vec4 color);
+			void set_material(res::mat::Material mat, bool orig = false) override;
 			void select() override;
 			void deselect() override;
+			bool is_selected() override;
 			void bind() override;
 			void render(Shader* sh) override;
 			void transform(vec3 tvec, vec3 svec, vec3 rvec, float angle) override;

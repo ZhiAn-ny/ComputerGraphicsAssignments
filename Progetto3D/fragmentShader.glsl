@@ -44,9 +44,15 @@ struct Spotlight {
 	float quadratic;
 };
 
-struct Material {
+struct MaterialMtl {
     sampler2D diffuse;
     sampler2D specular;
+    float     shininess;
+};
+struct Material {
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
     float     shininess;
 }; 
   
@@ -54,7 +60,10 @@ struct Material {
 //  UNIFORM VARIABLES  /////////////////////////////////////////////////////////
 
 uniform vec3 camPos;
-uniform Material material;
+
+uniform bool useTexture;
+uniform MaterialMtl material;
+uniform Material base;
 
 uniform int n_dirLights;
 uniform DirectionalLight dirLights[MAX_N_LIGHTS];
@@ -66,27 +75,47 @@ uniform Spotlight spotlights[MAX_N_LIGHTS];
 
 ///  UTILITY FUNCTIONS  ////////////////////////////////////////////////////////
 
-vec3 directionalLightContribute(DirectionalLight dl, vec3 normal, vec3 viewDir)
+Material getObjectColor()
+{
+    Material objColor;
+    if (useTexture)
+    {
+        objColor.ambient = vec3(texture(material.diffuse, TexCoord));
+        objColor.diffuse = vec3(texture(material.diffuse, TexCoord));
+        objColor.specular = vec3(texture(material.specular, TexCoord));
+        objColor.shininess = material.shininess;
+    } else {
+        objColor.ambient = base.ambient;
+        objColor.diffuse = base.diffuse;
+        objColor.specular = base.specular;
+        objColor.shininess = base.shininess;
+    }
+    return objColor;
+}
+
+///  PHONG SHADING  ////////////////////////////////////////////////////////
+
+vec3 directionalLightContribute(DirectionalLight dl, vec3 normal, vec3 viewDir, Material objColor)
 {
     // Calculate the light's direction
     vec3 lightDir = normalize(-dl.dir);
 
     // Calculate the ambient light contribution
-    vec3 ambient = dl.ambient * vec3(texture(material.diffuse, TexCoord));
+    vec3 ambient = dl.ambient * objColor.ambient;
 
     // Calculate the diffuse light contribution
     float diff = max(dot(normal, lightDir), 0.0);
-    vec3 diffuse = dl.diffuse * diff * vec3(texture(material.diffuse, TexCoord));
+    vec3 diffuse = dl.diffuse * diff * objColor.diffuse;
 
     // Calculate reflection from specular light
     vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-    vec3 specular = dl.specular * spec * vec3(texture(material.specular, TexCoord));
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), objColor.shininess);
+    vec3 specular = dl.specular * spec * objColor.specular;
 
     return (ambient + diffuse + specular);
 }
 
-vec3 pointLightContribute(PointLight pl, vec3 normal, vec3 viewDir)
+vec3 pointLightContribute(PointLight pl, vec3 normal, vec3 viewDir, Material objColor)
 {
      // Calculate light's attenuation from distance
     float dist = length(pl.pos - FragPos);
@@ -97,27 +126,21 @@ vec3 pointLightContribute(PointLight pl, vec3 normal, vec3 viewDir)
     vec3 lightDir = normalize(pl.pos - FragPos);
 
     // Calculate the ambient light contribution
-    vec3 ambient = pl.ambient 
-                    * vec3(texture(material.diffuse, TexCoord)) 
-                    * attenuation;
+    vec3 ambient = pl.ambient * objColor.ambient * attenuation;
 
     // Calculate the diffuse light contribution
     float diff = max(dot(normal, lightDir), 0.0);
-    vec3 diffuse = pl.diffuse * diff 
-                    * vec3(texture(material.diffuse, TexCoord)) 
-                    * attenuation;
+    vec3 diffuse = pl.diffuse * diff * objColor.diffuse * attenuation;
 
     // Calculate reflection from specular light
     vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-    vec3 specular = pl.specular * spec 
-                    * vec3(texture(material.specular, TexCoord))
-                    * attenuation;
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), objColor.shininess);
+    vec3 specular = pl.specular * spec * objColor.specular * attenuation;
 
     return (ambient + diffuse + specular);    
 }
 
-vec3 spotlightContribution(Spotlight sl, vec3 normal, vec3 viewDir)
+vec3 spotlightContribution(Spotlight sl, vec3 normal, vec3 viewDir, Material objColor)
 {
     // Calculate light's attenuation from distance
     float dist = length(sl.pos - FragPos);
@@ -133,44 +156,38 @@ vec3 spotlightContribution(Spotlight sl, vec3 normal, vec3 viewDir)
     float intensity = clamp((theta - sl.outerCutOff) / epsilon, 0.0, 1.0);
 
     // Calculate the ambient light contribution
-    vec3 ambient = sl.ambient 
-                    * vec3(texture(material.diffuse, TexCoord)) 
-                    * attenuation;
+    vec3 ambient = sl.ambient * objColor.ambient * attenuation;
 
     // Calculate the diffuse light contribution
     float diff = max(dot(normal, lightDir), 0.0);
-    vec3 diffuse = sl.diffuse * diff 
-                    * vec3(texture(material.diffuse, TexCoord)) 
-                    * attenuation * intensity;
+    vec3 diffuse = sl.diffuse * diff * objColor.diffuse * attenuation * intensity;
 
     // Calculate reflection from specular light
     vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-    vec3 specular = sl.specular * spec 
-                    * vec3(texture(material.specular, TexCoord))
-                    * attenuation * intensity;
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), objColor.shininess);
+    vec3 specular = sl.specular * spec * objColor.specular * attenuation * intensity;
 
     return (ambient + diffuse + specular);
 }
 
-vec4 applyPhongLighting(vec3 normal, vec3 viewDir)
+vec4 applyPhongLighting(vec3 normal, vec3 viewDir, Material objColor)
 {
     vec3 result = vec3(0);
 
     // Add directional light
     for (int i = 0; i < n_dirLights; i++)
     {
-        result += directionalLightContribute(dirLights[i], normal, viewDir);
+        result += directionalLightContribute(dirLights[i], normal, viewDir, objColor);
     }
     // Add point light
     for (int i = 0; i< n_pointLights; i++)
     {
-        result += pointLightContribute(pointLights[i], normal, viewDir);
+        result += pointLightContribute(pointLights[i], normal, viewDir, objColor);
     }
     // Add spotlight
     for (int i = 0; i < n_spotlights; i++)
     {
-        result += spotlightContribution(spotlights[i], normal, viewDir);
+        result += spotlightContribution(spotlights[i], normal, viewDir, objColor);
     }
 
     return vec4(result, 1.0);
@@ -183,8 +200,9 @@ void main()
     vec3 norm = normalize(Normal);
     vec3 viewDir = normalize(camPos - FragPos);
 
+    Material objColor = getObjectColor();
 
-    vec4 resColor = applyPhongLighting(norm, viewDir);
+    vec4 resColor = applyPhongLighting(norm, viewDir, objColor);
     
     FragColor = resColor;
 } 

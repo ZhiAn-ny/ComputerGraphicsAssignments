@@ -52,11 +52,13 @@ void gobj::Scene::select_nearest(vec3 origin, vec3 direction)
 			selected = &this->models_[i];
 		}
 	}
-	if (selected != nullptr)
-		selected->select();
 
-	std::cout << "SELECTION::SELECTED_OBJECT: " 
-			  << selected->get_name() << std::endl;
+	if (selected != nullptr)
+	{
+		selected->select();
+		std::cout << "SELECTION::SELECTED_OBJECT: " 
+				  << selected->get_name() << std::endl;
+	}
 }
 
 void gobj::Scene::deselect_all()
