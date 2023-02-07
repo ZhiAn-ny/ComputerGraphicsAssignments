@@ -31,29 +31,13 @@ public:
     void setMatrix4f(const std::string& name, mat4 value) const;
 };
 
-/** Contains the name of the uniform variables used in the main shaders. */
-namespace umain 
+namespace shd 
 {
-    const string model = "Model";
-    const string view = "View";
-    const string projection = "Projection";
-
-    const string sceltaVS = "sceltaVS";
-    const string sceltaFS = "sceltaFS";
-    
-    const string time = "time";
-    const string resolution = "resolution";
-    const string texture = "id_tex";
-    const string cam_position = "viewPos";
-    
-    const string light_position = "light.position";
-    const string light_color = "light.color";
-    const string light_power = "light.power";
-
-    const string material_ambient = "material.ambient";
-    const string material_diffuse = "material.diffuse";
-    const string material_specular = "material.specular";
-    const string material_shininess = "material.shininess";
-}
+    const int Phong_Phong = -1;
+    const int BlinnPhong_Phong = -2;
+    const int Phong_interp = -3;
+    const int BlinnPhong_interp = -4;
+    const int cartoon = -5;
+} // !shd
 
 #endif // !SHADER_H

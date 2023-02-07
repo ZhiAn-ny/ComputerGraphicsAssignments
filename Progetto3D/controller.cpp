@@ -50,29 +50,70 @@ void gctrl::GameController::deselect_all()
 
 void gctrl::GameController::change_selected_material(MenuActions type)
 {
+	string mtl_name;
 	switch (type)
 	{
 	case gctrl::mat_tutorial:
+		mtl_name = "from openGL tutorials";
 		this->scene_->for_each_selected([](gobj::mesh::IMesh* m)
 			{ m->set_material(tutorial); });
 		break;
 	case gctrl::mat_jade:
+		mtl_name = "jade";
 		this->scene_->for_each_selected([](gobj::mesh::IMesh* m)
 			{ m->set_material(jade); });
 		break;
 	case gctrl::mat_gold:
+		mtl_name = "gold";
 		this->scene_->for_each_selected([](gobj::mesh::IMesh* m)
 			{ m->set_material(gold); });
 		break;
 	case gctrl::mat_mtl:
+		mtl_name = "from diffuse map";
 		this->scene_->for_each_selected([](gobj::mesh::IMesh* m)
 			{ m->set_material(tutorial, true); });
 		break;
 	default:
+		mtl_name = "unknown";
 		break;
 	}
+	std::cout << "SET_MATERIAL::" << mtl_name << std::endl;
 }
 
 void gctrl::GameController::change_selected_shading(MenuActions type)
 {
+	string lighting_type;
+	switch (type)
+	{
+	case gctrl::sh_phong_phong:
+		lighting_type = "Phong_Lighting/Phong_Shading";
+		this->scene_->for_each_selected([](gobj::mesh::IMesh* m)
+			{ m->set_shading(shd::Phong_Phong); });
+		break;
+	case gctrl::sh_blinn_phong_phong:
+		lighting_type = "Blinn-Phong_Lighting/Phong_Shading";
+		this->scene_->for_each_selected([](gobj::mesh::IMesh* m)
+			{ m->set_shading(shd::BlinnPhong_Phong); });
+		break;
+	case gctrl::sh_phong_interp:
+		lighting_type = "Phong_Lighting/Interpolative_Shading";
+		this->scene_->for_each_selected([](gobj::mesh::IMesh* m)
+			{ m->set_shading(shd::Phong_interp); });
+		break;
+	case gctrl::sh_blinn_phong_interp:
+		lighting_type = "Blinn-Phong_Lighting/Interpolative_Shading";
+		this->scene_->for_each_selected([](gobj::mesh::IMesh* m)
+			{ m->set_shading(shd::BlinnPhong_interp); });
+		break;
+	case gctrl::sh_cartoon:
+		lighting_type = "Cartoon_Shading";
+		this->scene_->for_each_selected([](gobj::mesh::IMesh* m)
+			{ m->set_shading(shd::cartoon); });
+		break;
+	case gctrl::sh_texture:
+		break;
+	default:
+		break;
+	}
+	std::cout << "SET_LIGHTING::" << lighting_type << std::endl;
 }

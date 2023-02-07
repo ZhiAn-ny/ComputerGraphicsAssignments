@@ -15,6 +15,7 @@ namespace gobj
 			virtual string get_name() = 0;
 			virtual void set_name(string name) = 0;
 			virtual void set_material(Material mat, bool orig = false) = 0;
+			virtual void set_shading(int type) = 0;
 
 			virtual void select() = 0;
 			virtual void deselect() = 0;

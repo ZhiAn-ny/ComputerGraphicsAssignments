@@ -28,6 +28,7 @@ namespace gobj
 			vector<Texture> textures_ = {};
 			res::mat::Material orig_material_ = res::mat::tutorial;
 			res::mat::Material material = res::mat::tutorial;
+			int shading_ = -3;
 
 			unsigned int VAO, VBO, EBO;
 
@@ -60,6 +61,7 @@ namespace gobj
 			float ray_intersection(vec3 origin, vec3 direction);
 
 			void set_material(res::mat::Material mat, bool orig = false) override;
+			void set_shading(int type) override;
 			void select() override;
 			void deselect() override;
 			bool is_selected() override;

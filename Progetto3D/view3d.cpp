@@ -172,7 +172,7 @@ void gview::GameView3D::set_scene()
 	scene.add_object(model);
 
 	model = mf.create_manta();
-	model.transform(vec3(15,-10,-5), vec3(0.5), vec3(1, 0, 0), 0);
+	model.transform(vec3(10,-7,-1), vec3(0.5), vec3(1, 0, 0), 0);
 	scene.add_object(model);
 
 	model = mf.create_whale();
@@ -214,7 +214,7 @@ void gview::GameView3D::setup_menu()
 	glutAddMenuEntry("Render with phong (interpolative)", gctrl::MenuActions::sh_phong_interp);
 	glutAddMenuEntry("Render with blinn-phong (interpolative)", gctrl::MenuActions::sh_blinn_phong_interp);
 	glutAddMenuEntry("Render with cartoon", gctrl::MenuActions::sh_cartoon);
-	glutAddMenuEntry("Render with texture", gctrl::MenuActions::sh_texture);
+	//glutAddMenuEntry("Render with texture", gctrl::MenuActions::sh_texture);
 
 	glutCreateMenu(this->menu_event_handler);
 

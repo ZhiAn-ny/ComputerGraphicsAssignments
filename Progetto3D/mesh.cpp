@@ -254,6 +254,11 @@ void Mesh::set_material(res::mat::Material mat, bool orig)
     if (orig) this->orig_material_ = mat;
 }
 
+void gobj::mesh::Mesh::set_shading(int type)
+{
+    this->shading_ = type;
+}
+
 bool Mesh::is_colliding(vec4 pos)
 {
     bool xCollision = util::is_in_range(bb_bottom_left().x, bb_top_right().x, pos.x);
@@ -281,6 +286,9 @@ void Mesh::bind()
      
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, pos));
     glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
+    glEnableVertexAttribArray(1);
     
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, tex));
     glEnableVertexAttribArray(2);
@@ -304,6 +312,7 @@ void Mesh::render(Shader* sh)
     sh->setMatrix3f("NormalMatrix", mat3(transpose(inverse(this->model))));
 
     sh->setBool("useTexture", res::mat::is_equal(material, orig_material_));
+    sh->setInt("shadingType", this->shading_);
 
     sh->setVec3("base.ambient", this->material.ambient);
     sh->setVec3("base.diffuse", this->material.diffuse);

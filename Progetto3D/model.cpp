@@ -35,6 +35,12 @@ void gobj::mesh::Model::set_material(res::mat::Material mat, bool orig)
 	}
 }
 
+void gobj::mesh::Model::set_shading(int type)
+{
+	for (int i = 0; i < this->meshes_.size(); i++)
+		this->meshes_[i].set_shading(type);
+}
+
 void gobj::mesh::Model::select()
 {
 	for (int i = 0; i < this->meshes_.size(); i++)
