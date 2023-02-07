@@ -22,8 +22,10 @@ namespace gobj
 		void add_object(mesh::Model model);
 		void transform_object(string name, vec3 tvec, vec3 svec, vec3 rvec, float angle);
 		void select_nearest(vec3 origin, vec3 direction);
+		void deselect_all();
+		void for_each_selected(void (*func)(mesh::IMesh*));
 		void render(Shader* shader);
-
+		
 	};
 
 } // !gobj

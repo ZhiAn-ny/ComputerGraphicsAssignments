@@ -33,31 +33,50 @@ void gobj::Scene::transform_object(string name, vec3 tvec, vec3 svec, vec3 rvec,
 void gobj::Scene::select_nearest(vec3 origin, vec3 direction)
 {
 	float distance = INFINITE;
-	mesh::IMesh* selected;
-	std::cout << "SELECTION::SCENE::MESHES::START" << std::endl;
+	mesh::IMesh* selected = nullptr;
 	for (int i = 0; i < this->meshes_.size(); i++)
 	{
 		double d = this->meshes_[i].ray_intersection(origin, direction);
-		std::cout << "SELECTION::SCENE::MESHES::DISTANCE: " << d << std::endl;
 		if (d > -1 && d < distance)
 		{
 			distance = d;
 			selected = &this->meshes_[i];
 		}
 	}
-	std::cout << "SELECTION::SCENE::MODELS::END" << std::endl;
-	std::cout << "SELECTION::SCENE::MODELS::START" << std::endl;
 	for (int i = 0; i < this->models_.size(); i++)
 	{
 		float d = this->models_[i].ray_intersection(origin, direction);
-		std::cout << "SELECTION::SCENE::MODELS::DISTANCE: " << d << std::endl;
 		if (d > -1 && d < distance)
 		{
 			distance = d;
 			selected = &this->models_[i];
 		}
 	}
-	std::cout << "SELECTION::SCENE::MODELS::END" << std::endl;
+	if (selected != nullptr)
+		selected->select();
+
+	std::cout << "SELECTION::SELECTED_OBJECT: " 
+			  << selected->get_name() << std::endl;
+}
+
+void gobj::Scene::deselect_all()
+{
+	for (int i = 0; i < this->meshes_.size(); i++)
+		this->meshes_[i].deselect();
+
+	for (int i = 0; i < this->models_.size(); i++)
+		this->models_[i].deselect();
+}
+
+void gobj::Scene::for_each_selected(void(*func)(mesh::IMesh*))
+{
+	for (int i = 0; i < this->meshes_.size(); i++)
+		if (this->meshes_[i].is_selected())
+			func(&this->meshes_[i]);
+
+	for (int i = 0; i < this->models_.size(); i++)
+		if (this->models_[i].is_selected())
+			func(&this->models_[i]);
 }
 
 void gobj::Scene::add_object(mesh::Mesh mesh)

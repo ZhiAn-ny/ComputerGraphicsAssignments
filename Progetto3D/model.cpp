@@ -25,6 +25,16 @@ string gobj::mesh::Model::get_name()
 	return this->name_;
 }
 
+void gobj::mesh::Model::set_material(res::mat::Material mat, bool orig)
+{
+
+	for (int i = 0; i < this->meshes_.size(); i++)
+	{
+		if (orig) this->meshes_[i].reset_material();
+		else this->meshes_[i].set_material(mat);
+	}
+}
+
 void gobj::mesh::Model::select()
 {
 	for (int i = 0; i < this->meshes_.size(); i++)
@@ -35,6 +45,15 @@ void gobj::mesh::Model::deselect()
 {
 	for (int i = 0; i < this->meshes_.size(); i++)
 		this->meshes_[i].deselect();
+}
+
+bool gobj::mesh::Model::is_selected()
+{
+	for (int i = 0; i < this->meshes_.size(); i++)
+		if (this->meshes_[i].is_selected())
+			return true;
+
+	return false;
 }
 
 //bool gobj::mesh::Model::is_colliding(vec4 pos)
@@ -155,7 +174,7 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene)
 	}
 
 	Mesh m = Mesh(vertices, indices, textures);
-	m.set_material(mat);
+	m.set_material(mat, true);
 	m.set_diffuse_map(Texture::find_first(TexType::diffuse, textures)->name);
 
 	return m;

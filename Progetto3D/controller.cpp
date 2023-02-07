@@ -36,17 +36,43 @@ vec3 gctrl::GameController::get_ray(int x, int y)
 
 void gctrl::GameController::select_object(int x, int y)
 {
-	std::cout << "SELECTION::START" << std::endl;
 	vec3 mouse_ray = this->get_ray(x, y);
-	std:cout << "SELECTION::RAY: (" << mouse_ray.x << "," 
-			 << mouse_ray.y << "," 
-			 << mouse_ray.z << ")" << std::endl;
-
 	vec3 origin = this->cam_->get_position();
-	std::cout << "SELECTION::ORIGIN: (" << origin.x << ","
-			<< origin.y << ","
-			<< origin.z << ")" << std::endl;
 
 	this->scene_->select_nearest(origin, mouse_ray);
-	std::cout << "SELECTION::DONE" << std::endl;
+}
+
+void gctrl::GameController::deselect_all()
+{
+	this->scene_->deselect_all();
+	std::cout << "SELECTION::DESELECT_ALL" << std::endl;
+}
+
+void gctrl::GameController::change_selected_material(MenuActions type)
+{
+	switch (type)
+	{
+	case gctrl::mat_tutorial:
+		this->scene_->for_each_selected([](gobj::mesh::IMesh* m)
+			{ m->set_material(tutorial); });
+		break;
+	case gctrl::mat_jade:
+		this->scene_->for_each_selected([](gobj::mesh::IMesh* m)
+			{ m->set_material(jade); });
+		break;
+	case gctrl::mat_gold:
+		this->scene_->for_each_selected([](gobj::mesh::IMesh* m)
+			{ m->set_material(gold); });
+		break;
+	case gctrl::mat_mtl:
+		this->scene_->for_each_selected([](gobj::mesh::IMesh* m)
+			{ m->set_material(tutorial, true); });
+		break;
+	default:
+		break;
+	}
+}
+
+void gctrl::GameController::change_selected_shading(MenuActions type)
+{
 }

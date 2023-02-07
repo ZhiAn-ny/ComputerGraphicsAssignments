@@ -4,6 +4,8 @@
 #include "lib.h"
 #include "shader.h"
 
+using namespace res::mat;
+
 namespace gobj
 {
 	namespace mesh
@@ -12,9 +14,11 @@ namespace gobj
 		public:
 			virtual string get_name() = 0;
 			virtual void set_name(string name) = 0;
+			virtual void set_material(Material mat, bool orig = false) = 0;
 
 			virtual void select() = 0;
 			virtual void deselect() = 0;
+			virtual bool is_selected() = 0;
 
 			virtual void bind() = 0;
 			

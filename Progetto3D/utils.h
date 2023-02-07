@@ -8,6 +8,7 @@ namespace util
 	unsigned int check_error(string message);
 	bool is_in_range(double a, double b, double x);
 	vec3 distance(vec3 a, vec3 b);
+	bool is_same_material(res::mat::Material a, res::mat::Material b);
 
 	const int mouse_wheel_up = 4;
 	const int mouse_wheel_down = 3;

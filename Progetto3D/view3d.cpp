@@ -79,27 +79,24 @@ void gview::GameView3D::mouse_click(int button, int state, int x, int y)
 {
 	switch (button)
 	{
-	case GLUT_LEFT_BUTTON:
+	case GLUT_MIDDLE_BUTTON:
 		if (state == GLUT_DOWN)
 			cam.activate_trackball(x, y);
 		if (state == GLUT_UP)
 			cam.deactivate_trackball();
+		break;
+	case GLUT_LEFT_BUTTON:
+		if (state == GLUT_DOWN)
+		{
+			//std::cout << "Clicked point: (" << x << ", " << y << ")" << std::endl;
+			controller.select_object(x, y);
+		}
 		break;
 	case util::mouse_wheel_up:
 		cam.zoom_in();
 		break;
 	case util::mouse_wheel_down:
 		cam.zoom_out();
-		break;
-	case GLUT_RIGHT_BUTTON:
-		// TODO: select object
-		if (state == GLUT_DOWN)
-		{
-			std::cout << "Clicked point: (" << x << ", " << y << ")" << std::endl;
-			controller.select_object(x, y);
-		}
-
-
 		break;
 	default:
 		break;
@@ -109,6 +106,21 @@ void gview::GameView3D::mouse_click(int button, int state, int x, int y)
 void gview::GameView3D::mouse_motion(int x, int y)
 {
 	cam.rotate(x, y);
+}
+
+void gview::GameView3D::menu_event_handler(int event)
+{
+	if (event == gctrl::MenuActions::deselect) 
+	{
+		controller.deselect_all();
+		return;
+	}
+
+	gctrl::MenuActions action = static_cast<gctrl::MenuActions>(event);
+	if (event > 0) 
+		controller.change_selected_material(action);
+	else 
+		controller.change_selected_shading(action);
 }
 
 /******************************************************************************/
@@ -152,7 +164,7 @@ void gview::GameView3D::set_scene()
 	// Set scene's objects
 	mesh::MeshFactory mf;
 	mesh::Model model = mf.create_dolphin();
-	model.transform(vec3(2, 5, 9), vec3(1), vec3(0, 1, 0), 0.5);
+	//model.transform(vec3(2, 5, 9), vec3(1), vec3(0, 1, 0), 0.5);
 	scene.add_object(model);
 
 	model = mf.create_manta();
@@ -164,7 +176,7 @@ void gview::GameView3D::set_scene()
 	scene.add_object(model);
 
 	model = mf.create_whale();
-	model.transform(vec3(-100, 0, 0), vec3(1), vec3(1, 0, 0), 0);
+	model.transform(vec3(-100, 0, 0), vec3(1), vec3(0, 0, 1), 0.5);
 	scene.add_object(model);
 
 
@@ -186,6 +198,31 @@ void gview::GameView3D::set_scene()
 		scene.add_object(mesh);
 	}*/
 
+}
+
+void gview::GameView3D::setup_menu()
+{
+	int material_options = glutCreateMenu(this->menu_event_handler);
+	glutAddMenuEntry("Use basic white material", gctrl::MenuActions::mat_tutorial);
+	glutAddMenuEntry("Use jade material", gctrl::MenuActions::mat_jade);
+	glutAddMenuEntry("Use gold material", gctrl::MenuActions::mat_gold);
+	glutAddMenuEntry("Use .mtl file", gctrl::MenuActions::mat_mtl);
+
+	int shading_options = glutCreateMenu(this->menu_event_handler);
+	glutAddMenuEntry("Render with phong (phong)", gctrl::MenuActions::sh_phong_phong);
+	glutAddMenuEntry("Render with blinn-phong (phong)", gctrl::MenuActions::sh_blinn_phong_phong);
+	glutAddMenuEntry("Render with phong (interpolative)", gctrl::MenuActions::sh_phong_interp);
+	glutAddMenuEntry("Render with blinn-phong (interpolative)", gctrl::MenuActions::sh_blinn_phong_interp);
+	glutAddMenuEntry("Render with cartoon", gctrl::MenuActions::sh_cartoon);
+	glutAddMenuEntry("Render with texture", gctrl::MenuActions::sh_texture);
+
+	glutCreateMenu(this->menu_event_handler);
+
+	glutAddSubMenu("Change Material", material_options);
+	glutAddSubMenu("Change Shading", shading_options);
+	glutAddMenuEntry("Deselect All", gctrl::MenuActions::deselect);
+
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
 void gview::GameView3D::init()
@@ -217,6 +254,8 @@ void gview::GameView3D::init()
 	skybox.init();
 	skybox.set_theme(res::sky::SkyBoxThemes::space);
 	this->set_scene();
+
+	this->setup_menu();
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);

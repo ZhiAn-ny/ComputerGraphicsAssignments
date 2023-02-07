@@ -36,8 +36,10 @@ namespace gobj {
 
 			void set_name(string name) override;
 			string get_name() override;
+			void set_material(res::mat::Material mat, bool orig = false) override;
 			void select() override;
 			void deselect() override;
+			bool is_selected() override;
 			void bind() override;
 			void transform(vec3 tvec, vec3 svec, vec3 rvec, float angle) override;
 			void render(Shader* sh) override;

@@ -25,9 +25,11 @@ namespace gview
 		static void key_pressed(unsigned char key, int x, int y);
 		static void mouse_click(int button, int state, int x, int y);
 		static void mouse_motion(int x, int y);
+		static void menu_event_handler(int event);
 
 		void create_window(const char* title);
 		void set_scene();
+		void setup_menu();
 
 	public:
 		GameView3D();
