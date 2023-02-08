@@ -35,6 +35,8 @@ namespace res
 				&& a.specular == b.specular && a.shininess == b.shininess;
 		}
 
+		const Material no_material = { vec3(1.0f), vec3(0.0f), vec3(0.0f), 1.0f };
+
 		const Material tutorial = { vec3(1.0f, 0.5f, 0.31f),
 			vec3(1.0f, 0.5f, 0.31f), vec3(0.5f, 0.5f, 0.5f), 32.0f };
 
@@ -44,6 +46,9 @@ namespace res
 		const Material gold = { vec3(0.24725, 0.1995, 0.0745),
 			vec3(0.75164, 0.60648, 0.22648), vec3(0.628281, 0.555802, 0.366065),
 			0.4};
+
+		const Material brass = { vec3(0.5, 0.06, 0.015), vec3(0.78, 0.57, 0.11),
+			vec3(0.99, 0.91, 0.81), 27.8f};
 
 	} // !mat
 

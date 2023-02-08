@@ -68,10 +68,20 @@ void gctrl::GameController::change_selected_material(MenuActions type)
 		this->scene_->for_each_selected([](gobj::mesh::IMesh* m)
 			{ m->set_material(gold); });
 		break;
+	case gctrl::mat_brass:
+		mtl_name = "gold";
+		this->scene_->for_each_selected([](gobj::mesh::IMesh* m)
+			{ m->set_material(brass); });
+		break;
 	case gctrl::mat_mtl:
 		mtl_name = "from diffuse map";
 		this->scene_->for_each_selected([](gobj::mesh::IMesh* m)
 			{ m->set_material(tutorial, true); });
+		break;
+	case gctrl::no_mat:
+		mtl_name = "no material";
+		this->scene_->for_each_selected([](gobj::mesh::IMesh* m)
+			{ m->set_material(no_material); });
 		break;
 	default:
 		mtl_name = "unknown";

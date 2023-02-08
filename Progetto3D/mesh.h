@@ -26,7 +26,7 @@ namespace gobj
 			unsigned int diffuse_map = 0;
 			unsigned int specular_map = 0;
 			vector<Texture> textures_ = {};
-			res::mat::Material orig_material_ = res::mat::tutorial;
+			res::mat::Material orig_material_ = { vec3(-1), vec3(-1), vec3(-1),0 };
 			res::mat::Material material = res::mat::tutorial;
 			int shading_ = -3;
 

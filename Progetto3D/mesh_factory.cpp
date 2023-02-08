@@ -100,7 +100,7 @@ Model gobj::mesh::MeshFactory::create_whale()
 
 Model gobj::mesh::MeshFactory::create_fish()
 {
-    Model fish = Model("res/meshes/fish/goldfish.obj");
+    Model fish = Model("res/meshes/fish/12990_Black_Moor_Goldfish_v1_l2.obj");
     fish.set_name("fish_" + std::to_string(this->fish_number));
 
     this->whale_number++;
@@ -109,7 +109,7 @@ Model gobj::mesh::MeshFactory::create_fish()
 
 Model gobj::mesh::MeshFactory::create_jellyfish()
 {
-    Model jelly = Model("res/meshes/jellifish/jellifish.obj");
+    Model jelly = Model("res/meshes/jellyfish/jellyfish.obj");
     jelly.set_name("jellyfish_" + std::to_string(this->jelly_number));
 
     this->whale_number++;

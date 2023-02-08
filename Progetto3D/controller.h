@@ -17,6 +17,8 @@ namespace gctrl
 		mat_jade = 2,
 		mat_gold = 3,
 		mat_mtl = 4,
+		mat_brass = 5,
+		no_mat = 6,
 
 		sh_phong_phong = -1,
 		sh_blinn_phong_phong = -2,

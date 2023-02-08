@@ -48,6 +48,7 @@ void gview::GameView3D::draw_scene(void)
 void gview::GameView3D::time_refresh(int a)
 {
 	//scene.transform_object("cube_0", vec3(0), vec3(1), vec3(5, 1, 0), 1);
+	
 	glutTimerFunc(10, GameView3D::time_refresh, 0);
 	glutPostRedisplay();
 }
@@ -164,7 +165,6 @@ void gview::GameView3D::set_scene()
 	// Set scene's objects
 	mesh::MeshFactory mf;
 	mesh::Model model = mf.create_dolphin();
-	//model.transform(vec3(2, 5, 9), vec3(1), vec3(0, 1, 0), 0.5);
 	scene.add_object(model);
 
 	model = mf.create_manta();
@@ -176,9 +176,22 @@ void gview::GameView3D::set_scene()
 	scene.add_object(model);
 
 	model = mf.create_whale();
-	model.transform(vec3(-100, 0, 0), vec3(1), vec3(0, 0, 1), 0.5);
+	model.transform(vec3(500, 0, 0), vec3(1), vec3(0, 1, 0), -90);
 	scene.add_object(model);
 
+	model = mf.create_jellyfish();
+	model.transform(vec3(-10, 5, -5), vec3(1.5), vec3(1, 0, 0), 0);
+	scene.add_object(model);
+
+	model = mf.create_fish();
+	model.transform(vec3(-4, 0, -3), vec3(0.1), vec3(1, 0, 0), -90);
+	model.set_material(brass);
+	scene.add_object(model);
+
+	model = mf.create_fish();
+	model.transform(vec3(-4, 0.5, -3.5), vec3(0.1), vec3(1, 0, 0), -90);
+	model.set_material(brass);
+	scene.add_object(model);
 
 	//mesh::Mesh mesh = mf.create_cube();
 
@@ -206,7 +219,9 @@ void gview::GameView3D::setup_menu()
 	glutAddMenuEntry("Use tutorial material", gctrl::MenuActions::mat_tutorial);
 	glutAddMenuEntry("Use jade material", gctrl::MenuActions::mat_jade);
 	glutAddMenuEntry("Use gold material", gctrl::MenuActions::mat_gold);
+	glutAddMenuEntry("Use brass material", gctrl::MenuActions::mat_brass);
 	glutAddMenuEntry("Use .mtl file", gctrl::MenuActions::mat_mtl);
+	glutAddMenuEntry("Remove material", gctrl::MenuActions::no_mat);
 
 	int shading_options = glutCreateMenu(this->menu_event_handler);
 	glutAddMenuEntry("Render with phong (phong)", gctrl::MenuActions::sh_phong_phong);
@@ -214,7 +229,6 @@ void gview::GameView3D::setup_menu()
 	glutAddMenuEntry("Render with phong (interpolative)", gctrl::MenuActions::sh_phong_interp);
 	glutAddMenuEntry("Render with blinn-phong (interpolative)", gctrl::MenuActions::sh_blinn_phong_interp);
 	glutAddMenuEntry("Render with cartoon", gctrl::MenuActions::sh_cartoon);
-	//glutAddMenuEntry("Render with texture", gctrl::MenuActions::sh_texture);
 
 	glutCreateMenu(this->menu_event_handler);
 

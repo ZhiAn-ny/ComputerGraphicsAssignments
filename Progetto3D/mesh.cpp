@@ -251,7 +251,8 @@ void Mesh::set_specular_map(string name)
 void Mesh::set_material(res::mat::Material mat, bool orig)
 {
     this->material = mat;
-    if (orig) this->orig_material_ = mat;
+    if (orig && res::mat::is_equal(this->orig_material_, { vec3(-1), vec3(-1), vec3(-1), 0 }))
+        this->orig_material_ = mat;
 }
 
 void gobj::mesh::Mesh::set_shading(int type)
