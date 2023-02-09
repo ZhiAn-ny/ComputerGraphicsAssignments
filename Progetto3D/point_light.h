@@ -2,6 +2,7 @@
 #define GAME_LIGHT_POINT_H_
 
 #include "alight.h"
+#include "imesh.h"
 
 namespace lgh {
 

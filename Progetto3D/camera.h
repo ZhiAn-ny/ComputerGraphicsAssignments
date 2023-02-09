@@ -54,6 +54,7 @@ namespace gview
 			void zoom_in();
 			void zoom_out();
 			void to_origin();
+			void set_position(vec3 pos);
 		};
 
 	} // !cam

@@ -120,3 +120,8 @@ void gview::gcam::Camera::to_origin()
 {
 	this->pos_ = vec3(0.f);
 }
+
+void gview::gcam::Camera::set_position(vec3 pos)
+{
+	this->pos_ = pos;
+}

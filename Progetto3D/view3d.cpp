@@ -48,6 +48,12 @@ void gview::GameView3D::draw_scene(void)
 void gview::GameView3D::time_refresh(int a)
 {
 	scene.transform_object("cube_0", vec3(0), vec3(1), vec3(1, 1, 0), 0.1);
+	scene.transform_object("jellyfish_0", vec3(0, 0.001, 0), vec3(1), vec3(0, 1, 0), 0.1);
+	scene.transform_object("whale_0", vec3(0, 0, 0.1), vec3(1), vec3(0, 1, 0), 0);
+
+
+	vector<lgh::PointLight> lights = light_setting.get_point_lights();
+	lights[0].set_position(scene.get_object("jellyfish_0")->get_pos());
 	
 	glutTimerFunc(10, GameView3D::time_refresh, 0);
 	glutPostRedisplay();
@@ -81,6 +87,9 @@ void gview::GameView3D::key_pressed(unsigned char key, int x, int y)
 		break;
 	case 'O': case 'o':
 		cam.to_origin();
+		break;
+	case 'j':
+		cam.set_position(scene.get_object("jellyfish_0")->get_pos());
 		break;
 	}
 }
@@ -191,19 +200,30 @@ void gview::GameView3D::set_scene()
 	scene.add_object(model);
 
 	model = mf.create_jellyfish();
-	model.transform(vec3(-10, 5, -5), vec3(1.5), vec3(1, 0, 0), 0);
+	model.transform(vec3(-10, -25, -5), vec3(1.5), vec3(1, 0, 0), 0);
 	scene.add_object(model);
-	//pl = lf.new_point_light();
+	pl = lf.new_point_light(model.get_pos());
+	pl.set_color(color::cyan);
+	//pl.bind_to_mesh(scene.get_object("jellyfish_0"));
+	light_setting.add_point_light(pl);
 
 	model = mf.create_fish();
 	model.transform(vec3(-4, 0, -3), vec3(0.1), vec3(1, 0, 0), -90);
 	model.set_material(brass);
 	scene.add_object(model);
+	pl = lf.new_point_light(model.get_pos());
+	pl.set_color(color::orange);
+	//pl.bind_to_mesh((mesh::IMesh*) & model);
+	light_setting.add_point_light(pl);
 
 	model = mf.create_fish();
 	model.transform(vec3(-4, 0.5, -3.5), vec3(0.1), vec3(1, 0, 0), -90);
 	model.set_material(brass);
 	scene.add_object(model);
+	pl = lf.new_point_light(model.get_pos());
+	pl.set_color(color::orange);
+	//pl.bind_to_mesh((mesh::IMesh*) & model);
+	light_setting.add_point_light(pl);
 
 	gobj::mesh::Mesh mesh = mf.create_torus();
 	mesh.add_texture("rainbow", "res/textures/rainbow.png", 1);

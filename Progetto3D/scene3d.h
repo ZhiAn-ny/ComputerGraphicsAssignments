@@ -12,14 +12,13 @@ namespace gobj
 		vector<mesh::Mesh> meshes_ = {};
 		vector<mesh::Model> models_ = {};
 
-		mesh::IMesh* get_object(string name);
-
 	public:
 		Scene();
 		~Scene();
 
 		void add_object(mesh::Mesh mesh);
 		void add_object(mesh::Model model);
+		mesh::IMesh* get_object(string name);
 		void transform_object(string name, vec3 tvec, vec3 svec, vec3 rvec, float angle);
 		void select_nearest(vec3 origin, vec3 direction);
 		void deselect_all();

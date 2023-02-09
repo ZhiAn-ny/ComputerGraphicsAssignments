@@ -20,3 +20,10 @@ void lgh::ALight::set_lights(vec3 ambient, vec3 diffuse, vec3 specular)
 	this->set_diffuse(diffuse);
 	this->set_specular(specular);
 }
+
+void lgh::ALight::set_color(vec3 color)
+{
+	this->ambient_ *= color;
+	this->diffuse_ *= color;
+	this->specular_ *= color;
+}

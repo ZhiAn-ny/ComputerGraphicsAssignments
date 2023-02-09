@@ -19,6 +19,8 @@ namespace lgh {
 		LightingSettings();
 		~LightingSettings();
 
+		vector<PointLight> get_point_lights();
+
 		void add_point_light(PointLight light);
 		void add_spotlight(Spotlight light);
 		void add_directional_light(DirectionalLight light);

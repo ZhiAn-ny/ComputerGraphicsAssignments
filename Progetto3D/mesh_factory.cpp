@@ -73,7 +73,7 @@ Mesh MeshFactory::create_cube()
 Mesh gobj::mesh::MeshFactory::create_torus()
 {
     Mesh mesh;
-    mesh.set_name("toro_" + std::to_string(this->cube_number));
+    mesh.set_name("toro_" + std::to_string(this->toro_number));
     int Stacks = 30;  //numero di suddivisioni sull'asse x
     int Slices = 30;  // numero di suddivisioni sull'asse y
     float R = 1, r = 0.1;
@@ -152,7 +152,7 @@ Model gobj::mesh::MeshFactory::create_fish()
     Model fish = Model("res/meshes/fish/12990_Black_Moor_Goldfish_v1_l2.obj");
     fish.set_name("fish_" + std::to_string(this->fish_number));
 
-    this->whale_number++;
+    this->fish_number++;
     return fish;
 }
 
@@ -161,6 +161,6 @@ Model gobj::mesh::MeshFactory::create_jellyfish()
     Model jelly = Model("res/meshes/jellyfish/jellyfish.obj");
     jelly.set_name("jellyfish_" + std::to_string(this->jelly_number));
 
-    this->whale_number++;
+    this->jelly_number++;
     return jelly;
 }

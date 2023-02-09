@@ -16,6 +16,7 @@ namespace res
 		const vec4 cyan = vec4(0.0, 1.0, 1.0, 1.0);
 		const vec4 yellow = vec4(1.0, 1.0, 0.0, 1.0);
 		const vec4 magenta = vec4(1.0, 0.0, 1.0, 1.0);
+		const vec4 orange = vec4(255/255.0, 139/255.0, 40/255.0, 1.0);
 
 		const vec4 coral = vec4(1.0, 0.5, 0.31, 1.0);
 

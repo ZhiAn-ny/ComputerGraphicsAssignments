@@ -1,10 +1,11 @@
 #ifndef GAME_OBJECT_MESH_INTERFACE_H_
-#define GAME_OBJECT_MESH_INTERFACE_H_7
+#define GAME_OBJECT_MESH_INTERFACE_H_
 
 #include "lib.h"
 #include "shader.h"
 
 using namespace res::mat;
+using namespace util::dir;
 
 namespace gobj
 {
@@ -12,6 +13,7 @@ namespace gobj
 	{
 		class IMesh {
 		public:
+			virtual vec3 get_pos() = 0;
 			virtual string get_name() = 0;
 			virtual void set_name(string name) = 0;
 			virtual void set_material(Material mat, bool orig = false) = 0;
@@ -25,6 +27,7 @@ namespace gobj
 			
 			virtual float ray_intersection(vec3 origin, vec3 direction) = 0;
 			virtual void transform(vec3 tvec, vec3 svec, vec3 rvec, float angle) = 0;
+			virtual void move(Directions dir) = 0;
 			virtual void render(Shader* sh) = 0;
 		};
 	}

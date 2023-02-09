@@ -5,6 +5,11 @@ lgh::LightingSettings::LightingSettings() { }
 
 lgh::LightingSettings::~LightingSettings() { }
 
+vector<lgh::PointLight> lgh::LightingSettings::get_point_lights()
+{
+	return this->point;
+}
+
 void lgh::LightingSettings::add_point_light(PointLight light)
 {
 	this->point.push_back(light);

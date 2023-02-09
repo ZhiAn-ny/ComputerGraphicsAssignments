@@ -21,6 +21,11 @@ Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture
 
 Mesh::~Mesh() { }
 
+vec3 gobj::mesh::Mesh::get_pos()
+{
+    return this->get_anchor();
+}
+
 string Mesh::get_name()
 {
     return this->name_;
@@ -31,24 +36,9 @@ void Mesh::set_name(string name)
     this->name_ = name;
 }
 
-unsigned int gobj::mesh::Mesh::get_vao()
-{
-    return this->VAO;
-}
-
-unsigned int gobj::mesh::Mesh::get_indices_size()
-{
-    return this->indices.size();
-}
-
 void Mesh::add_vertex(Vertex v)
 {
     this->verts.push_back(v);
-}
-
-void Mesh::add_index(unsigned int index)
-{
-    this->indices.push_back(index);
 }
 
 void Mesh::set_color(vec4 color)
@@ -86,13 +76,6 @@ void Mesh::add_texture(Texture texture)
 
     texture.id = this->load_texture(texture.path.c_str(), 0);
     this->textures_.push_back(texture);
-}
-
-void Mesh::set_texture(string name)
-{
-    for (int i = 0; i < this->textures_.size(); i++)
-        if (this->textures_[i].name._Equal(name)) 
-            this->diffuse_map = this->textures_[i].id;
 }
 
 unsigned int Mesh::load_texture(char const* path, int vertical_flip)
@@ -201,6 +184,14 @@ void Mesh::transform(vec3 tvec, vec3 svec, vec3 rvec, float angle)
     mat4 R = rotate(mat4(1), radians(angle), normalize(rvec));
 
     this->model = model * T * R * S;
+}
+
+void gobj::mesh::Mesh::move(Directions dir)
+{
+    // TODO:
+    // - define speed and front direction
+    // - switch based on direction
+
 }
 
 void Mesh::add_texture(string name, char const* path, bool vflip)

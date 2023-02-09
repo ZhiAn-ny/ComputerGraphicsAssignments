@@ -20,6 +20,27 @@ void gobj::mesh::Model::set_name(string name)
 	this->name_ = name;
 }
 
+vec3 gobj::mesh::Model::get_pos()
+{
+	vec3 pos = this->meshes_[0].get_pos();
+	if (this->meshes_.size() == 1) return pos;
+
+	vec3 min = pos;
+	vec3 max = pos;
+	for (int i = 1; i < this->meshes_.size(); i++)
+	{
+		pos = this->meshes_[i].get_pos();
+		if (pos.x < min.x) min.x = pos.x;
+		if (pos.y < min.y) min.y = pos.y;
+		if (pos.z < min.z) min.z = pos.z;
+
+		if (pos.x > max.x) max.x = pos.x;
+		if (pos.y > max.y) max.y = pos.y;
+		if (pos.z > max.z) max.z = pos.z;
+	}
+	return vec3((min.x + max.x) / 2, (min.y + max.y) / 2, (min.z + max.z) / 2);
+}
+
 string gobj::mesh::Model::get_name()
 {
 	return this->name_;
@@ -272,10 +293,14 @@ void gobj::mesh::Model::transform(vec3 tvec, vec3 svec, vec3 rvec, float angle)
 	}
 }
 
+void gobj::mesh::Model::move(Directions dir)
+{
+	for (int i = 0; i < this->meshes_.size(); i++)
+		this->meshes_[i].move(dir);
+}
+
 void gobj::mesh::Model::render(Shader* sh)
 {
 	for (int i = 0; i < this->meshes_.size(); i++)
-	{
 		this->meshes_[i].render(sh);
-	}
 }

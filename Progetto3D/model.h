@@ -31,18 +31,18 @@ namespace gobj {
 			Model(string const& path);
 			~Model();
 
-			//bool is_colliding(vec4 pos);
-			float ray_intersection(vec3 origin, vec3 direction);
-
-			void set_name(string name) override;
+			vec3 get_pos() override;
 			string get_name() override;
-			void set_material(res::mat::Material mat, bool orig = false) override;
+			void set_name(string name) override;
+			void set_material(Material mat, bool orig = false) override;
 			void set_shading(int type) override;
 			void select() override;
 			void deselect() override;
 			bool is_selected() override;
 			void bind() override;
+			float ray_intersection(vec3 origin, vec3 direction) override;
 			void transform(vec3 tvec, vec3 svec, vec3 rvec, float angle) override;
+			void move(Directions dir) override;
 			void render(Shader* sh) override;
 
 		};

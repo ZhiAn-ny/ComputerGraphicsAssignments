@@ -30,6 +30,7 @@ namespace lgh {
 		void set_diffuse(vec3 color);
 		void set_specular(vec3 color);
 		void set_lights(vec3 ambient, vec3 diffuse, vec3 specular);
+		void set_color(vec3 color);
 
 		virtual void render(Shader* sh, string uvar) = 0;
 	};
