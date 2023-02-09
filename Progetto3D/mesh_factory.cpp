@@ -142,6 +142,7 @@ Model gobj::mesh::MeshFactory::create_whale()
 {
     Model whale = Model("res/meshes/whale/whale.obj");
     whale.set_name("whale_" + std::to_string(this->whale_number));
+    whale.set_front(vec3(0, 0, 1));
 
     this->whale_number++;
     return whale;

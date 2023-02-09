@@ -22,6 +22,13 @@ namespace gobj
 			
 			vec3 bb_top_right_ = vec3(0);
 			vec3 bb_bottom_left_ = vec3(0);
+			vec3 up_ = vec3(0, 1, 0);
+			vec3 front_ = vec3(0, 0, -1);
+			// Rotation along the y axis
+			float yaw_ = -90.0f;
+			// Rotation along the x axis
+			float pitch_ = 0.0f;
+			float speed_ = 0.1;
 
 			unsigned int diffuse_map = 0;
 			unsigned int specular_map = 0;
@@ -56,6 +63,8 @@ namespace gobj
 			bool is_colliding(vec4 pos);
 
 			vec3 get_pos() override;
+			void set_speed(float speed) override;
+			void set_front(vec3 front) override;
 			string get_name() override;
 			void set_name(string name) override;
 			void set_material(Material mat, bool orig = false) override;
@@ -67,6 +76,8 @@ namespace gobj
 			float ray_intersection(vec3 origin, vec3 direction) override;
 			void transform(vec3 tvec, vec3 svec, vec3 rvec, float angle) override;
 			void move(Directions dir) override;
+			void turn(Directions dir) override;
+			void turn(Directions dir, float angle) override;
 			void render(Shader* sh) override;
 		};
 

@@ -41,6 +41,18 @@ vec3 gobj::mesh::Model::get_pos()
 	return vec3((min.x + max.x) / 2, (min.y + max.y) / 2, (min.z + max.z) / 2);
 }
 
+void gobj::mesh::Model::set_speed(float speed)
+{
+	for (int i = 0; i < this->meshes_.size(); i++)
+		this->meshes_[i].set_speed(speed);
+}
+
+void gobj::mesh::Model::set_front(vec3 front)
+{
+	for (int i = 0; i < this->meshes_.size(); i++)
+		this->meshes_[i].set_front(front);
+}
+
 string gobj::mesh::Model::get_name()
 {
 	return this->name_;
@@ -297,6 +309,18 @@ void gobj::mesh::Model::move(Directions dir)
 {
 	for (int i = 0; i < this->meshes_.size(); i++)
 		this->meshes_[i].move(dir);
+}
+
+void gobj::mesh::Model::turn(Directions dir)
+{
+	for (int i = 0; i < this->meshes_.size(); i++)
+		this->meshes_[i].turn(dir);
+}
+
+void gobj::mesh::Model::turn(Directions dir, float angle)
+{
+	for (int i = 0; i < this->meshes_.size(); i++)
+		this->meshes_[i].turn(dir, angle);
 }
 
 void gobj::mesh::Model::render(Shader* sh)

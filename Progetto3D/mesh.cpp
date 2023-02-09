@@ -26,6 +26,16 @@ vec3 gobj::mesh::Mesh::get_pos()
     return this->get_anchor();
 }
 
+void gobj::mesh::Mesh::set_speed(float speed)
+{
+    this->speed_ = speed;
+}
+
+void gobj::mesh::Mesh::set_front(vec3 front)
+{
+    this->front_ = front;
+}
+
 string Mesh::get_name()
 {
     return this->name_;
@@ -188,10 +198,81 @@ void Mesh::transform(vec3 tvec, vec3 svec, vec3 rvec, float angle)
 
 void gobj::mesh::Mesh::move(Directions dir)
 {
-    // TODO:
-    // - define speed and front direction
-    // - switch based on direction
+    vec3 tvec = vec3(0);
+    switch (dir)
+    {
+	case util::dir::Directions::front:
+        tvec += this->speed_ * this->front_;
+        break;
+    case util::dir::Directions::back:
+        tvec -= this->speed_ * this->front_;
+        break;
+    case util::dir::Directions::left:
+        tvec -= normalize(cross(this->front_, this->up_)) * this->speed_;
+        break;
+    case util::dir::Directions::right:
+        tvec += normalize(cross(this->front_, this->up_)) * this->speed_;
+        break;
+    case util::dir::Directions::up:
+        tvec += this->speed_ * this->up_;
+        break;
+    case util::dir::Directions::down:
+        tvec -= this->speed_ * this->up_;
+        break;
+    default:
+        break;
+    }
+    this->transform(tvec, vec3(1), vec3(1), 0);
+}
 
+void gobj::mesh::Mesh::turn(Directions dir)
+{
+    this->turn(dir, 1);
+}
+
+void gobj::mesh::Mesh::turn(Directions dir, float angle)
+{
+    vec3 rvec, rot;
+    vec4 front = vec4(this->front_, 0.0);
+    mat4 R;
+
+    switch (dir)
+    {
+    case util::dir::Directions::up:
+        rvec = vec3(1, 0, 0);
+        break;
+    case util::dir::Directions::down:
+        rvec = vec3(1, 0, 0);
+        angle = -angle;
+        break;
+    case util::dir::Directions::left:
+        rot = vec3(0, 0, 1);
+        rvec = vec3(0, 1, 0);
+        R = rotate(mat4(1), radians(angle), normalize(rot));
+        this->front_ = front * R;
+        break;
+    case util::dir::Directions::right:
+        rot = vec3(0, 0, 1);
+        rvec = vec3(0, 1, 0);
+        angle = -angle;
+        R = rotate(mat4(1), radians(angle), normalize(rot));
+        this->front_ = front * R;
+        break;
+    case util::dir::Directions::front:
+        rot = vec3(1, 0, 0);
+        rvec = vec3(0, 0, 1);
+        angle = -angle;
+        break;
+    case util::dir::Directions::back:
+        rot = vec3(1, 0, 0);
+        rvec = vec3(0, 0, 1);
+        angle = -angle;
+        break;
+    default:
+        break;
+    }
+
+    this->transform(vec3(0), vec3(1), rvec, angle);
 }
 
 void Mesh::add_texture(string name, char const* path, bool vflip)
