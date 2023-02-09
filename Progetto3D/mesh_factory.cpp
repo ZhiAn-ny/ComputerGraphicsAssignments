@@ -70,6 +70,55 @@ Mesh MeshFactory::create_cube()
     return mesh;
 }
 
+Mesh gobj::mesh::MeshFactory::create_torus()
+{
+    Mesh mesh;
+    mesh.set_name("toro_" + std::to_string(this->cube_number));
+    int Stacks = 30;  //numero di suddivisioni sull'asse x
+    int Slices = 30;  // numero di suddivisioni sull'asse y
+    float R = 1, r = 0.1;
+    float s, t;
+    vector<unsigned int> indices = {};
+
+    for (int i = 0; i <= Stacks; ++i) 
+    {
+        float V = i / (float)Stacks;
+        float phi = V * glm::pi <float>() * 2;
+
+        // Loop Through Slices
+        for (int j = 0; j <= Slices; ++j)
+        {
+            float U = j / (float)Slices;
+            float theta = U * (glm::pi <float>() * 2);
+
+            float x = (R + r * cosf(phi)) * cosf(theta);
+            float y = r * sinf(phi);
+            float z = (R + r * cosf(phi)) * sinf(theta);
+        
+            mesh.add_vertex(Vertex(
+                vec3(x, y, z),
+                color::white,
+                vec2(U, V),
+                vec3(normalize(vec3(sin(phi) * cos(theta), cos(phi), sin(theta) * sin(phi))))
+            ));
+        }
+    }
+    for (int i = 0; i < Slices * Stacks + Slices; ++i)
+    {
+        indices.push_back(i);
+        indices.push_back(i + Slices + 1);
+        indices.push_back(i + Slices);
+
+        indices.push_back(i + Slices + 1);
+        indices.push_back(i);
+        indices.push_back(i + 1);
+    }
+    mesh.set_indices(indices);
+
+    this->toro_number++;
+    return mesh;
+}
+
 Model gobj::mesh::MeshFactory::create_dolphin()
 {
     Model dolphin = Model("res/meshes/dolphin/dolphin.obj");

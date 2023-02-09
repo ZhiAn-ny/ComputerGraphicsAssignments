@@ -53,6 +53,7 @@ namespace gobj
 			void set_color(vec4 color);
 			void set_indices(vector<unsigned int> indices);
 			void add_texture(Texture texture);
+			void set_texture(string name);
 			void add_texture(string name, char const* path, bool vflip);
 			void set_diffuse_map(string name);
 			void set_specular_map(string name);

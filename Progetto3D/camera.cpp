@@ -52,6 +52,12 @@ void gview::gcam::Camera::move(dir::Directions dir)
 	case util::dir::Directions::right:
 		this->pos_ += normalize(cross(this->front_, this->up_)) * this->speed_;
 		break;
+	case util::dir::Directions::up:
+		this->pos_ += this->speed_ * this->up_;
+		break;
+	case util::dir::Directions::down:
+		this->pos_ -= this->speed_ * this->up_;
+		break;
 	default:
 		break;
 	}
@@ -108,4 +114,9 @@ void gview::gcam::Camera::zoom_out()
 	this->fov_ = this->fov_ - 1;
 	if (this->fov_ < 1.0f)
 		this->fov_ = 1.0f;
+}
+
+void gview::gcam::Camera::to_origin()
+{
+	this->pos_ = vec3(0.f);
 }

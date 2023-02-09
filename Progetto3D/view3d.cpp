@@ -47,7 +47,7 @@ void gview::GameView3D::draw_scene(void)
 
 void gview::GameView3D::time_refresh(int a)
 {
-	//scene.transform_object("cube_0", vec3(0), vec3(1), vec3(5, 1, 0), 1);
+	scene.transform_object("cube_0", vec3(0), vec3(1), vec3(1, 1, 0), 0.1);
 	
 	glutTimerFunc(10, GameView3D::time_refresh, 0);
 	glutPostRedisplay();
@@ -72,6 +72,15 @@ void gview::GameView3D::key_pressed(unsigned char key, int x, int y)
 		break;
 	case 'D': case 'd':
 		cam.move(dir::Directions::right);
+		break;
+	case 'E': case 'e':
+		cam.move(dir::Directions::up);
+		break;
+	case 'Q': case 'q':
+		cam.move(dir::Directions::down);
+		break;
+	case 'O': case 'o':
+		cam.to_origin();
 		break;
 	}
 }
@@ -153,6 +162,7 @@ void gview::GameView3D::set_scene()
 	lgh::LightFactory lf;
 	light_setting.add_directional_light(lf.new_directional_light(vec3(0,0,-1)));
 
+	lgh::PointLight pl;
 	/*lgh::Spotlight light = lf.new_spotlight(cam.get_position(), cam.get_front_direction());
 	vec3 col = color::cyan;
 	col *= 0.5;
@@ -165,6 +175,7 @@ void gview::GameView3D::set_scene()
 	// Set scene's objects
 	mesh::MeshFactory mf;
 	mesh::Model model = mf.create_dolphin();
+	model.transform(vec3(-3,-5, 2), vec3(0.5), vec3(1, 0, 0), 0);
 	scene.add_object(model);
 
 	model = mf.create_manta();
@@ -182,6 +193,7 @@ void gview::GameView3D::set_scene()
 	model = mf.create_jellyfish();
 	model.transform(vec3(-10, 5, -5), vec3(1.5), vec3(1, 0, 0), 0);
 	scene.add_object(model);
+	//pl = lf.new_point_light();
 
 	model = mf.create_fish();
 	model.transform(vec3(-4, 0, -3), vec3(0.1), vec3(1, 0, 0), -90);
@@ -192,6 +204,19 @@ void gview::GameView3D::set_scene()
 	model.transform(vec3(-4, 0.5, -3.5), vec3(0.1), vec3(1, 0, 0), -90);
 	model.set_material(brass);
 	scene.add_object(model);
+
+	gobj::mesh::Mesh mesh = mf.create_torus();
+	mesh.add_texture("rainbow", "res/textures/rainbow.png", 1);
+	mesh.set_diffuse_map("rainbow");
+	mesh.set_material(tutorial, true);
+	mesh.transform(vec3(-2), vec3(1), vec3(1, 0, 0), 90);
+	scene.add_object(mesh);
+
+	mesh = mf.create_cube();
+	mesh.add_texture("opal", "res/textures/opal.jpg", 1);
+	mesh.set_diffuse_map("opal");
+	mesh.set_material(tutorial, true);
+	scene.add_object(mesh);
 
 	//mesh::Mesh mesh = mf.create_cube();
 

@@ -11,6 +11,7 @@ namespace gobj
 		class MeshFactory {
 		private:
 			unsigned int cube_number = 0;
+			unsigned int toro_number = 0;
 			unsigned int dolphin_number = 0;
 			unsigned int manta_number = 0;
 			unsigned int whale_number = 0;
@@ -22,6 +23,7 @@ namespace gobj
 			~MeshFactory();
 
 			Mesh create_cube();
+			Mesh create_torus();
 
 			Model create_dolphin();
 			Model create_manta();

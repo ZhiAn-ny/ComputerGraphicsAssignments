@@ -82,10 +82,17 @@ void Mesh::set_indices(vector<unsigned int> indices)
 void Mesh::add_texture(Texture texture)
 {
     for (int i = 0; i < this->textures_.size(); i++)
-    {
         if (this->textures_[i].path._Equal(texture.path)) return;
-    }
+
+    texture.id = this->load_texture(texture.path.c_str(), 0);
     this->textures_.push_back(texture);
+}
+
+void Mesh::set_texture(string name)
+{
+    for (int i = 0; i < this->textures_.size(); i++)
+        if (this->textures_[i].name._Equal(name)) 
+            this->diffuse_map = this->textures_[i].id;
 }
 
 unsigned int Mesh::load_texture(char const* path, int vertical_flip)

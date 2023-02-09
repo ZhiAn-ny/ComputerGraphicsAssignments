@@ -53,6 +53,7 @@ namespace gview
 			void rotate(int x, int y);
 			void zoom_in();
 			void zoom_out();
+			void to_origin();
 		};
 
 	} // !cam
