@@ -54,11 +54,22 @@ void gview::GameView3D::time_refresh(int a)
 		[](mesh::IMesh* mesh) { return mesh->get_name().substr(0, 5)._Equal("whale"); },
 		[](mesh::IMesh* mesh) {
 			mesh->move(Directions::front);
+			mesh->turn(EulerAngle::yaw_left, 0.1);
+		}
+	);
+
+	scene.for_each(
+		[](mesh::IMesh* mesh) { return mesh->get_name().substr(0, 5)._Equal("manta"); },
+		[](mesh::IMesh* mesh) {
+			mesh->move(Directions::front);
+			mesh->turn(EulerAngle::yaw_right);
 		}
 	);
 
 	scene.get_object("dolphin_0")->turn(EulerAngle::yaw_right);
 	scene.get_object("dolphin_0")->move(Directions::front);
+	scene.get_object("dolphin_1")->turn(EulerAngle::yaw_left);
+	scene.get_object("dolphin_1")->move(Directions::front);
 
 	scene.for_each(
 		[](mesh::IMesh* mesh) { return mesh->get_name().substr(0, 5)._Equal("fish_"); },
@@ -200,8 +211,10 @@ void gview::GameView3D::set_scene()
 {
 	// Set scene's lights
 	lgh::LightFactory lf;
-	light_setting.add_directional_light(lf.new_directional_light(vec3(0,0,-1)));
 	lgh::PointLight pl;
+
+	light_setting.add_directional_light(lf.new_directional_light(vec3(0,0,-1)));
+	
 	pl = lf.new_point_light(vec3(5), color::orange);
 	light_setting.add_point_light(pl);
 	pl = lf.new_point_light(vec3(-3), color::blue);
@@ -209,28 +222,58 @@ void gview::GameView3D::set_scene()
 	pl = lf.new_point_light(vec3(0,-5,0), color::cyan);
 	light_setting.add_point_light(pl);
 
+	////////////////////////////////////////////////////////////////////////////
+
 	// Set scene's objects
 	mesh::MeshFactory mf;
-	mesh::Model model = mf.create_dolphin();
-	model.transform(vec3(-1, 0, 0), vec3(0.5), vec3(1, 0, 0), 0);
-	model.turn(EulerAngle::roll_right, 30);
+	mesh::Mesh mesh;
+	mesh::Model model;
+
+	// Add torus
+	for (float x = -5.7; x < 6; x += 5.7)
+	{
+		mesh = mf.create_torus();
+		mesh.add_texture("rainbow", "res/textures/rainbow.png", 1);
+		mesh.set_diffuse_map("rainbow");
+		mesh.set_material(tutorial, true);
+		mesh.transform(vec3(x, 0, 0), vec3(1), vec3(1, 0, 0), 90);
+		scene.add_object(mesh);
+	}
+
+	model = mf.create_dolphin();
+	model.transform(vec3(-5.7, 0, 0), vec3(0.5), vec3(1, 0, 0), 0);
+	scene.add_object(model);
+	model = mf.create_dolphin();
+	model.transform(vec3(0), vec3(0.5), vec3(0, 1, 0), 180);
 	scene.add_object(model);
 
 	model = mf.create_manta();
-	model.transform(vec3(5,-5,-3), vec3(0.4), vec3(1, 0, 0), 0);
+	model.transform(vec3(-8,-5,-3), vec3(0.4), vec3(1, 0, 0), 0);
+	model.turn(EulerAngle::pitch_up, 30);
+	model.turn(EulerAngle::roll_left, 10);
 	scene.add_object(model);
-
 	model = mf.create_manta();
-	model.transform(vec3(10,-7,-1), vec3(0.4), vec3(1, 0, 0), 0);
+	model.transform(vec3(-10,-6,-1), vec3(0.4), vec3(1, 0, 0), 0);
+	model.turn(EulerAngle::pitch_up, 30);
+	model.turn(EulerAngle::roll_left, 10);
+	scene.add_object(model);
+	model = mf.create_manta();
+	model.transform(vec3(-15, -9, 0), vec3(0.4), vec3(1, 0, 0), 0);
+	model.turn(EulerAngle::pitch_up, 30);
+	model.turn(EulerAngle::roll_left, 10);
 	scene.add_object(model);
 
+	// Create whales
 	model = mf.create_whale();
-	model.transform(vec3(500, 0, 0), vec3(1.3), vec3(0, 1, 0), -90);
+	model.transform(vec3(0, 0, -132), vec3(1.3), vec3(0, 1, 0), -90);
+	model.turn(EulerAngle::pitch_down, 30);
 	scene.add_object(model);
 	model = mf.create_whale();
-	model.transform(vec3(550, -50, 0), vec3(0.9), vec3(0, 1, 0), -90);
+	model.transform(vec3(0, -3, -130), vec3(0.9), vec3(0, 1, 0), -90);
+	model.turn(EulerAngle::pitch_down, 30);
 	scene.add_object(model);
 
+	// Add jellyfish
 	for (unsigned int i = 0; i < 5; i++)
 	{
 		model = mf.create_jellyfish();
@@ -243,26 +286,13 @@ void gview::GameView3D::set_scene()
 		scene.add_object(model);
 	}
 
-	gobj::mesh::Mesh mesh = mf.create_torus();
-	mesh.add_texture("rainbow", "res/textures/rainbow.png", 1);
-	mesh.set_diffuse_map("rainbow");
-	mesh.set_material(tutorial, true);
-	mesh.transform(vec3(-1, 0, 0), vec3(1), vec3(1, 0, 0), 90);
-	scene.add_object(mesh);
-
-	mesh = mf.create_torus();
-	mesh.add_texture("rainbow", "res/textures/rainbow.png", 1);
-	mesh.set_diffuse_map("rainbow");
-	mesh.set_material(tutorial, true);
-	mesh.transform(vec3(4, -3, 0), vec3(1), vec3(1, 0, 0), 90);
-	scene.add_object(mesh);
-
 	//gobj::mesh::Mesh mesh = mf.create_cube();
 	//mesh.add_texture("opal", "res/textures/opal.jpg", 1);
 	//mesh.set_diffuse_map("opal");
 	//mesh.set_material(tutorial, true);
 	//scene.add_object(mesh);
 
+	// Add fishes
 	for (unsigned int i = 0; i < 30; i++)
 	{
 		model = mf.create_fish();
@@ -271,6 +301,7 @@ void gview::GameView3D::set_scene()
 			(rand() % 12 - 6) / 3.0,
 			(rand() % 18 - 9) / 3.0
 		), vec3(0.05), vec3(0, 0, 1), 0);
+
 		model.turn(EulerAngle::yaw_left, 90);
 		switch (rand() % 3)
 		{

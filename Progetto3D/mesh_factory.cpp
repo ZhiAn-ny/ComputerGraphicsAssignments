@@ -132,6 +132,7 @@ Model gobj::mesh::MeshFactory::create_manta()
 {
     Model manta = Model("res/meshes/manta_ray/manta_ray.obj");
     manta.set_name("manta_" + std::to_string(this->manta_number));
+    manta.set_speed(0.4);
 
     this->manta_number++;
     return manta;
