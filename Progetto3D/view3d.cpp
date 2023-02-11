@@ -57,14 +57,15 @@ void gview::GameView3D::time_refresh(int a)
 		}
 	);
 
-	//scene.get_object("dolphin_0")->turn(Directions::right);
-	//scene.get_object("dolphin_0")->move(Directions::front);
+	scene.get_object("dolphin_0")->turn(EulerAngle::yaw_right);
+	scene.get_object("dolphin_0")->move(Directions::front);
 
 	scene.for_each(
 		[](mesh::IMesh* mesh) { return mesh->get_name().substr(0, 5)._Equal("fish_"); },
 		[](mesh::IMesh* mesh) {
 			mesh->move(Directions::front);
-			if (mesh->get_pos().x < -10 || mesh->get_pos().x > 10)
+			if (mesh->get_pos().x < -10 || mesh->get_pos().x > 10 ||
+				mesh->get_pos().z < -10 || mesh->get_pos().z > 10)
 			{
 				mesh->move(Directions::back, 0.5);
 				mesh->turn(EulerAngle::yaw_right, 90);
@@ -75,8 +76,8 @@ void gview::GameView3D::time_refresh(int a)
 	scene.for_each(
 		[](mesh::IMesh* mesh) { return mesh->get_name().substr(0, 5)._Equal("jelly"); },
 		[](mesh::IMesh* mesh) {
-			mesh->move(Directions::up);
-			//mesh->turn(EulerAngle::yaw_right);
+			mesh->move(Directions::front);
+			mesh->turn(EulerAngle::yaw_left);
 			if (mesh->get_pos().y > 30)
 				mesh->transform(vec3(0, -60, 0), vec3(1), vec3(1, 0, 0), 0);
 		}
@@ -212,8 +213,8 @@ void gview::GameView3D::set_scene()
 	mesh::MeshFactory mf;
 	mesh::Model model = mf.create_dolphin();
 	model.transform(vec3(-1, 0, 0), vec3(0.5), vec3(1, 0, 0), 0);
-	//model.turn(EulerAngle::yaw_left::back, 30);
-	//scene.add_object(model);
+	model.turn(EulerAngle::roll_right, 30);
+	scene.add_object(model);
 
 	model = mf.create_manta();
 	model.transform(vec3(5,-5,-3), vec3(0.4), vec3(1, 0, 0), 0);
@@ -270,7 +271,7 @@ void gview::GameView3D::set_scene()
 			(rand() % 12 - 6) / 3.0,
 			(rand() % 18 - 9) / 3.0
 		), vec3(0.05), vec3(0, 0, 1), 0);
-		model.turn(EulerAngle::yaw_left);
+		model.turn(EulerAngle::yaw_left, 90);
 		switch (rand() % 3)
 		{
 		case 0:

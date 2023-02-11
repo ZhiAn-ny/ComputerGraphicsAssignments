@@ -152,11 +152,7 @@ Model gobj::mesh::MeshFactory::create_fish()
 {
     Model fish = Model("res/meshes/fish/12990_Black_Moor_Goldfish_v1_l2.obj");
     fish.set_name("fish_" + std::to_string(this->fish_number));
-   // fish.transform(vec3(0), vec3(1), vec3(1, -1, 0), -90);
-    fish.set_ref_sys(vec3(1, 0, 0), vec3(0, 1, 0));
-    fish.turn(EulerAngle::pitch_down, 90);
-    fish.turn(EulerAngle::yaw_left, 90);
-    fish.set_ref_sys(vec3(1, 0, 0), vec3(0, 1, 0));
+    fish.set_ref_sys(vec3(0, 0, -1), vec3(0, 1, 0));
 
     this->fish_number++;
     return fish;
@@ -166,7 +162,7 @@ Model gobj::mesh::MeshFactory::create_jellyfish()
 {
     Model jelly = Model("res/meshes/jellyfish/jellyfish.obj");
     jelly.set_name("jellyfish_" + std::to_string(this->jelly_number));
-    jelly.set_ref_sys(vec3(1, 0, 0), vec3(0, 1, 0));
+    jelly.set_ref_sys(vec3(0, 1, 0), vec3(1, 0, 0));
 
     this->jelly_number++;
     return jelly;
