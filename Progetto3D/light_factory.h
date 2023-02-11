@@ -19,6 +19,7 @@ namespace lgh {
 		~LightFactory();
 
 		PointLight new_point_light(vec3 pos);
+		PointLight new_point_light(vec3 pos, vec3 color);
 
 		Spotlight new_spotlight(vec3 pos);
 		Spotlight new_spotlight(vec3 pos, vec3 dir);

@@ -47,10 +47,10 @@ void gobj::mesh::Model::set_speed(float speed)
 		this->meshes_[i].set_speed(speed);
 }
 
-void gobj::mesh::Model::set_front(vec3 front)
+void gobj::mesh::Model::set_ref_sys(vec3 front, vec3 up)
 {
 	for (int i = 0; i < this->meshes_.size(); i++)
-		this->meshes_[i].set_front(front);
+		this->meshes_[i].set_ref_sys(front, up);
 }
 
 string gobj::mesh::Model::get_name()
@@ -311,13 +311,19 @@ void gobj::mesh::Model::move(Directions dir)
 		this->meshes_[i].move(dir);
 }
 
-void gobj::mesh::Model::turn(Directions dir)
+void gobj::mesh::Model::move(Directions dir, float speed)
+{
+	for (int i = 0; i < this->meshes_.size(); i++)
+		this->meshes_[i].move(dir, speed);
+}
+
+void gobj::mesh::Model::turn(EulerAngle dir)
 {
 	for (int i = 0; i < this->meshes_.size(); i++)
 		this->meshes_[i].turn(dir);
 }
 
-void gobj::mesh::Model::turn(Directions dir, float angle)
+void gobj::mesh::Model::turn(EulerAngle dir, float angle)
 {
 	for (int i = 0; i < this->meshes_.size(); i++)
 		this->meshes_[i].turn(dir, angle);

@@ -23,6 +23,7 @@ namespace gobj
 		void select_nearest(vec3 origin, vec3 direction);
 		void deselect_all();
 		void for_each_selected(void (*func)(mesh::IMesh*));
+		void for_each(bool (*predicate)(mesh::IMesh*), void (*func)(mesh::IMesh*));
 		void render(Shader* shader);
 		
 	};

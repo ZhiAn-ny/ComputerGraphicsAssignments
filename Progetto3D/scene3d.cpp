@@ -81,6 +81,17 @@ void gobj::Scene::for_each_selected(void(*func)(mesh::IMesh*))
 			func(&this->models_[i]);
 }
 
+void gobj::Scene::for_each(bool(*predicate)(mesh::IMesh*), void(*func)(mesh::IMesh*))
+{
+	for (int i = 0; i < this->meshes_.size(); i++)
+		if (predicate(&this->meshes_[i]))
+			func(&this->meshes_[i]);
+
+	for (int i = 0; i < this->models_.size(); i++)
+		if (predicate(&this->models_[i]))
+			func(&this->models_[i]);
+}
+
 void gobj::Scene::add_object(mesh::Mesh mesh)
 {
 	mesh.bind();

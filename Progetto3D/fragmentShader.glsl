@@ -1,7 +1,7 @@
 #version 330 core
 
 // Maximum number of lights for each type
-#define MAX_N_LIGHTS 10
+#define MAX_N_LIGHTS 20
 
 in vec2 TexCoord;
 in vec3 Normal;

@@ -33,7 +33,7 @@ namespace gobj {
 
 			vec3 get_pos() override;
 			void set_speed(float speed) override;
-			void set_front(vec3 front) override;
+			void set_ref_sys(vec3 front, vec3 up) override;
 			string get_name() override;
 			void set_name(string name) override;
 			void set_material(Material mat, bool orig = false) override;
@@ -45,8 +45,9 @@ namespace gobj {
 			float ray_intersection(vec3 origin, vec3 direction) override;
 			void transform(vec3 tvec, vec3 svec, vec3 rvec, float angle) override;
 			void move(Directions dir) override;
-			void turn(Directions dir) override;
-			void turn(Directions dir, float angle) override;
+			void move(Directions dir, float speed) override;
+			void turn(EulerAngle dir) override;
+			void turn(EulerAngle dir, float angle) override;
 			void render(Shader* sh) override;
 
 		};

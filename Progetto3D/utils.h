@@ -22,6 +22,19 @@ namespace util
 			right
 		};
 
+		enum class EulerAngle {
+			// rotation along x axis
+			yaw_left,
+			// rotation along x axis
+			yaw_right,
+			// rotation along y axis
+			pitch_up,
+			// rotation along y axis
+			pitch_down,
+			roll_left,
+			roll_right
+		};
+
 	} // !dir
 
 } // !util

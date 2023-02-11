@@ -31,9 +31,10 @@ void gobj::mesh::Mesh::set_speed(float speed)
     this->speed_ = speed;
 }
 
-void gobj::mesh::Mesh::set_front(vec3 front)
+void gobj::mesh::Mesh::set_ref_sys(vec3 front, vec3 up)
 {
     this->front_ = front;
+    this->up_ = up;
 }
 
 string Mesh::get_name()
@@ -198,45 +199,127 @@ void Mesh::transform(vec3 tvec, vec3 svec, vec3 rvec, float angle)
 
 void gobj::mesh::Mesh::move(Directions dir)
 {
+    this->move(dir, this->speed_);
+}
+
+void gobj::mesh::Mesh::move(Directions dir, float speed)
+{
     vec3 tvec = vec3(0);
     switch (dir)
     {
-	case util::dir::Directions::front:
-        tvec += this->speed_ * this->front_;
+    case util::dir::Directions::front:
+        tvec += speed * this->front_;
         break;
     case util::dir::Directions::back:
-        tvec -= this->speed_ * this->front_;
+        tvec -= speed * this->front_;
         break;
     case util::dir::Directions::left:
-        tvec -= normalize(cross(this->front_, this->up_)) * this->speed_;
+        tvec -= normalize(cross(this->front_, this->up_)) * speed;
         break;
     case util::dir::Directions::right:
-        tvec += normalize(cross(this->front_, this->up_)) * this->speed_;
+        tvec += normalize(cross(this->front_, this->up_)) * speed;
         break;
     case util::dir::Directions::up:
-        tvec += this->speed_ * this->up_;
+        tvec += speed * this->up_;
         break;
     case util::dir::Directions::down:
-        tvec -= this->speed_ * this->up_;
+        tvec -= speed * this->up_;
         break;
     default:
         break;
     }
-    this->transform(tvec, vec3(1), vec3(1), 0);
+    this->transform(tvec, vec3(1), vec3(1,0,0), 0);
 }
 
-void gobj::mesh::Mesh::turn(Directions dir)
+void gobj::mesh::Mesh::turn(EulerAngle dir)
 {
     this->turn(dir, 1);
 }
 
-void gobj::mesh::Mesh::turn(Directions dir, float angle)
+void gobj::mesh::Mesh::turn(EulerAngle dir, float angle)
 {
-    vec3 rvec, rot;
-    vec4 front = vec4(this->front_, 0.0);
-    mat4 R;
+    vec3 rvec;
 
     switch (dir)
+    {
+    case util::dir::EulerAngle::yaw_right:
+    case util::dir::EulerAngle::yaw_left:
+
+        if (dir == EulerAngle::yaw_right) 
+            angle = -angle;
+
+        rvec = vec3(0, 0, 1); // fix z axis
+
+        front_.x = front_.x * cos(radians(angle)) + front_.z * sin(radians(angle));
+        front_.z = -front_.x * sin(radians(angle)) + front_.z * cos(radians(angle));
+        up_.x = up_.x * cos(radians(angle)) + up_.z * sin(radians(angle));
+        up_.z = -up_.x * sin(radians(angle)) + up_.z * cos(radians(angle));
+        front_ = normalize(front_);
+        up_ = normalize(up_);
+
+        break;
+    case util::dir::EulerAngle::pitch_up: 
+    case util::dir::EulerAngle::pitch_down:
+
+        if (dir == EulerAngle::pitch_down)
+            angle = -angle;
+
+        rvec = vec3(1, 0, 0);
+
+        front_.y = front_.y * cos(radians(angle)) - front_.z * sin(radians(angle));
+        front_.z = front_.y * sin(radians(angle)) + front_.z * cos(radians(angle));
+        up_.y = up_.y * cos(radians(angle)) - up_.z * sin(radians(angle));
+        up_.z = up_.y * sin(radians(angle)) + up_.z * cos(radians(angle));
+        front_ = normalize(front_);
+        up_ = normalize(up_);
+        break;
+    case util::dir::EulerAngle::roll_left:
+    case util::dir::EulerAngle::roll_right:
+
+        if (dir == EulerAngle::roll_right)
+            angle = -angle;
+
+        rvec = vec3(0, 1, 0); 
+        front_.x = front_.x * cos(radians(angle)) - front_.y * sin(radians(angle));
+        front_.y = front_.x * sin(radians(angle)) + front_.y * cos(radians(angle));
+        up_.x = up_.x * cos(radians(angle)) - up_.y * sin(radians(angle));
+        up_.y = up_.x * sin(radians(angle)) + up_.y * cos(radians(angle));
+        front_ = normalize(front_);
+        up_ = normalize(up_);
+        break;
+    default:
+        break;
+    }
+
+    this->transform(vec3(0), vec3(1), rvec, angle);
+    std::cout << front_.x << "," << front_.y << "," << front_.z << std::endl;
+
+    
+     /*Rx = mat3({ vec3(1, 0, 0),
+                vec3(0, cos(ax), -sin(ax)),
+                vec3(0, sin(ax), cos(ax)) });
+
+     Ry = mat3({ vec3(0, cos(ay), sin(ay)),
+                vec3(0, 1, 0),
+                vec3(0, -sin(ay), cos(ay)) });
+
+     Rz = mat3({ vec3(cos(az), -sin(az), 0),
+                vec3(sin(az), cos(az), 0),
+                vec3(0, 0, 1) });
+
+    std::cout << front_.x << "," << front_.y << "," << front_.z << std::endl;
+    mat3 R = mat3(Rx * Ry * Rz);
+
+    mat3 R = rotate(angle, rvec);
+
+    this->front_ = vec3((vec4(this->front_,1) * R));
+    this->up_ = vec3((vec4(this->up_,1) * R));*/
+
+
+ /*   this->front_ = vec3(vec4(this->front_, 1.0) * R);
+    this->model = this->model * R;*/
+
+    /*switch (dir)
     {
     case util::dir::Directions::up:
         rvec = vec3(1, 0, 0);
@@ -270,9 +353,8 @@ void gobj::mesh::Mesh::turn(Directions dir, float angle)
         break;
     default:
         break;
-    }
-
-    this->transform(vec3(0), vec3(1), rvec, angle);
+    }*/
+    //this->transform(vec3(0), vec3(1), rvec, angle);
 }
 
 void Mesh::add_texture(string name, char const* path, bool vflip)

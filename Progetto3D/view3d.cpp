@@ -50,19 +50,38 @@ void gview::GameView3D::time_refresh(int a)
 	//scene.transform_object("cube_0", vec3(0), vec3(1), vec3(1, 1, 0), 0.1);
 	//scene.get_object("cube_0")->turn(Directions::up);
 
-	scene.get_object("jellyfish_0")->move(Directions::front);
-	scene.get_object("jellyfish_0")->turn(Directions::right);
+	scene.for_each(
+		[](mesh::IMesh* mesh) { return mesh->get_name().substr(0, 5)._Equal("whale"); },
+		[](mesh::IMesh* mesh) {
+			mesh->move(Directions::front);
+		}
+	);
 
-	scene.get_object("whale_0")->move(Directions::front);
+	//scene.get_object("dolphin_0")->turn(Directions::right);
+	//scene.get_object("dolphin_0")->move(Directions::front);
 
-	scene.get_object("dolphin_0")->turn(Directions::right);
-	scene.get_object("dolphin_0")->move(Directions::front);
+	scene.for_each(
+		[](mesh::IMesh* mesh) { return mesh->get_name().substr(0, 5)._Equal("fish_"); },
+		[](mesh::IMesh* mesh) {
+			mesh->move(Directions::front);
+			if (mesh->get_pos().x < -10 || mesh->get_pos().x > 10)
+			{
+				mesh->move(Directions::back, 0.5);
+				mesh->turn(EulerAngle::yaw_right, 90);
+			}
+		}
+	);
 
-	
+	scene.for_each(
+		[](mesh::IMesh* mesh) { return mesh->get_name().substr(0, 5)._Equal("jelly"); },
+		[](mesh::IMesh* mesh) {
+			mesh->move(Directions::up);
+			//mesh->turn(EulerAngle::yaw_right);
+			if (mesh->get_pos().y > 30)
+				mesh->transform(vec3(0, -60, 0), vec3(1), vec3(1, 0, 0), 0);
+		}
+	);
 
-	vector<lgh::PointLight> lights = light_setting.get_point_lights();
-	lights[0].set_position(scene.get_object("jellyfish_0")->get_pos());
-	
 	glutTimerFunc(10, GameView3D::time_refresh, 0);
 	glutPostRedisplay();
 }
@@ -98,6 +117,9 @@ void gview::GameView3D::key_pressed(unsigned char key, int x, int y)
 		break;
 	case 'j':
 		cam.set_position(scene.get_object("jellyfish_0")->get_pos());
+		break;
+	case 'b':
+		cam.set_position(scene.get_object("whale_0")->get_pos());
 		break;
 	}
 }
@@ -179,57 +201,46 @@ void gview::GameView3D::set_scene()
 	lgh::LightFactory lf;
 	light_setting.add_directional_light(lf.new_directional_light(vec3(0,0,-1)));
 	lgh::PointLight pl;
+	pl = lf.new_point_light(vec3(5), color::orange);
+	light_setting.add_point_light(pl);
+	pl = lf.new_point_light(vec3(-3), color::blue);
+	light_setting.add_point_light(pl);
+	pl = lf.new_point_light(vec3(0,-5,0), color::cyan);
+	light_setting.add_point_light(pl);
 
 	// Set scene's objects
 	mesh::MeshFactory mf;
 	mesh::Model model = mf.create_dolphin();
 	model.transform(vec3(-1, 0, 0), vec3(0.5), vec3(1, 0, 0), 0);
-	model.turn(Directions::back, 30);
+	//model.turn(EulerAngle::yaw_left::back, 30);
+	//scene.add_object(model);
+
+	model = mf.create_manta();
+	model.transform(vec3(5,-5,-3), vec3(0.4), vec3(1, 0, 0), 0);
 	scene.add_object(model);
 
 	model = mf.create_manta();
-	model.transform(vec3(5,-5,-3), vec3(0.5), vec3(1, 0, 0), 0);
-	scene.add_object(model);
-
-	model = mf.create_manta();
-	model.transform(vec3(10,-7,-1), vec3(0.5), vec3(1, 0, 0), 0);
+	model.transform(vec3(10,-7,-1), vec3(0.4), vec3(1, 0, 0), 0);
 	scene.add_object(model);
 
 	model = mf.create_whale();
-	model.transform(vec3(500, 0, 0), vec3(1), vec3(0, 1, 0), -90);
+	model.transform(vec3(500, 0, 0), vec3(1.3), vec3(0, 1, 0), -90);
+	scene.add_object(model);
+	model = mf.create_whale();
+	model.transform(vec3(550, -50, 0), vec3(0.9), vec3(0, 1, 0), -90);
 	scene.add_object(model);
 
-	model = mf.create_jellyfish();
-	model.transform(vec3(-10, -25, -5), vec3(1.5), vec3(1, 0, 0), 0);
-	model.set_speed(0.001);
-	scene.add_object(model);
-	pl = lf.new_point_light(model.get_pos());
-	pl.set_color(color::cyan);
-	light_setting.add_point_light(pl);
-
-	model = mf.create_fish();
-	model.transform(vec3(-4, 0, -3), vec3(0.1), vec3(1, 0, 0), -90);
-	model.set_material(brass);
-	scene.add_object(model);
-	pl = lf.new_point_light(model.get_pos());
-	pl.set_color(color::orange);
-	light_setting.add_point_light(pl);
-
-	model = mf.create_fish();
-	model.transform(vec3(-4, 0.5, -3.5), vec3(0.1), vec3(1, 0, 0), -90);
-	model.set_material(brass);
-	scene.add_object(model);
-	pl = lf.new_point_light(model.get_pos());
-	pl.set_color(color::orange);
-	light_setting.add_point_light(pl);
-
-	model = mf.create_fish();
-	model.transform(vec3(-4.5, 0, -4), vec3(0.1), vec3(1, 0, 0), -90);
-	model.set_material(brass);
-	scene.add_object(model);
-	pl = lf.new_point_light(model.get_pos());
-	pl.set_color(color::orange);
-	light_setting.add_point_light(pl);
+	for (unsigned int i = 0; i < 5; i++)
+	{
+		model = mf.create_jellyfish();
+		model.transform(vec3(
+			(rand() % 4 - 5) / 2.0,
+			(rand() % 4 - 15) / 2.0,
+			(rand() % 4 - 5) / 2.0
+		), vec3(1), vec3(0, 0, 1), 0);
+		model.set_speed(0.001);
+		scene.add_object(model);
+	}
 
 	gobj::mesh::Mesh mesh = mf.create_torus();
 	mesh.add_texture("rainbow", "res/textures/rainbow.png", 1);
@@ -251,19 +262,30 @@ void gview::GameView3D::set_scene()
 	//mesh.set_material(tutorial, true);
 	//scene.add_object(mesh);
 
-	/*for (unsigned int i = 0; i < 10; i++)
+	for (unsigned int i = 0; i < 30; i++)
 	{
-		mesh = mf.create_torus();
-		mesh.add_texture("rainbow", "res/textures/rainbow.png", 1);
-		mesh.set_diffuse_map("rainbow");
-		mesh.set_material(tutorial, true);
-		mesh.transform(
-			vec3(rand() % 6 - 3, rand() % 6 - 3, rand() % 6 - 3),
-			vec3(1),
-			vec3(rand() % 20 - 10), rand()
-		);
-		scene.add_object(mesh);
-	}*/
+		model = mf.create_fish();
+		model.transform(vec3(
+			(rand() % 18 - 9) / 3.0,
+			(rand() % 12 - 6) / 3.0,
+			(rand() % 18 - 9) / 3.0
+		), vec3(0.05), vec3(0, 0, 1), 0);
+		model.turn(EulerAngle::yaw_left);
+		switch (rand() % 3)
+		{
+		case 0:
+			model.set_material(brass);
+			break;
+		case 1:
+			model.set_material(gold);
+			break;
+		case 2:
+			model.set_material(no_material, true);
+			break;
+		}
+		model.set_speed(0.2);
+		scene.add_object(model);
+	}
 
 }
 

@@ -19,6 +19,13 @@ PointLight LightFactory::new_point_light(vec3 pos)
     return light;
 }
 
+PointLight lgh::LightFactory::new_point_light(vec3 pos, vec3 color)
+{
+    PointLight pl = this->new_point_light(pos);
+    pl.set_color(color);
+    return pl;
+}
+
 Spotlight LightFactory::new_spotlight(vec3 pos)
 {
     Spotlight light = Spotlight("spotlight_" + this->n_sl);

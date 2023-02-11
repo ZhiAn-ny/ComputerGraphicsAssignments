@@ -15,7 +15,7 @@ namespace gobj
 		public:
 			virtual vec3 get_pos() = 0;
 			virtual void set_speed(float speed) = 0;
-			virtual void set_front(vec3 front) = 0;
+			virtual void set_ref_sys(vec3 front, vec3 up) = 0;
 			virtual string get_name() = 0;
 			virtual void set_name(string name) = 0;
 			virtual void set_material(Material mat, bool orig = false) = 0;
@@ -30,8 +30,9 @@ namespace gobj
 			virtual float ray_intersection(vec3 origin, vec3 direction) = 0;
 			virtual void transform(vec3 tvec, vec3 svec, vec3 rvec, float angle) = 0;
 			virtual void move(Directions dir) = 0;
-			virtual void turn(Directions dir) = 0;
-			virtual void turn(Directions dir, float angle) = 0;
+			virtual void move(Directions dir, float speed) = 0;
+			virtual void turn(EulerAngle dir) = 0;
+			virtual void turn(EulerAngle dir, float angle) = 0;
 			virtual void render(Shader* sh) = 0;
 		};
 	}
