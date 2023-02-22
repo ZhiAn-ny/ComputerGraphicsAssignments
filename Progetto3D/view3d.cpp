@@ -353,7 +353,7 @@ void gview::GameView3D::init()
 	glutInitContextProfile(GLUT_CORE_PROFILE);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
 
-	this->create_window("Is this working?");
+	this->create_window("Space Ocean");
 
 	glutDisplayFunc(this->draw_scene);
 	glutTimerFunc(10, this->time_refresh, 0);
