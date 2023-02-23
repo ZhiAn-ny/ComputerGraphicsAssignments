@@ -390,16 +390,17 @@ void main()
     switch (shadingType)
     {
         case -1: // Phong lighting model with Phong shading
-        case -3: // Phong lighting model with interpolative shading
             FragColor = applyPhongLighting(norm, viewDir, objColor);
             break;
         case -2: // Blinn-Phong lighting model with Phong shading
-        case -4: // Blinn-Phong lighting model with interpolative shading
             FragColor = applyBlinnPhongLighting(norm, viewDir, objColor);
             break;
         case -5: // Cartoon shading
             FragColor = applyCartoonShading(norm, viewDir, objColor);
             break;
+        case -3: // Phong lighting model with interpolative shading
+        case -4: // Blinn-Phong lighting model with interpolative shading
+            FragColor = mix(ourColor, vec4(objColor.diffuse, 1.0), 0.3);
         default:
             break;
     }
