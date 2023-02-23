@@ -362,16 +362,16 @@ vec4 applyCartoonShading(vec3 normal, vec3 viewDir, Material objColor)
     {
         result += DLContributeCartoon(dirLights[i], normal, viewDir, objColor);
     }
-    // Add point light
-    for (int i = 0; i< n_pointLights; i++)
-    {
-        result += PLContributeCartoon(pointLights[i], normal, viewDir, objColor);
-    }
-    // Add spotlight
-    for (int i = 0; i < n_spotlights; i++)
-    {
-        result += SLContributeCartoon(spotlights[i], normal, viewDir, objColor);
-    }
+//    // Add point light
+//    for (int i = 0; i< n_pointLights; i++)
+//    {
+//        result += PLContributeCartoon(pointLights[i], normal, viewDir, objColor);
+//    }
+//    // Add spotlight
+//    for (int i = 0; i < n_spotlights; i++)
+//    {
+//        result += SLContributeCartoon(spotlights[i], normal, viewDir, objColor);
+//    }
 
     return vec4(result, 1.0);
 }
