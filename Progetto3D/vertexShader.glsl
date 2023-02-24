@@ -332,7 +332,6 @@ void main()
 
     FragPos = vec3(Model * vec4(aPos, 1.0));
 
-    vec3 norm = normalize(Normal);
     vec3 viewDir = normalize(camPos - vec3(View * Model * vec4(aPos,1.0)));
 
     Material objColor = getObjectColor();
@@ -355,6 +354,7 @@ void main()
         Normal = VMmatrix * aNormal;
     }
     else Normal = NormalMatrix * aNormal;
+    vec3 norm = normalize(Normal);
 
         // To apply the interpolated shading, we must first calculate the
     // illumination equation on each vertex of the mesh, then interpolate the
