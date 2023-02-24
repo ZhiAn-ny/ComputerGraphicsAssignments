@@ -362,16 +362,16 @@ vec4 applyCartoonShading(vec3 normal, vec3 viewDir, Material objColor)
     {
         result += DLContributeCartoon(dirLights[i], normal, viewDir, objColor);
     }
-    // Add point light
-    for (int i = 0; i< n_pointLights; i++)
-    {
-        result += PLContributeCartoon(pointLights[i], normal, viewDir, objColor);
-    }
-    // Add spotlight
-    for (int i = 0; i < n_spotlights; i++)
-    {
-        result += SLContributeCartoon(spotlights[i], normal, viewDir, objColor);
-    }
+//    // Add point light
+//    for (int i = 0; i< n_pointLights; i++)
+//    {
+//        result += PLContributeCartoon(pointLights[i], normal, viewDir, objColor);
+//    }
+//    // Add spotlight
+//    for (int i = 0; i < n_spotlights; i++)
+//    {
+//        result += SLContributeCartoon(spotlights[i], normal, viewDir, objColor);
+//    }
 
     return vec4(result, 1.0);
 }
@@ -390,16 +390,17 @@ void main()
     switch (shadingType)
     {
         case -1: // Phong lighting model with Phong shading
-        case -3: // Phong lighting model with interpolative shading
             FragColor = applyPhongLighting(norm, viewDir, objColor);
             break;
         case -2: // Blinn-Phong lighting model with Phong shading
-        case -4: // Blinn-Phong lighting model with interpolative shading
             FragColor = applyBlinnPhongLighting(norm, viewDir, objColor);
             break;
         case -5: // Cartoon shading
             FragColor = applyCartoonShading(norm, viewDir, objColor);
             break;
+        case -3: // Phong lighting model with interpolative shading
+        case -4: // Blinn-Phong lighting model with interpolative shading
+            FragColor = mix(ourColor, vec4(objColor.diffuse, 1.0), 0.3);
         default:
             break;
     }
